@@ -24,6 +24,8 @@ The JSON includes macro-F1, per-class precision and recall, abstention rate, cit
 
 Macro-F1 is the unweighted mean of the three class F1 scores. A class with gold rows but no predictions has recall 0, precision `null`, and F1 0, and it stays in the average. The checked-in test expects macro-F1 **0.5** and abstention **0.5** for the local backend on this fixture. That is a regression check, not a claim about research quality.
 
+Candidate rows live in [candidates/README.md](candidates/README.md). They are fictional and author-labeled. They are not gold.
+
 ## Not in this release
 
 A gold set of at least 100 original or permissively licensed examples, with human review before any model-written label is treated as gold, is still future work. Do not fill it with unlabeled synthetic text and call the result gold.

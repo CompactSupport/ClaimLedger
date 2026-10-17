@@ -7,6 +7,7 @@ Precision is null, not zero, when the denominator would be zero.
 
 from __future__ import annotations
 
+import random
 from typing import Any
 
 from .models import DocumentPage
@@ -47,6 +48,37 @@ def classification_metrics(pairs: list[tuple[str, str]]) -> dict[str, Any]:
         "macro_f1": sum(f1_values) / len(f1_values) if f1_values else None,
         "abstention_rate": abstention_rate,
         "n": count,
+    }
+
+
+def bootstrap_macro_f1(pairs: list[tuple[str, str]], *, iterations: int = 1000,
+                       seed: int = 0) -> dict[str, Any]:
+    """Percentile interval from resampling this finite set.
+
+    The interval does not estimate accuracy on a larger population.
+    """
+    if not pairs:
+        return {"method": "bootstrap_percentile", "iterations": 0, "seed": seed,
+                "low": None, "high": None}
+    rng = random.Random(seed)
+    scores: list[float] = []
+    for _ in range(iterations):
+        sample = [pairs[rng.randrange(len(pairs))] for _ in pairs]
+        score = classification_metrics(sample)["macro_f1"]
+        scores.append(0.0 if score is None else score)
+    scores.sort()
+
+    def percentile(fraction: float) -> float:
+        index = round((len(scores) - 1) * fraction)
+        return scores[index]
+
+    return {
+        "method": "bootstrap_percentile",
+        "iterations": iterations,
+        "seed": seed,
+        "low": percentile(0.025),
+        "high": percentile(0.975),
+        "note": "Resampling interval for this finite set, not a population accuracy claim.",
     }
 
 
