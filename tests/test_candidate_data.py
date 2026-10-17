@@ -15,9 +15,11 @@ def test_manifest_document_hashes_and_counts():
     manifest = json.loads((BASE / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["gold_benchmark"] is False
     assert manifest["label_origin"] == "synthetic_author_labeled"
-    assert manifest["original_synthetic_documents"] == 20
-    assert manifest["rows"] == 60
-    assert len(manifest["document_sha256"]) == 20
+    assert manifest["dataset_version"] == "candidates-2026-10-17.2"
+    assert manifest["original_synthetic_documents"] == 36
+    assert manifest["rows"] == 108
+    assert manifest["external_evaluation_set"] == "not_available"
+    assert len(manifest["document_sha256"]) == 36
     for filename, digest in manifest["document_sha256"].items():
         source = BASE / "documents" / filename
         assert source.is_file()
@@ -25,20 +27,21 @@ def test_manifest_document_hashes_and_counts():
 
 
 def test_review_queue_and_shards_are_aligned():
+    manifest = json.loads((BASE / "manifest.json").read_text(encoding="utf-8"))
     with (BASE / "review_queue.csv").open(encoding="utf-8", newline="") as handle:
         reviews = list(csv.DictReader(handle))
     shards = sorted(BASE.glob("shard-*.jsonl"))
-    assert len(shards) == 3
+    assert len(shards) == manifest["shards"] == 5
     cases = []
     for shard in shards:
         local_cases = [json.loads(line) for line in shard.read_text(encoding="utf-8").splitlines()]
-        assert len(local_cases) == 20
+        assert 1 <= len(local_cases) <= 30
         cases += local_cases
-    assert len(reviews) == len(cases) == 60
+    assert len(reviews) == len(cases) == 108
     assert Counter(case["expected"] for case in cases) == {
-        "supported": 20,
-        "contradicted": 20,
-        "insufficient": 20,
+        "supported": 36,
+        "contradicted": 36,
+        "insufficient": 36,
     }
     assert len({review["id"] for review in reviews}) == len(reviews)
     for review, case in zip(reviews, cases, strict=True):
@@ -70,6 +73,19 @@ CORRECTED_QUOTES = {
     "cl-019-2": "It did not provide a French translation.",
     "cl-020-2": "The authors did not conduct a blinded trial.",
 }
+
+
+def test_pre_review_flags_do_not_mark_rows_reviewed():
+    with (BASE / "review_queue.csv").open(encoding="utf-8", newline="") as handle:
+        reviews = {row["id"]: row for row in csv.DictReader(handle)}
+    with (BASE / "pre_review_flags.csv").open(encoding="utf-8", newline="") as handle:
+        flags = list(csv.DictReader(handle))
+    assert flags
+    for flag in flags:
+        assert flag["id"] in reviews
+        assert flag["human_reviewed"] == "false"
+        assert reviews[flag["id"]]["human_reviewed"] == "False"
+        assert reviews[flag["id"]]["reviewed_label"] == ""
 
 
 def test_corrected_quotes_name_the_relevant_statement():

@@ -1,0 +1,24 @@
+{"id": "cl-021-1", "document": "documents/d021.md", "claim": "The ferry departed at 07:10 on 3 May 2026.", "expected": "supported"}
+{"id": "cl-021-2", "document": "documents/d021.md", "claim": "The ferry waited because the gate was closed on 3 May 2026.", "expected": "contradicted"}
+{"id": "cl-021-3", "document": "documents/d021.md", "claim": "The ferry carried 40 passengers.", "expected": "insufficient"}
+{"id": "cl-022-1", "document": "documents/d022.md", "claim": "Every published chart used 2025 observations.", "expected": "supported"}
+{"id": "cl-022-2", "document": "documents/d022.md", "claim": "The appendix draft chart was published.", "expected": "contradicted"}
+{"id": "cl-022-3", "document": "documents/d022.md", "claim": "The charts were printed in color.", "expected": "insufficient"}
+{"id": "cl-023-1", "document": "documents/d023.md", "claim": "Site A samples were tested on Tuesday.", "expected": "supported"}
+{"id": "cl-023-2", "document": "documents/d023.md", "claim": "The lab tested samples from Site B.", "expected": "contradicted"}
+{"id": "cl-023-3", "document": "documents/d023.md", "claim": "Site A samples failed the test.", "expected": "insufficient"}
+{"id": "cl-024-1", "document": "documents/d024.md", "claim": "Route East took less time than Route West.", "expected": "supported"}
+{"id": "cl-024-2", "document": "documents/d024.md", "claim": "Route West was faster than Route East.", "expected": "contradicted"}
+{"id": "cl-024-3", "document": "documents/d024.md", "claim": "Route East costs less than Route West.", "expected": "insufficient"}
+{"id": "cl-025-1", "document": "documents/d025.md", "claim": "The panel interviewed three candidates.", "expected": "supported"}
+{"id": "cl-025-2", "document": "documents/d025.md", "claim": "The panel interviewed five candidates.", "expected": "contradicted"}
+{"id": "cl-025-3", "document": "documents/d025.md", "claim": "The panel offered the role to the second candidate.", "expected": "insufficient"}
+{"id": "cl-026-1", "document": "documents/d026.md", "claim": "The desk answered calls at 09:00.", "expected": "supported"}
+{"id": "cl-026-2", "document": "documents/d026.md", "claim": "The desk answered a call at 18:30.", "expected": "contradicted"}
+{"id": "cl-026-3", "document": "documents/d026.md", "claim": "The desk employed four operators.", "expected": "insufficient"}
+{"id": "cl-027-1", "document": "documents/d027.md", "claim": "The recipe uses honey.", "expected": "supported"}
+{"id": "cl-027-2", "document": "documents/d027.md", "claim": "The recipe includes nuts.", "expected": "contradicted"}
+{"id": "cl-027-3", "document": "documents/d027.md", "claim": "The recipe is gluten-free.", "expected": "insufficient"}
+{"id": "cl-028-1", "document": "documents/d028.md", "claim": "Mara recorded the measurements.", "expected": "supported"}
+{"id": "cl-028-2", "document": "documents/d028.md", "claim": "Luis recorded the measurements.", "expected": "contradicted"}
+{"id": "cl-028-3", "document": "documents/d028.md", "claim": "Mara calibrated the instrument.", "expected": "insufficient"}

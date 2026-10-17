@@ -73,12 +73,16 @@ def aggregate(shard_outputs: list[dict], shard_rows: list[list[dict]],
     failures: list[dict] = []
     valid_quotes = 0
     total_quotes = 0
+    cases_with_valid_evidence = 0
     for output, rows in zip(shard_outputs, shard_rows, strict=True):
         cases = output["cases"]
         if len(cases) != len(rows):
             raise ValueError("Shard result row count does not match the JSONL.")
         valid_quotes += output.get("citation_valid_quotes", 0)
         total_quotes += output.get("citation_total_quotes", 0)
+        cases_with_valid_evidence += sum(
+            1 for case in cases if case.get("has_valid_evidence")
+        )
         for case, row in zip(cases, rows, strict=True):
             if case["claim"] != row["claim"] or case["expected"] != row["expected"]:
                 raise ValueError("Shard output does not match the source row.")
@@ -137,6 +141,12 @@ def aggregate(shard_outputs: list[dict], shard_rows: list[list[dict]],
         "citation_validity_note": (
             "This rate counts only quotes the baseline emitted. "
             "It is not evidence of citation reliability for cases with no quote."
+        ),
+        "evidence_coverage_rate": cases_with_valid_evidence / len(pairs),
+        "cases_with_valid_evidence": cases_with_valid_evidence,
+        "evidence_coverage_note": (
+            "Share of cases that received at least one validated quote. "
+            "Separate from quote validity among emitted quotes."
         ),
         "held_out_split_note": (
             "The held-out split is an internal partition of the same author-written set. "

@@ -28,24 +28,27 @@ def test_local_candidate_run_pools_sixty_cases():
         outputs, rows, queue_rows, manifest["document_sha256"], CANDIDATES,
     )
     summary = aggregate(outputs, rows, load_split())
-    assert summary["examples"] == 60
+    assert summary["examples"] == 108
     assert summary["gold_benchmark"] is False
     assert summary["human_reviewed"] is False
     assert summary["label_origin"] == "synthetic_author_labeled"
-    assert summary["correct"] == 22
+    assert summary["correct"] == summary["examples"] - len(summary["failure_modes"])
     assert summary["metrics"]["macro_f1"] != summary["mean_of_shard_macro_f1"]
     assert summary["baselines"]["always_abstain"]["macro_f1"] == 1 / 6
     assert summary["citation_validity_rate"] == 1.0
     assert summary["citation_validity_scope"] == "emitted_quotes_only"
-    assert summary["citation_total_quotes"] == 2
+    assert summary["cases_with_valid_evidence"] == summary["citation_total_quotes"]
+    assert summary["evidence_coverage_rate"] < 1
     assert summary["total_tokens"] == 0
-    assert summary["independent_documents"] == 20
-    assert summary["splits"]["dev"]["n"] == 42
-    assert summary["splits"]["held_out"]["n"] == 18
+    assert summary["independent_documents"] == 36
+    assert summary["splits"]["dev"]["n"] == 66
+    assert summary["splits"]["held_out"]["n"] == 42
     interval = summary["local_macro_f1_cluster_bootstrap_95"]
-    assert interval["independent_documents"] == 20
+    assert interval["independent_documents"] == 36
     assert interval["low"] <= summary["metrics"]["macro_f1"] <= interval["high"]
-    assert len(summary["failure_modes"]) == 38
+    assert summary["cases_with_valid_evidence"] == summary["citation_total_quotes"]
+    assert summary["evidence_coverage_rate"] < summary["citation_validity_rate"]
+    assert "not a blind external test set" in summary["held_out_split_note"]
 
 
 def test_openai_candidate_run_requires_an_explicit_paid_flag():

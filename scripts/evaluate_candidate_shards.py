@@ -31,8 +31,8 @@ def main() -> int:
         print("Refusing network inference without --allow-paid", file=sys.stderr)
         return 2
     datasets = sorted(CANDIDATES.glob("shard-*.jsonl"))
-    if len(datasets) != 3:
-        print("Expected exactly 3 candidate shards", file=sys.stderr)
+    if not datasets:
+        print("Expected at least one candidate shard", file=sys.stderr)
         return 2
     outdir = ROOT / "output" / "candidate_benchmark"
     outdir.mkdir(parents=True, exist_ok=True)

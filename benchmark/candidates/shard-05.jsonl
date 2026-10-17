@@ -1,0 +1,24 @@
+{"id": "cl-029-1", "document": "documents/d029.md", "claim": "Equipment bought in 2026 can be charged to the grant.", "expected": "supported"}
+{"id": "cl-029-2", "document": "documents/d029.md", "claim": "The grant covers salaries.", "expected": "contradicted"}
+{"id": "cl-029-3", "document": "documents/d029.md", "claim": "The grant covers travel.", "expected": "insufficient"}
+{"id": "cl-030-1", "document": "documents/d030.md", "claim": "The archive holds diaries.", "expected": "supported"}
+{"id": "cl-030-2", "document": "documents/d030.md", "claim": "This archive holds the photographs.", "expected": "contradicted"}
+{"id": "cl-030-3", "document": "documents/d030.md", "claim": "The diaries are digitized.", "expected": "insufficient"}
+{"id": "cl-031-1", "document": "documents/d031.md", "claim": "This batch had 8 intact vials.", "expected": "supported"}
+{"id": "cl-031-2", "document": "documents/d031.md", "claim": "This batch passed the intact-vial rule.", "expected": "contradicted"}
+{"id": "cl-031-3", "document": "documents/d031.md", "claim": "The vials contain saline.", "expected": "insufficient"}
+{"id": "cl-032-1", "document": "documents/d032.md", "claim": "A submission on 3 March 2026 was late.", "expected": "supported"}
+{"id": "cl-032-2", "document": "documents/d032.md", "claim": "Submissions were accepted on 3 March 2026.", "expected": "contradicted"}
+{"id": "cl-032-3", "document": "documents/d032.md", "claim": "The form required a PDF.", "expected": "insufficient"}
+{"id": "cl-033-1", "document": "documents/d033.md", "claim": "The tank holds 2 liters.", "expected": "supported"}
+{"id": "cl-033-2", "document": "documents/d033.md", "claim": "The tank holds 2 gallons.", "expected": "contradicted"}
+{"id": "cl-033-3", "document": "documents/d033.md", "claim": "The tank is made of glass.", "expected": "insufficient"}
+{"id": "cl-034-1", "document": "documents/d034.md", "claim": "Both groups scored 15.", "expected": "supported"}
+{"id": "cl-034-2", "document": "documents/d034.md", "claim": "Group Red outscored Group Blue.", "expected": "contradicted"}
+{"id": "cl-034-3", "document": "documents/d034.md", "claim": "Group Red finished earlier than Group Blue.", "expected": "insufficient"}
+{"id": "cl-035-1", "document": "documents/d035.md", "claim": "The Tuesday sample was frozen.", "expected": "supported"}
+{"id": "cl-035-2", "document": "documents/d035.md", "claim": "The Monday sample was frozen.", "expected": "contradicted"}
+{"id": "cl-035-3", "document": "documents/d035.md", "claim": "The freezer was set to -20 degrees.", "expected": "insufficient"}
+{"id": "cl-036-1", "document": "documents/d036.md", "claim": "A German edition of the manual exists.", "expected": "supported"}
+{"id": "cl-036-2", "document": "documents/d036.md", "claim": "A Korean edition of the manual exists.", "expected": "contradicted"}
+{"id": "cl-036-3", "document": "documents/d036.md", "claim": "The manual has a glossary.", "expected": "insufficient"}
