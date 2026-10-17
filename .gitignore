@@ -3,15 +3,36 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
+.mypy_cache/
+.tox/
+.coverage
+htmlcov/
 *.egg-info/
 dist/
 build/
+output/
+
+# Credentials and local secret material. The example file is only a placeholder.
 .env
 .env.*
 !.env.example
-output/
-*.log
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# Editor-specific local configuration.
+.vscode/
+.idea/
+.cursor/
+*.swp
+*.swo
+*~
 .DS_Store
-# Never commit private inputs or model-generated reports.
+Thumbs.db
+
+# Local agent brief and private inputs. Never publish these.
+/CURSOR_PROMPT.md
 private/
 user_data/
+*.log
