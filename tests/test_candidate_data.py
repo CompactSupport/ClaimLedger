@@ -60,3 +60,26 @@ def test_review_queue_and_shards_are_aligned():
             assert text[start:end] == review["evidence_quote"]
             assert text.find(review["evidence_quote"], start + 1) == -1
         assert review["reviewed_label"] == ""
+        assert review["human_reviewed"] == "False"
+
+
+CORRECTED_QUOTES = {
+    "cl-009-2": "Median message latency was 42 milliseconds during the benchmark.",
+    "cl-010-2": "The museum is closed to visitors on Mondays.",
+    "cl-013-2": "The Delta complex consists of three towers.",
+    "cl-019-2": "It did not provide a French translation.",
+    "cl-020-2": "The authors did not conduct a blinded trial.",
+}
+
+
+def test_corrected_quotes_name_the_relevant_statement():
+    with (BASE / "review_queue.csv").open(encoding="utf-8", newline="") as handle:
+        reviews = {row["id"]: row for row in csv.DictReader(handle)}
+    for case_id, quote in CORRECTED_QUOTES.items():
+        review = reviews[case_id]
+        text = (BASE / review["document"]).read_text(encoding="utf-8")
+        assert review["evidence_quote"] == quote
+        assert review["human_reviewed"] == "False"
+        start = text.find(quote)
+        assert start >= 0
+        assert text.find(quote, start + 1) == -1

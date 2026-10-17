@@ -16,11 +16,11 @@
     "note": "This branch's own Actions run is not recorded here until GitHub reports it."
   },
   "tests": {
-    "local_pytest_passed": 59,
+    "local_pytest_passed": 61,
     "python_versions_run_locally": ["3.11.9", "3.12.10"],
-    "line_coverage_percent": 90,
+    "line_coverage_percent": 87,
     "measured_on": "2026-10-17",
-    "note": "Line coverage from pytest-cov on the local Python 3.11 run of this branch. It is not a quality score. Python 3.12 passed the same 59 tests."
+    "note": "Line coverage from pytest-cov on the local Python 3.11 run of the correctness-audit branch. It is not a quality score. Python 3.12 passed the same 61 tests."
   },
   "benchmark": {
     "gold_set_rows": 0,
@@ -35,10 +35,15 @@
     "candidate_gold_benchmark": false,
     "local_candidate_correct": 22,
     "local_candidate_macro_f1": 0.23154623154623155,
-    "local_candidate_macro_f1_bootstrap_95": [0.1471861471861472, 0.3230994152046784],
+    "local_candidate_insufficient_prediction_rate": 0.9666666666666667,
+    "local_candidate_macro_f1_document_cluster_bootstrap_95": [0.16666666666666666, 0.3111111111111111],
+    "independent_documents": 20,
     "always_abstain_candidate_macro_f1": 0.16666666666666666,
     "candidate_citation_validity_rate_on_emitted_quotes": 1.0,
     "candidate_emitted_quotes": 2,
+    "candidate_rows_without_an_emitted_quote": 58,
+    "evidence_quote_corrections": ["cl-009-2", "cl-010-2", "cl-013-2", "cl-019-2", "cl-020-2"],
+    "gold_benchmark_ready": false,
     "retrieval_recall": null,
     "paid_inference_recorded": false,
     "measured_on": "2026-10-17",

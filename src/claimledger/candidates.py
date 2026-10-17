@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
-from .metrics import bootstrap_macro_f1, classification_metrics
+from .metrics import classification_metrics, cluster_bootstrap_macro_f1
 
 CANDIDATES = Path(__file__).resolve().parents[2] / "benchmark" / "candidates"
 
@@ -22,6 +23,45 @@ def load_split(path: Path | None = None) -> dict[str, str]:
     return mapping
 
 
+def assert_shard_outputs_match_sources(shard_outputs: list[dict], shard_rows: list[list[dict]],
+                                       queue_rows: list[dict], manifest_hashes: dict[str, str],
+                                       base: Path) -> None:
+    """Reject aggregation when a result disagrees with the queue or document bytes."""
+    queue: dict[tuple[str, str], dict] = {}
+    for row in queue_rows:
+        key = (row["document"], row["claim"])
+        if key in queue:
+            raise ValueError(f"Duplicate review-queue row for {key}")
+        queue[key] = row
+    seen_ids: set[str] = set()
+    root = base.resolve()
+    for output, rows in zip(shard_outputs, shard_rows, strict=True):
+        cases = output["cases"]
+        if len(cases) != len(rows):
+            raise ValueError("Shard result row count does not match the JSONL.")
+        for case, row in zip(cases, rows, strict=True):
+            if case["claim"] != row["claim"] or case["expected"] != row["expected"]:
+                raise ValueError("Shard output does not match the source row.")
+            review = queue.get((row["document"], row["claim"]))
+            if review is None:
+                raise ValueError("Shard row is not in the review queue.")
+            if review["expected"] != row["expected"]:
+                raise ValueError("Expected label does not match the review queue.")
+            case_id = review["id"]
+            if row.get("id") not in (None, case_id) or case.get("id") not in (None, case_id):
+                raise ValueError(f"Case ID mismatch for {case_id}.")
+            if case_id in seen_ids:
+                raise ValueError(f"Duplicate case ID {case_id}.")
+            seen_ids.add(case_id)
+            source = (root / row["document"]).resolve()
+            if not source.is_relative_to(root) or not source.is_file():
+                raise ValueError(f"Document path is not inside the benchmark directory: {row['document']}")
+            digest = hashlib.sha256(source.read_bytes()).hexdigest()
+            filename = Path(row["document"]).name
+            if manifest_hashes.get(filename) != digest:
+                raise ValueError(f"Document hash mismatch for {filename}.")
+
+
 def aggregate(shard_outputs: list[dict], shard_rows: list[list[dict]],
               split: dict[str, str]) -> dict:
     """Pool shard cases. ``shard_rows`` supplies the document for each case, in order."""
@@ -29,6 +69,7 @@ def aggregate(shard_outputs: list[dict], shard_rows: list[list[dict]],
         raise ValueError("Each shard result needs its source rows.")
     pairs: list[tuple[str, str]] = []
     grouped: dict[str, list[tuple[str, str]]] = {"dev": [], "held_out": []}
+    by_document: dict[str, list[tuple[str, str]]] = {}
     failures: list[dict] = []
     valid_quotes = 0
     total_quotes = 0
@@ -39,10 +80,15 @@ def aggregate(shard_outputs: list[dict], shard_rows: list[list[dict]],
         valid_quotes += output.get("citation_valid_quotes", 0)
         total_quotes += output.get("citation_total_quotes", 0)
         for case, row in zip(cases, rows, strict=True):
+            if case["claim"] != row["claim"] or case["expected"] != row["expected"]:
+                raise ValueError("Shard output does not match the source row.")
+            if row.get("id") and case.get("id") not in (None, row["id"]):
+                raise ValueError("Shard output case ID does not match the source row.")
             pair = (case["expected"], case["actual"])
             pairs.append(pair)
             document_name = Path(row["document"]).name
             grouped[split[document_name]].append(pair)
+            by_document.setdefault(document_name, []).append(pair)
             if case["expected"] != case["actual"]:
                 failures.append({
                     "document": row["document"],
@@ -55,6 +101,10 @@ def aggregate(shard_outputs: list[dict], shard_rows: list[list[dict]],
     metrics = classification_metrics(pairs)
     shard_scores = [output["metrics"]["macro_f1"] for output in shard_outputs]
     shard_mean = sum(shard_scores) / len(shard_scores)
+    abstain_by_document = {
+        name: [(expected, "insufficient") for expected, _actual in document_pairs]
+        for name, document_pairs in by_document.items()
+    }
     abstain_pairs = [(expected, "insufficient") for expected, _actual in pairs]
     correct = sum(expected == actual for expected, actual in pairs)
     return {
@@ -72,8 +122,9 @@ def aggregate(shard_outputs: list[dict], shard_rows: list[list[dict]],
             "local_exact_match": metrics,
             "always_abstain": classification_metrics(abstain_pairs),
         },
-        "local_macro_f1_bootstrap_95": bootstrap_macro_f1(pairs),
-        "abstain_macro_f1_bootstrap_95": bootstrap_macro_f1(abstain_pairs),
+        "independent_documents": len(by_document),
+        "local_macro_f1_cluster_bootstrap_95": cluster_bootstrap_macro_f1(by_document),
+        "abstain_macro_f1_cluster_bootstrap_95": cluster_bootstrap_macro_f1(abstain_by_document),
         "splits": {
             "dev": classification_metrics(grouped["dev"]),
             "held_out": classification_metrics(grouped["held_out"]),
@@ -82,6 +133,15 @@ def aggregate(shard_outputs: list[dict], shard_rows: list[list[dict]],
         "citation_valid_quotes": valid_quotes,
         "citation_total_quotes": total_quotes,
         "citation_validity_rate": valid_quotes / total_quotes if total_quotes else None,
+        "citation_validity_scope": "emitted_quotes_only",
+        "citation_validity_note": (
+            "This rate counts only quotes the baseline emitted. "
+            "It is not evidence of citation reliability for cases with no quote."
+        ),
+        "held_out_split_note": (
+            "The held-out split is an internal partition of the same author-written set. "
+            "It is not a blind external test set."
+        ),
         "total_tokens": sum(output.get("total_tokens", 0) for output in shard_outputs),
         "latency_seconds": sum(output.get("latency_seconds", 0) for output in shard_outputs),
         "paid_inference": False,

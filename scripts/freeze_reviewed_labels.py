@@ -29,7 +29,11 @@ def main() -> int:
         return 2
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(f"gold_count={payload['gold_count']}", file=sys.stderr)
+    print(
+        f"reviewed_case_count={payload['reviewed_case_count']} "
+        f"gold_benchmark_ready={payload['gold_benchmark_ready']}",
+        file=sys.stderr,
+    )
     return 0
 
 

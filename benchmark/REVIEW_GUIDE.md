@@ -1,6 +1,6 @@
 # Human review guide
 
-The 60 candidate rows are fictional and `synthetic_author_labeled`. None are gold. `funding/status.json` keeps `gold_set_rows` at 0 until a freeze file contains accepted reviews.
+The 60 candidate rows are fictional and `synthetic_author_labeled`. None are gold. A frozen subset is not a gold benchmark until it has at least 100 valid reviewed cases and a separate quality-criteria record. Reviewer names do not prove independence. Use [SEMANTIC_REVIEW_CHECKLIST.md](SEMANTIC_REVIEW_CHECKLIST.md) before marking a row reviewed. `funding/status.json` keeps `gold_set_rows` at 0 until that bar is met.
 
 ## Acceptance policy for a future 100+ gold set
 
@@ -23,7 +23,7 @@ A row becomes gold only when all of the following are true:
 python scripts/freeze_reviewed_labels.py --queue benchmark/candidates/review_queue.csv --out output/frozen_reviews.json
 ```
 
-Running it on the current queue prints `gold_count=0`. Repeating a freeze is safe. Changing a frozen case ID, label, or evidence span is rejected.
+Running it on the current queue reports `reviewed_case_count=0` and `gold_benchmark_ready=False`. Repeating a freeze is safe. Changing a frozen case ID, label, or evidence span is rejected.
 
 ## Reviewer checklist
 

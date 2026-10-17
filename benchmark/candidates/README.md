@@ -14,7 +14,7 @@ python -m claimledger evaluate --dataset benchmark/candidates/shard-03.jsonl --o
 python scripts/evaluate_candidate_shards.py --backend local
 ```
 
-All reported rows are **synthetic_author_labeled**, not manually verified gold. The v0.2 CLI hardcodes `dataset_tier=smoke`; do not relabel that value to gold when reviewing this material.
+All reported rows are **synthetic_author_labeled**, not manually verified gold. The v0.2 CLI hardcodes `dataset_tier=smoke`; do not relabel that value to gold when reviewing this material. An exact unique quote is required, and it still does not establish that the quote entails the claim. See [SEMANTIC_REVIEW_CHECKLIST.md](../SEMANTIC_REVIEW_CHECKLIST.md).
 
 `reviewed_label` is empty until a person fills it. The author column `expected` is never copied into that field. Freeze accepted reviews with:
 

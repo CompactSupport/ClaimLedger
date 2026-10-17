@@ -36,8 +36,8 @@ def test_offline_evaluation():
     assert result["gold_benchmark"] is False
     assert result["dataset_label_origin"] == "synthetic_author_labeled"
     assert result["metrics"]["macro_f1"] == 0.5
-    assert result["metrics"]["abstention_rate"] == 0.5
-    assert result["baselines"]["abstain"]["abstention_rate"] == 1.0
+    assert result["metrics"]["insufficient_prediction_rate"] == 0.5
+    assert result["baselines"]["abstain"]["insufficient_prediction_rate"] == 1.0
     assert result["citation_validity_rate"] == 1.0
     assert result["retrieval_recall"] is None
     assert result["total_tokens"] == 0

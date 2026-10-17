@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 LABELS = {"supported", "contradicted", "insufficient"}
+GOLD_READY_MIN_CASES = 100
 
 
 def locate_unique_quote(text: str, quote: str) -> tuple[int, int]:
@@ -30,11 +31,27 @@ def _as_bool(value: str) -> bool:
     return value.strip().casefold() == "true"
 
 
-def freeze_reviews(queue_path: Path, *, existing: dict[str, Any] | None = None) -> dict[str, Any]:
-    """Build a gold freeze from rows a person has actually reviewed.
+def gold_benchmark_ready(reviewed_case_count: int,
+                         quality_criteria: dict[str, Any] | None) -> bool:
+    """Return whether a freeze may be called a gold benchmark.
+
+    Reviewer names and timestamps are not proof that review was independent.
+    Readiness also needs at least 100 frozen cases and an explicit criteria record.
+    """
+    if reviewed_case_count < GOLD_READY_MIN_CASES or not quality_criteria:
+        return False
+    if quality_criteria.get("independence_attested") is not True:
+        return False
+    document = quality_criteria.get("criteria_document")
+    return isinstance(document, str) and bool(document.strip())
+
+
+def freeze_reviews(queue_path: Path, *, existing: dict[str, Any] | None = None,
+                   quality_criteria: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Freeze rows a person has marked reviewed.
 
     Author ``expected`` values stay in the queue. They are not copied into
-    ``reviewed_label``. Rows that are still unreviewed do not increase ``gold_count``.
+    ``reviewed_label``. Unreviewed rows do not increase the reviewed count.
     """
     base = queue_path.parent.resolve()
     with queue_path.open(encoding="utf-8", newline="") as handle:
@@ -93,12 +110,21 @@ def freeze_reviews(queue_path: Path, *, existing: dict[str, Any] | None = None) 
             continue
         if previous != record:
             raise ValueError(f"Frozen case {case_id} would change. Case IDs and evidence are immutable.")
+    reviewed_case_count = len(frozen_cases)
     return {
         "schema": "claimledger.reviewed_labels.v1",
-        "gold_benchmark": bool(frozen_cases),
-        "gold_count": len(frozen_cases),
+        "reviewed_case_count": reviewed_case_count,
+        "reviewed_subset_available": reviewed_case_count > 0,
+        "gold_benchmark_ready": gold_benchmark_ready(reviewed_case_count, quality_criteria),
+        "gold_count": reviewed_case_count,
+        "independence_verified_from_reviewer_metadata": False,
         "cases": frozen_cases,
-        "note": "gold_count counts frozen human reviews only. Author labels are not included.",
+        "note": (
+            "reviewed_case_count counts frozen reviews only. "
+            "Reviewer metadata is not proof of independence. "
+            "gold_benchmark_ready also needs at least "
+            f"{GOLD_READY_MIN_CASES} cases and documented quality criteria."
+        ),
     }
 
 
