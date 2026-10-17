@@ -8,12 +8,13 @@ OpenAI runs only when ``--allow-paid`` is set.
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import subprocess
 import sys
 from pathlib import Path
 
-from claimledger.candidates import aggregate, load_split
+from claimledger.candidates import aggregate, assert_shard_outputs_match_sources, load_split
 
 ROOT = Path(__file__).resolve().parents[1]
 CANDIDATES = ROOT / "benchmark" / "candidates"
@@ -53,6 +54,12 @@ def main() -> int:
             for line in path.read_text(encoding="utf-8").splitlines()
             if line.strip()
         ])
+    manifest = json.loads((CANDIDATES / "manifest.json").read_text(encoding="utf-8"))
+    with (CANDIDATES / "review_queue.csv").open(encoding="utf-8", newline="") as handle:
+        queue_rows = list(csv.DictReader(handle))
+    assert_shard_outputs_match_sources(
+        outputs, rows, queue_rows, manifest["document_sha256"], CANDIDATES,
+    )
     summary = aggregate(outputs, rows, load_split())
     summary["paid_inference"] = args.backend != "local"
     target = outdir / "combined-summary.json"

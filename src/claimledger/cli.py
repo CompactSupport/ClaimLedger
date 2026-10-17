@@ -80,8 +80,11 @@ def evaluate_dataset(path: Path, backend: str, model: str) -> dict:
         confusion.setdefault(expected, {}).setdefault(actual, 0)
         confusion[expected][actual] += 1
         tokens += report["token_usage"]["total_tokens"]
-        cases.append({"claim": case["claim"], "expected": expected, "actual": actual,
-                      "pass": actual == expected})
+        recorded = {"claim": case["claim"], "expected": expected, "actual": actual,
+                    "pass": actual == expected}
+        if "id" in case:
+            recorded["id"] = case["id"]
+        cases.append(recorded)
     pairs = [(case["expected"], case["actual"]) for case in cases]
     metrics = classification_metrics(pairs)
     abstain_metrics = classification_metrics([(expected, "insufficient") for expected, _ in pairs])

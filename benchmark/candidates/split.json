@@ -1,5 +1,5 @@
 {
-  "policy": "Held-out documents must not be used to tune prompts, thresholds, or model choice. This split is fixed before any gold labels exist. The current baselines have no tuned parameters.",
+  "policy": "Held-out documents must not be used to tune prompts, thresholds, or model choice. This is an internal partition of one author-written candidate set, not a blind external test set. The current baselines have no tuned parameters.",
   "dev_documents": [
     "d001.md",
     "d002.md",

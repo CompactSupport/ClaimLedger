@@ -1,9 +1,10 @@
+import csv
 import json
 import subprocess
 import sys
 from pathlib import Path
 
-from claimledger.candidates import aggregate, load_split
+from claimledger.candidates import aggregate, assert_shard_outputs_match_sources, load_split
 from claimledger.cli import evaluate_dataset
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,6 +21,12 @@ def test_local_candidate_run_pools_sixty_cases():
             for line in path.read_text(encoding="utf-8").splitlines()
             if line.strip()
         ])
+    manifest = json.loads((CANDIDATES / "manifest.json").read_text(encoding="utf-8"))
+    with (CANDIDATES / "review_queue.csv").open(encoding="utf-8", newline="") as handle:
+        queue_rows = list(csv.DictReader(handle))
+    assert_shard_outputs_match_sources(
+        outputs, rows, queue_rows, manifest["document_sha256"], CANDIDATES,
+    )
     summary = aggregate(outputs, rows, load_split())
     assert summary["examples"] == 60
     assert summary["gold_benchmark"] is False
@@ -29,12 +36,15 @@ def test_local_candidate_run_pools_sixty_cases():
     assert summary["metrics"]["macro_f1"] != summary["mean_of_shard_macro_f1"]
     assert summary["baselines"]["always_abstain"]["macro_f1"] == 1 / 6
     assert summary["citation_validity_rate"] == 1.0
+    assert summary["citation_validity_scope"] == "emitted_quotes_only"
     assert summary["citation_total_quotes"] == 2
     assert summary["total_tokens"] == 0
+    assert summary["independent_documents"] == 20
     assert summary["splits"]["dev"]["n"] == 42
     assert summary["splits"]["held_out"]["n"] == 18
-    assert summary["local_macro_f1_bootstrap_95"]["low"] < summary["metrics"]["macro_f1"]
-    assert summary["metrics"]["macro_f1"] < summary["local_macro_f1_bootstrap_95"]["high"]
+    interval = summary["local_macro_f1_cluster_bootstrap_95"]
+    assert interval["independent_documents"] == 20
+    assert interval["low"] <= summary["metrics"]["macro_f1"] <= interval["high"]
     assert len(summary["failure_modes"]) == 38
 
 

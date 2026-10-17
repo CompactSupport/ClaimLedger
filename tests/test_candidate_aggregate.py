@@ -48,7 +48,8 @@ def test_pooled_macro_f1_is_not_the_mean_of_shard_scores():
     assert summary["citation_validity_rate"] == pytest.approx(2 / 4)
     assert summary["splits"]["dev"]["n"] == 5
     assert summary["splits"]["held_out"]["n"] == 2
-    assert summary["baselines"]["always_abstain"]["abstention_rate"] == 1.0
+    assert summary["baselines"]["always_abstain"]["insufficient_prediction_rate"] == 1.0
+    assert summary["independent_documents"] == 2
 
 
 def test_split_file_has_no_document_overlap():

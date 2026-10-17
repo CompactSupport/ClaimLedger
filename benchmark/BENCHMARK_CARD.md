@@ -29,14 +29,18 @@ Macro-F1 is `classification_metrics` on all 60 `(expected, actual)` pairs. The m
 
 These numbers come from `python scripts/evaluate_candidate_shards.py --backend local` on this candidate set. They are regression figures for the exact-match baseline.
 
-| Baseline | Correct | Macro-F1 | Abstention | Bootstrap 95% interval for macro-F1 |
+| Baseline | Correct | Macro-F1 | Insufficient-prediction rate | Document-cluster 95% interval for macro-F1 |
 | --- | --- | --- | --- | --- |
-| Local exact match | 22 / 60 | 0.2315 | 0.9667 | 0.1472 to 0.3231, 1000 resamples, seed 0 |
-| Always abstain | 20 / 60 | 0.1667 | 1.0 | 0.1187 to 0.2069, same resampling rule |
+| Local exact match | 22 / 60 | 0.2315 | 0.9667 | 0.1667 to 0.3111, 1000 resamples of 20 documents, seed 0 |
+| Always abstain | 20 / 60 | 0.1667 | 1.0 | 0.1667 to 0.1667, same document resampling |
 
-The interval only resamples these 60 rows. It is not an estimate for other documents. Two quotes were emitted and both matched the extracted text, so citation validity on emitted quotes was 1.0. Retrieval recall is not defined here because rows do not name a relevant chunk. Token use was 0.
+The insufficient-prediction rate is the share of rows the baseline labeled `insufficient`. The local baseline has no separate abstention decision. The interval resamples the 20 documents, not the 60 rows, and it does not estimate accuracy beyond this set. The always-abstain interval is a single point because every document has the same three author labels.
 
-Held-out documents `d015.md`–`d020.md` were scored separately and were not used to choose the baseline. On that slice the local baseline abstained on every row, so its macro-F1 matched always-abstain. That is a known limit of exact string match, not a tuning result.
+Two quotes were emitted and both matched the extracted text. The other 58 rows emitted no quote. A 2/2 match is not evidence of broad citation reliability. Retrieval recall is not defined here because rows do not name a relevant chunk. Token use was 0.
+
+Held-out documents `d015.md`–`d020.md` are an internal partition written and labeled by the same author. They are not a blind external test set. They were not used to choose the baseline. On that slice the local baseline labeled every row `insufficient`, so its macro-F1 matched always-abstain. That is a limit of exact string match, not a tuning result.
+
+Evidence quotes for `cl-009-2`, `cl-010-2`, `cl-013-2`, `cl-019-2`, and `cl-020-2` were corrected so they cite the statement about the claim, not a different true sentence in the same document. Exact quote matching still does not establish semantic entailment. See [SEMANTIC_REVIEW_CHECKLIST.md](SEMANTIC_REVIEW_CHECKLIST.md).
 
 ## Known errors
 

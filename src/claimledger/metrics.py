@@ -40,14 +40,18 @@ def classification_metrics(pairs: list[tuple[str, str]]) -> dict[str, Any]:
         if f1 is not None:
             f1_values.append(f1)
     count = len(pairs)
-    abstention_rate = (
+    insufficient_prediction_rate = (
         sum(actual == "insufficient" for _, actual in pairs) / count if count else None
     )
     return {
         "per_class": per_class,
         "macro_f1": sum(f1_values) / len(f1_values) if f1_values else None,
-        "abstention_rate": abstention_rate,
+        "insufficient_prediction_rate": insufficient_prediction_rate,
         "n": count,
+        "insufficient_prediction_note": (
+            "Share of predictions labeled insufficient. "
+            "This is not a separate system-abstention decision."
+        ),
     }
 
 
@@ -79,6 +83,48 @@ def bootstrap_macro_f1(pairs: list[tuple[str, str]], *, iterations: int = 1000,
         "low": percentile(0.025),
         "high": percentile(0.975),
         "note": "Resampling interval for this finite set, not a population accuracy claim.",
+    }
+
+
+def cluster_bootstrap_macro_f1(pairs_by_document: dict[str, list[tuple[str, str]]], *,
+                               iterations: int = 1000, seed: int = 0) -> dict[str, Any]:
+    """Resample documents, keeping every row from each drawn document together."""
+    documents = list(pairs_by_document)
+    if not documents:
+        return {
+            "method": "document_cluster_bootstrap_percentile",
+            "iterations": 0,
+            "seed": seed,
+            "independent_documents": 0,
+            "low": None,
+            "high": None,
+        }
+    rng = random.Random(seed)
+    scores: list[float] = []
+    for _ in range(iterations):
+        chosen = [documents[rng.randrange(len(documents))] for _ in documents]
+        sample: list[tuple[str, str]] = []
+        for name in chosen:
+            sample.extend(pairs_by_document[name])
+        score = classification_metrics(sample)["macro_f1"]
+        scores.append(0.0 if score is None else score)
+    scores.sort()
+
+    def percentile(fraction: float) -> float:
+        index = round((len(scores) - 1) * fraction)
+        return scores[index]
+
+    return {
+        "method": "document_cluster_bootstrap_percentile",
+        "iterations": iterations,
+        "seed": seed,
+        "independent_documents": len(documents),
+        "low": percentile(0.025),
+        "high": percentile(0.975),
+        "note": (
+            "Documents are the resampling unit. Rows from the same document are not "
+            "treated as independent observations."
+        ),
     }
 
 

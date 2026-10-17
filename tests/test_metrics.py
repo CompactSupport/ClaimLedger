@@ -18,7 +18,7 @@ def test_macro_f1_keeps_a_missed_class_in_the_average():
     assert metrics["per_class"]["insufficient"]["precision"] == pytest.approx(1 / 3)
     assert metrics["per_class"]["insufficient"]["f1"] == 0.5
     assert metrics["macro_f1"] == 0.5
-    assert metrics["abstention_rate"] == 0.5
+    assert metrics["insufficient_prediction_rate"] == 0.5
 
 
 def test_unknown_provider_is_rejected():

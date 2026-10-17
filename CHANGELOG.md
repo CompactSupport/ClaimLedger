@@ -4,6 +4,9 @@ All notable changes to ClaimLedger are documented here. The project uses semanti
 
 ## Unreleased
 
+- Correct five candidate evidence quotes that cited a true but irrelevant sentence: `cl-009-2`, `cl-010-2`, `cl-013-2`, `cl-019-2`, and `cl-020-2`.
+- Report `reviewed_case_count`, `reviewed_subset_available`, and `gold_benchmark_ready` separately. Readiness needs 100 reviewed cases plus documented criteria. Reviewer metadata is not treated as independence.
+- Rename the insufficient-prediction share so it is not called system abstention, and add a document-level cluster bootstrap.
 - Add 20 fictional documents and 60 author-labeled candidate claims. They are not gold and have not been human reviewed.
 - Pool candidate macro-F1 from every case pair, and keep an always-abstain baseline beside the local exact-match baseline.
 - Add a review freeze that records a human `reviewed_label` and an exact evidence span without copying the author label. `gold_count` stays 0 until that happens.
