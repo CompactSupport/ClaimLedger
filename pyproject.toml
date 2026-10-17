@@ -13,7 +13,6 @@ authors = [{name = "EvidenceForge contributors"}]
 keywords = ["evaluation", "claims", "citations", "llm", "provenance"]
 classifiers = [
     "Development Status :: 3 - Alpha",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -38,3 +37,7 @@ pythonpath = ["tests"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+
+[tool.ruff.lint]
+# Ruff 0.14+ enables a much larger default set. Keep CI on the stable core rules.
+select = ["E4", "E7", "E9", "F"]
