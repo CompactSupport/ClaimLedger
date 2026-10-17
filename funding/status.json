@@ -16,11 +16,11 @@
     "note": "This branch's own Actions run is not recorded here until GitHub reports it."
   },
   "tests": {
-    "local_pytest_passed": 66,
+    "local_pytest_passed": 75,
     "python_versions_run_locally": ["3.11.9", "3.12.10"],
-    "line_coverage_percent": 88,
+    "line_coverage_percent": 86,
     "measured_on": "2026-10-17",
-    "note": "Line coverage from pytest-cov on the local Python 3.11 run of the gold-integrity branch. It is not a quality score. Python 3.12 passed the same 66 tests."
+    "note": "Line coverage from pytest-cov on the local Python 3.11 run after the freeze CLI fix. It is not a quality score. Python 3.12 passed the same 75 tests."
   },
   "benchmark": {
     "gold_set_rows": 0,

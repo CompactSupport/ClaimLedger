@@ -23,7 +23,7 @@ python scripts/evaluate_candidate_shards.py --backend local
 
 The command refuses `--backend openai` unless `--allow-paid` is also present. CI does not pass that flag.
 
-Macro-F1 is `classification_metrics` on all 108 `(expected, actual)` pairs. The mean of the three shard macro-F1 scores is stored separately and is not the reported score. On the local run used to write this card, those two numbers differed.
+Macro-F1 is `classification_metrics` on all 108 `(expected, actual)` pairs across 5 shards. The mean of the shard macro-F1 scores is stored separately and is not the reported score. On the local run used to write this card, those two numbers differed.
 
 ## Measured local smoke, 2026-10-17
 

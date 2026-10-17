@@ -89,7 +89,7 @@ def test_frozen_case_cannot_change_its_span(tmp_path: Path):
     frozen = freeze_reviews(queue)
     changed = json.loads(json.dumps(frozen))
     changed["cases"][0]["evidence"]["end"] += 1
-    with pytest.raises(ValueError, match="immutable"):
+    with pytest.raises(ValueError, match="span"):
         freeze_reviews(queue, existing=changed)
 
 
@@ -222,7 +222,7 @@ def test_modified_source_document_cannot_be_refrozen(tmp_path: Path):
     )])
     frozen = freeze_reviews(queue, dataset_version="candidates-test")
     note.write_text("The sample count is 4.\nEdited after review.\n", encoding="utf-8")
-    with pytest.raises(ValueError, match="immutable"):
+    with pytest.raises(ValueError, match="hash"):
         freeze_reviews(queue, existing=frozen, dataset_version="candidates-test")
 
 

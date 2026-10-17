@@ -86,11 +86,45 @@ def release_status(reviewed_case_count: int, criteria: dict[str, Any], *,
         and bool(approval.get("approval_id", "").strip())
         and isinstance(approval.get("approver"), str)
         and bool(approval.get("approver", "").strip())
+        and isinstance(approval.get("approved_at"), str)
+        and bool(approval.get("approved_at", "").strip())
     )
     return {
         "reviewed_subset_available": subset,
         "eligible_for_final_approval": eligible,
         "gold_benchmark_released": formally_released,
+    }
+
+
+def revalidate_frozen_cases(cases: list[dict[str, Any]], base: Path) -> None:
+    """Check frozen rows against current files, including rows absent from the queue."""
+    root = base.resolve()
+    for case in cases:
+        source = (root / case["document"]).resolve()
+        if not source.is_relative_to(root) or not source.is_file():
+            raise ValueError(f"Frozen document is missing: {case['document']}")
+        digest = hashlib.sha256(source.read_bytes()).hexdigest()
+        provenance = case.get("review_provenance") or {}
+        if digest != case.get("document_sha256") or digest != provenance.get("document_sha256"):
+            raise ValueError(f"Frozen document hash does not match the current file: {case['case_id']}")
+        evidence = case.get("evidence")
+        if evidence:
+            text = source.read_text(encoding="utf-8")
+            start, end = evidence["start"], evidence["end"]
+            if text[start:end] != evidence["quote"]:
+                raise ValueError(f"Frozen quote span does not match the current document: {case['case_id']}")
+
+
+def _release_record(approval: dict[str, Any] | None, quality_criteria: dict[str, Any] | None,
+                    dataset_version: str | None) -> dict[str, Any]:
+    approval = approval or {}
+    criteria = quality_criteria or {}
+    return {
+        "approval_id": approval.get("approval_id"),
+        "approver": approval.get("approver"),
+        "criteria_sha256": criteria.get("criteria_sha256"),
+        "dataset_version": dataset_version,
+        "approved_at": approval.get("approved_at"),
     }
 
 
@@ -108,6 +142,7 @@ def freeze_reviews(queue_path: Path, *, existing: dict[str, Any] | None = None,
     with queue_path.open(encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
     frozen_cases = list((existing or {}).get("cases") or [])
+    revalidate_frozen_cases(frozen_cases, base)
     by_id = {case["case_id"]: case for case in frozen_cases}
     if len(by_id) != len(frozen_cases):
         raise ValueError("Existing freeze contains duplicate case IDs.")
@@ -199,6 +234,9 @@ def freeze_reviews(queue_path: Path, *, existing: dict[str, Any] | None = None,
         "independence_verified": False,
         "dataset_version": dataset_version,
         "cases": frozen_cases,
+        "release_approval": _release_record(
+            release_approval, quality_criteria, dataset_version,
+        ) if status["gold_benchmark_released"] else None,
         "note": (
             "reviewed_case_count counts unique document-claim pairs. "
             "independence_attested is an attestation, not a verification. "

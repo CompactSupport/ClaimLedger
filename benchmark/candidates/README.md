@@ -1,6 +1,6 @@
 # Candidate benchmark expansion (NOT gold)
 
-This is an **original, fictional, author-labeled starter set**: 20 documents and 60 candidate claims, balanced across `supported`, `contradicted`, and `insufficient`. No human review has been completed. No observed model performance on these rows is a reliable accuracy estimate.
+This is an **original, fictional, author-labeled candidate set**: 36 documents, 108 claims, and 5 shards, balanced across `supported`, `contradicted`, and `insufficient`. No human review has been completed. No observed model performance on these rows is a reliable accuracy estimate.
 
 The sharding exists because v0.2 `evaluate` limits each dataset to 30 rows. Each shard contains 20 rows with relative `documents/*.md` paths and can run using the current CLI unchanged.
 

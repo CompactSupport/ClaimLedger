@@ -2,13 +2,19 @@
 
 This pilot has not been run. No API key is stored here, and no dollar amount has been spent.
 
-## Proposed boundary
+## Caps that are not a spending ceiling
 
-- Dataset: the candidate JSONL shards only, after a person approves the run.
-- Calls: at most one local-sized request per candidate row. The current set has 108 rows, so the cap is 108 requests.
-- Backend flag: `--allow-paid` must be present. The default command does not call the API.
-- Storage: `store=false`, as the verifier already requests.
-- Budget: the operator must write a numeric currency cap in the approval before any call. No cap has been approved.
-- Output: token counts from the API response may be recorded. This file does not invent those counts.
+The current candidate set has 108 rows, 36 documents, and 5 shards. A cap of 108 logical cases does not guarantee a dollar ceiling: retries, longer prompts, and price changes can spend more. The planner therefore uses a conservative allowance of 4,000 input tokens and 800 output tokens for every allowed HTTP attempt.
+
+- Logical case cap: 108.
+- Retry policy: configurable, default 2 retries, so at most 3 HTTP attempts per case.
+- HTTP attempt cap at that default: 324.
+- Proposed preflight budget: 25 USD. This number is a planning cap, not an approved spend and not a measurement.
+- Prices must be supplied by the operator for the preflight. This repository does not assume a current provider price.
+- Before any future call, set a separate budget on the provider account. The local estimate cannot enforce that account limit.
+
+## Confirmation
+
+`claimledger.paid_pilot.execute_pilot` refuses to run without explicit confirmation. Even with confirmation, this revision raises an error and does not contact the API. Results are intended to be appended as JSONL so a later approved runner can resume completed case IDs.
 
 Do not start the pilot from CI.

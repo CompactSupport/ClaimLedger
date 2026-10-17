@@ -23,7 +23,7 @@ A row becomes gold only when all of the following are true:
 python scripts/freeze_reviewed_labels.py --queue benchmark/candidates/review_queue.csv --out output/frozen_reviews.json
 ```
 
-Running it on the current queue reports `reviewed_case_count=0` and `gold_benchmark_ready=False`. Repeating a freeze is safe. Changing a frozen case ID, label, or evidence span is rejected.
+Running it on the current queue reports `reviewed_case_count=0`, `reviewed_subset_available=False`, `eligible_for_final_approval=False`, and `gold_benchmark_released=False`. Repeating a freeze is safe. Changing a frozen case ID, label, or evidence span is rejected.
 
 ## Reviewer checklist
 

@@ -14,7 +14,12 @@ import subprocess
 import sys
 from pathlib import Path
 
-from claimledger.candidates import aggregate, assert_shard_outputs_match_sources, load_split
+from claimledger.candidates import (
+    aggregate,
+    assert_dataset_complete,
+    assert_shard_outputs_match_sources,
+    load_split,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 CANDIDATES = ROOT / "benchmark" / "candidates"
@@ -57,6 +62,7 @@ def main() -> int:
     manifest = json.loads((CANDIDATES / "manifest.json").read_text(encoding="utf-8"))
     with (CANDIDATES / "review_queue.csv").open(encoding="utf-8", newline="") as handle:
         queue_rows = list(csv.DictReader(handle))
+    assert_dataset_complete(rows, queue_rows, manifest, CANDIDATES)
     assert_shard_outputs_match_sources(
         outputs, rows, queue_rows, manifest["document_sha256"], CANDIDATES,
     )

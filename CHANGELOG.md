@@ -4,6 +4,9 @@ All notable changes to ClaimLedger are documented here. The project uses semanti
 
 ## Unreleased
 
+- Fix the freeze CLI so it reports the four release-state fields instead of the removed `gold_benchmark_ready` key.
+- Require the evaluated shards to match the manifest and review queue exactly, and revalidate frozen rows against current document bytes.
+- Add an unexecuted OpenAI pilot planner with an explicit USD preflight. A request cap is not a spending ceiling.
 - Stop duplicate document-claim pairs from inflating the reviewed count.
 - Separate a reviewed subset, eligibility for final approval, and a formally approved gold release. One hundred rows do not certify a benchmark, and an independence attestation is not a verification.
 - Add 48 fictional candidate rows in 16 new documents, a pre-review flag list, and an empty adjudication log.
