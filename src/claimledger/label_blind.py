@@ -84,7 +84,9 @@ This directory is the only input an evaluator may read.
 Do not open the repository, the audit mapping, the review queue, or the AI annotation files.
 inputs.jsonl has one JSON object per line: evaluation_id, claim, passage_id, and passage.
 prompt.txt is the instruction.
-Copy this directory somewhere outside the repository before handing it to an agent.
+Copying this directory outside the repository only copies these files.
+That copy is not an operating-system sandbox.
+The audit mapping committed in the repository is publicly readable.
 This view is an internal export. It is not an independent external test set.
 No score file belongs here.
 """
@@ -94,6 +96,8 @@ Agent boundary
 
 Read only the files in this directory.
 Do not access a ClaimLedger checkout, an answer key, a mapping file, or a score file.
+Copying these files to another folder is not an operating-system sandbox.
+A process that can open other paths can still read the repository.
 """
 
 HUMAN_README = """\
@@ -304,7 +308,7 @@ def inter_annotator_agreement(rows: list[dict]) -> dict:
 def reconcile(predictions: list[dict], mapping: dict) -> list[dict]:
     """Join model verdicts to canonical cases. The mapping is the only join key."""
     if not mapping or "cases" not in mapping:
-        raise ValueError("Reconciliation requires the private mapping.")
+        raise ValueError("Reconciliation requires the audit mapping.")
     index = {row["evaluation_id"]: row for row in mapping["cases"]}
     resolved = []
     for prediction in predictions:
@@ -313,7 +317,7 @@ def reconcile(predictions: list[dict], mapping: dict) -> list[dict]:
             raise ValueError(f"A model output includes answer-key fields: {sorted(leaked)}")
         evaluation_id = prediction["evaluation_id"]
         if evaluation_id not in index:
-            raise ValueError("Unknown evaluation id. The private mapping is required.")
+            raise ValueError("Unknown evaluation id. The audit mapping is required.")
         verdict = prediction["verdict"]
         if verdict not in CLASSES:
             raise ValueError("Verdict is not one of the three classes.")
@@ -412,10 +416,14 @@ def build_bundle(candidates: Path) -> dict:
             "because that number is the canonical document number."
         ),
         "model_visible_directory": "benchmark/evaluation/isolated",
-        "private_mapping": "benchmark/evaluation/audit/id_mapping.json",
+        "audit_mapping": "benchmark/evaluation/audit/id_mapping.json",
+        "audit_mapping_access": "committed_in_the_public_repository",
+        "audit_mapping_is_access_controlled": False,
+        "agent_directory_is_os_sandbox": False,
         "agent_rule": (
-            "An evaluator may read only a copy of the isolated directory stored outside "
-            "the repository. Do not give it the checkout, the audit mapping, or the AI notes."
+            "The committed audit mapping is publicly readable. It is separate from the "
+            "model-visible directory, and it is not access-controlled. Copying that "
+            "directory outside the repository is a file copy, not an operating-system sandbox."
         ),
         "evaluator": {
             "configured": False,
@@ -550,7 +558,7 @@ def _json_records(path: Path) -> list[dict]:
 
 
 def prepare_agent_view(destination: Path, repo_root: Path, bundle: dict) -> None:
-    """Copy only the model view. Refuse a destination inside the repository."""
+    """Copy only the model view. This is a file copy, not an operating-system sandbox."""
     dest = destination.resolve()
     root = repo_root.resolve()
     if dest == root or dest.is_relative_to(root):

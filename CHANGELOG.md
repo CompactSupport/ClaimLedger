@@ -4,6 +4,7 @@ All notable changes to ClaimLedger are documented here. The project uses semanti
 
 ## Unreleased
 
+- State that the committed audit mapping is publicly readable and that copying the model view outside the repository is not an operating-system sandbox.
 - Add a seeded label-blind export for future semantic evaluations. Canonical case IDs and author labels stay in the candidate set. Model-visible inputs omit them, and the 30-case human packet has no recorded decisions. The export is not an external test set.
 - Import the remaining 90 AI second-opinion annotations beside the first 18. Combined author-label agreement is 107 of 108 and is not an accuracy estimate. The case-id suffix still encodes the author label.
 - Import 18 AI second-opinion annotations beside the candidate queue. They do not change author labels or human-review fields.

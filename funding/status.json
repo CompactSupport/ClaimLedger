@@ -37,6 +37,8 @@
     "human_calibration_rows": 30,
     "human_calibration_decisions": 0,
     "label_blind_is_external_test": false,
+    "audit_mapping_is_access_controlled": false,
+    "agent_directory_is_os_sandbox": false,
     "smoke_rows": 6,
     "smoke_label_origin": "synthetic_author_labeled",
     "local_smoke_correct": 4,

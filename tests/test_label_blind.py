@@ -162,11 +162,11 @@ def test_suffix_baseline_fails_on_evaluation_ids():
     assert not any(scored)
 
 
-def test_reconciliation_requires_the_private_mapping():
+def test_reconciliation_requires_the_audit_mapping():
     bundle = _bundle()
     visible_ids = [json.loads(line)["evaluation_id"] for line in bundle["isolated"]["inputs.jsonl"].splitlines()]
     assert "canonical_id" not in bundle["isolated"]["inputs.jsonl"]
-    with pytest.raises(ValueError, match="private mapping"):
+    with pytest.raises(ValueError, match="audit mapping"):
         reconcile([{"evaluation_id": visible_ids[0], "verdict": "supported"}], {})
     predictions = [
         {"evaluation_id": row["evaluation_id"], "verdict": "insufficient"}
@@ -230,6 +230,15 @@ def test_protocol_versions_the_export_and_refuses_an_in_repo_agent_dir(tmp_path)
     prose = (ROOT / "benchmark" / "evaluation" / "PROTOCOL.md").read_text(encoding="utf-8")
     assert "claimledger.evaluation_export.v1" in prose
     assert "does not create an independent external test set" in prose
+    assert "publicly readable" in prose
+    assert "not an operating-system sandbox" in prose
+    assert protocol["audit_mapping_is_access_controlled"] is False
+    assert protocol["agent_directory_is_os_sandbox"] is False
+    assert protocol["audit_mapping_access"] == "committed_in_the_public_repository"
+    assert "private_mapping" not in protocol
+    assert "sandbox" in bundle["isolated"]["BOUNDARY.txt"].lower()
+    gitignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
+    assert "benchmark/evaluation/audit" not in gitignore
     assert protocol["protocol_version"] == "claimledger.evaluation_export.v1"
     assert protocol["prompt_version"] == "claimledger.inference_prompt.v1"
     assert protocol["randomization_seed"] == SEED

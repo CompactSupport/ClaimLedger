@@ -12,8 +12,11 @@
   "calibration_rows": 30,
   "heading_redaction": "Model-visible passages omit the leading '# Fictional scenario NNN' line because that number is the canonical document number.",
   "model_visible_directory": "benchmark/evaluation/isolated",
-  "private_mapping": "benchmark/evaluation/audit/id_mapping.json",
-  "agent_rule": "An evaluator may read only a copy of the isolated directory stored outside the repository. Do not give it the checkout, the audit mapping, or the AI notes.",
+  "audit_mapping": "benchmark/evaluation/audit/id_mapping.json",
+  "audit_mapping_access": "committed_in_the_public_repository",
+  "audit_mapping_is_access_controlled": false,
+  "agent_directory_is_os_sandbox": false,
+  "agent_rule": "The committed audit mapping is publicly readable. It is separate from the model-visible directory, and it is not access-controlled. Copying that directory outside the repository is a file copy, not an operating-system sandbox.",
   "evaluator": {
     "configured": false,
     "backend": null,

@@ -2,3 +2,5 @@ Agent boundary
 
 Read only the files in this directory.
 Do not access a ClaimLedger checkout, an answer key, a mapping file, or a score file.
+Copying these files to another folder is not an operating-system sandbox.
+A process that can open other paths can still read the repository.
