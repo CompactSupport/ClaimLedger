@@ -1,0 +1,6 @@
+{"document":"aurora.md","claim":"Project Aurora evaluated 120 samples in March 2026.","expected":"supported"}
+{"document":"aurora.md","claim":"The research team published its results on April 2, 2026.","expected":"supported"}
+{"document":"aurora.md","claim":"The study used synthetic samples.","expected":"contradicted"}
+{"document":"aurora.md","claim":"The research was conducted in London.","expected":"insufficient"}
+{"document":"aurora.md","claim":"The quality screen was passed by 96 samples.","expected":"supported"}
+{"document":"aurora.md","claim":"Three independent reviewers checked each sample.","expected":"contradicted"}

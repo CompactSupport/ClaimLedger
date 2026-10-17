@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "verdict": {
+      "type": "string",
+      "enum": ["supported", "contradicted", "insufficient"]
+    },
+    "reason": {"type": "string"},
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "unit_id": {"type": "string"},
+          "quote": {"type": "string"}
+        },
+        "required": ["unit_id", "quote"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["verdict", "reason", "evidence"],
+  "additionalProperties": false
+}

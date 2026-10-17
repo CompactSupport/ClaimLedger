@@ -1,0 +1,92 @@
+{
+  "tool": "EvidenceForge",
+  "version": "0.1.0",
+  "created_utc": "2026-10-17T04:58:03.093474+00:00",
+  "backend": "local",
+  "model": null,
+  "documents": [
+    {
+      "source": "aurora.md",
+      "sha256": "270b1c8d85a8ae1397e4edc533eac2db5226422e5fe17ba0b0f3d27affe1b00b"
+    }
+  ],
+  "page_count": 1,
+  "evidence_unit_count": 5,
+  "results": [
+    {
+      "id": "c1",
+      "claim": "Project Aurora evaluated 120 samples in March 2026.",
+      "verdict": "supported",
+      "reason": "Literal substring match only.",
+      "evidence": [
+        {
+          "unit_id": "270b1c8d85a8:2d31191c:p1:u2",
+          "source": "aurora.md",
+          "sha256": "270b1c8d85a8ae1397e4edc533eac2db5226422e5fe17ba0b0f3d27affe1b00b",
+          "page": 1,
+          "start": 51,
+          "end": 102,
+          "quote": "Project Aurora evaluated 120 samples in March 2026."
+        }
+      ],
+      "backend": "local",
+      "model": null,
+      "usage": {},
+      "audit_warnings": []
+    },
+    {
+      "id": "c2",
+      "claim": "The study used synthetic samples.",
+      "verdict": "insufficient",
+      "reason": "No exact textual match. Local mode cannot evaluate paraphrases or negation.",
+      "evidence": [],
+      "backend": "local",
+      "model": null,
+      "usage": {},
+      "audit_warnings": []
+    },
+    {
+      "id": "c3",
+      "claim": "The research was conducted in London.",
+      "verdict": "insufficient",
+      "reason": "No exact textual match. Local mode cannot evaluate paraphrases or negation.",
+      "evidence": [],
+      "backend": "local",
+      "model": null,
+      "usage": {},
+      "audit_warnings": []
+    },
+    {
+      "id": "c4",
+      "claim": "The research team published its results on April 2, 2026.",
+      "verdict": "supported",
+      "reason": "Literal substring match only.",
+      "evidence": [
+        {
+          "unit_id": "270b1c8d85a8:2d31191c:p1:u5",
+          "source": "aurora.md",
+          "sha256": "270b1c8d85a8ae1397e4edc533eac2db5226422e5fe17ba0b0f3d27affe1b00b",
+          "page": 1,
+          "start": 277,
+          "end": 334,
+          "quote": "The research team published its results on April 2, 2026."
+        }
+      ],
+      "backend": "local",
+      "model": null,
+      "usage": {},
+      "audit_warnings": []
+    }
+  ],
+  "verdict_counts": {
+    "supported": 2,
+    "contradicted": 0,
+    "insufficient": 2
+  },
+  "token_usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "total_tokens": 0
+  },
+  "disclaimer": "Exact citation spans are mechanically checked against extracted source text. A validated quote does not guarantee that the semantic verdict is correct."
+}
