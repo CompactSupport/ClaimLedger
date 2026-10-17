@@ -10,6 +10,7 @@ cl-016-1,The quote says every 15 minutes. The claim says four times per hour.,fa
 cl-018-1,The quote is the fragment "not by external referees." It is on topic but not a complete sentence.,false,false
 cl-018-2,The quote is the same sentence fragment as cl-018-1.,false,false
 cl-024-1,Faster route is inferred from 48 and 53 minutes. The document does not use the word faster.,false,false
+cl-027-2,An AI second opinion says omission of nuts is not explicit exclusion and suggests insufficient. The author label contradicted was not changed.,false,false
 cl-029-1,The quote says the grant covers equipment. The claim says the equipment can be charged to the grant.,false,false
 cl-031-2,Passing is defined as 9 of 10 intact vials and this batch had 8. The failure is inferred from the rule.,false,false
 cl-032-1,The quote says the 3 March submission was rejected as late. The claim says it was late.,false,false

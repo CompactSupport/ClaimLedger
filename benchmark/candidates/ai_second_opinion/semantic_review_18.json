@@ -1,0 +1,356 @@
+{
+  "project": "ClaimLedger",
+  "repository": "https://github.com/CompactSupport/ClaimLedger",
+  "commit": "4729842129139cb8ddecb9cdbb05be0ec7754e86",
+  "dataset_version": "candidates-2026-10-17.2",
+  "review_type": "AI_not_independent_human_review",
+  "gold_eligible": false,
+  "paid_api_calls": 0,
+  "n": 18,
+  "author_label_agreement": 17,
+  "author_label_disagreements": [
+    "cl-027-2"
+  ],
+  "suggested_evidence_quote_fixes": [
+    "cl-024-1",
+    "cl-024-2",
+    "cl-031-2"
+  ],
+  "source_hashes_verified": true,
+  "note": "AI judgments formed from claims and full source documents in this pass before comparing to author labels. Prior conversation context may expose parts of dataset; not a genuinely independent human blind test.",
+  "results": [
+    {
+      "case_id": "cl-021-1",
+      "document": "documents/d021.md",
+      "document_sha256": "072fbaf96ebcfe634d7964f58876f175756987d5a822a543f1ad67d58082b369",
+      "claim": "The ferry departed at 07:10 on 3 May 2026.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "來源明確記載出發時間。",
+      "evidence": [
+        {
+          "source": "documents/d021.md",
+          "sha256": "072fbaf96ebcfe634d7964f58876f175756987d5a822a543f1ad67d58082b369",
+          "page": 1,
+          "start": 87,
+          "end": 152,
+          "quote": "On 3 May 2026 the gate was open, and the ferry departed at 07:10."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": null
+    },
+    {
+      "case_id": "cl-021-2",
+      "document": "documents/d021.md",
+      "document_sha256": "072fbaf96ebcfe634d7964f58876f175756987d5a822a543f1ad67d58082b369",
+      "claim": "The ferry waited because the gate was closed on 3 May 2026.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "當日閘門開啟且已出發，與 claim 矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d021.md",
+          "sha256": "072fbaf96ebcfe634d7964f58876f175756987d5a822a543f1ad67d58082b369",
+          "page": 1,
+          "start": 87,
+          "end": 152,
+          "quote": "On 3 May 2026 the gate was open, and the ferry departed at 07:10."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": null
+    },
+    {
+      "case_id": "cl-021-3",
+      "document": "documents/d021.md",
+      "document_sha256": "072fbaf96ebcfe634d7964f58876f175756987d5a822a543f1ad67d58082b369",
+      "claim": "The ferry carried 40 passengers.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源沒有乘客數資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": null
+    },
+    {
+      "case_id": "cl-024-1",
+      "document": "documents/d024.md",
+      "document_sha256": "949a26ab6a6f45da5d89258090907c084120cb3b3de77614ea3c43721436471b",
+      "claim": "Route East took less time than Route West.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "48 分鐘小於 53 分鐘，必須同時引用兩個比較數值。",
+      "evidence": [
+        {
+          "source": "documents/d024.md",
+          "sha256": "949a26ab6a6f45da5d89258090907c084120cb3b3de77614ea3c43721436471b",
+          "page": 1,
+          "start": 39,
+          "end": 94,
+          "quote": "Route East took 48 minutes. Route West took 53 minutes."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": "AUTHOR_EVIDENCE_INCOMPLETE"
+    },
+    {
+      "case_id": "cl-024-2",
+      "document": "documents/d024.md",
+      "document_sha256": "949a26ab6a6f45da5d89258090907c084120cb3b3de77614ea3c43721436471b",
+      "claim": "Route West was faster than Route East.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "West 反而更慢，必須同時引用兩個比較數值。",
+      "evidence": [
+        {
+          "source": "documents/d024.md",
+          "sha256": "949a26ab6a6f45da5d89258090907c084120cb3b3de77614ea3c43721436471b",
+          "page": 1,
+          "start": 39,
+          "end": 94,
+          "quote": "Route East took 48 minutes. Route West took 53 minutes."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": "AUTHOR_EVIDENCE_INCOMPLETE"
+    },
+    {
+      "case_id": "cl-024-3",
+      "document": "documents/d024.md",
+      "document_sha256": "949a26ab6a6f45da5d89258090907c084120cb3b3de77614ea3c43721436471b",
+      "claim": "Route East costs less than Route West.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源沒有票價比較。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": null
+    },
+    {
+      "case_id": "cl-027-1",
+      "document": "documents/d027.md",
+      "document_sha256": "e1c1d5d2caff5c664ed5ee846d7882478cbfa998b01627137c89ea16c0e40ee9",
+      "claim": "The recipe uses honey.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "來源直接包含蜂蜜。",
+      "evidence": [
+        {
+          "source": "documents/d027.md",
+          "sha256": "e1c1d5d2caff5c664ed5ee846d7882478cbfa998b01627137c89ea16c0e40ee9",
+          "page": 1,
+          "start": 37,
+          "end": 68,
+          "quote": "The recipe uses oats and honey."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": null
+    },
+    {
+      "case_id": "cl-027-2",
+      "document": "documents/d027.md",
+      "document_sha256": "e1c1d5d2caff5c664ed5ee846d7882478cbfa998b01627137c89ea16c0e40ee9",
+      "claim": "The recipe includes nuts.",
+      "ai_verdict": "insufficient",
+      "author_label": "contradicted",
+      "agrees_with_author": false,
+      "reason_zh": "未提及堅果，不代表明確排除堅果；作者標籤值得人工裁定。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": "AUTHOR_LABEL_DISAGREEMENT"
+    },
+    {
+      "case_id": "cl-027-3",
+      "document": "documents/d027.md",
+      "document_sha256": "e1c1d5d2caff5c664ed5ee846d7882478cbfa998b01627137c89ea16c0e40ee9",
+      "claim": "The recipe is gluten-free.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "未說明無麩質狀態或相關製程。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": null
+    },
+    {
+      "case_id": "cl-031-1",
+      "document": "documents/d031.md",
+      "document_sha256": "617a182ccbbb41b4fefafaaa66e31347fd53f4a2f6ed5c8ca1d1179a9540fe40",
+      "claim": "This batch had 8 intact vials.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "來源明確記載八瓶完整。",
+      "evidence": [
+        {
+          "source": "documents/d031.md",
+          "sha256": "617a182ccbbb41b4fefafaaa66e31347fd53f4a2f6ed5c8ca1d1179a9540fe40",
+          "page": 1,
+          "start": 93,
+          "end": 123,
+          "quote": "This batch had 8 intact vials."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": null
+    },
+    {
+      "case_id": "cl-031-2",
+      "document": "documents/d031.md",
+      "document_sha256": "617a182ccbbb41b4fefafaaa66e31347fd53f4a2f6ed5c8ca1d1179a9540fe40",
+      "claim": "This batch passed the intact-vial rule.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "至少要九瓶，實際八瓶，不符合門檻；需引用兩個條件。",
+      "evidence": [
+        {
+          "source": "documents/d031.md",
+          "sha256": "617a182ccbbb41b4fefafaaa66e31347fd53f4a2f6ed5c8ca1d1179a9540fe40",
+          "page": 1,
+          "start": 38,
+          "end": 123,
+          "quote": "A batch passes when at least 9 of 10 vials are intact. This batch had 8 intact vials."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": "AUTHOR_EVIDENCE_INCOMPLETE"
+    },
+    {
+      "case_id": "cl-031-3",
+      "document": "documents/d031.md",
+      "document_sha256": "617a182ccbbb41b4fefafaaa66e31347fd53f4a2f6ed5c8ca1d1179a9540fe40",
+      "claim": "The vials contain saline.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未說明內容物。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": null
+    },
+    {
+      "case_id": "cl-033-1",
+      "document": "documents/d033.md",
+      "document_sha256": "d7a2cdbb70991fd2753b503cf2ad67b1f10fcfd29fa4605f5e166269908a6822",
+      "claim": "The tank holds 2 liters.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "來源直接支持。",
+      "evidence": [
+        {
+          "source": "documents/d033.md",
+          "sha256": "d7a2cdbb70991fd2753b503cf2ad67b1f10fcfd29fa4605f5e166269908a6822",
+          "page": 1,
+          "start": 33,
+          "end": 57,
+          "quote": "The tank holds 2 liters."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": null
+    },
+    {
+      "case_id": "cl-033-2",
+      "document": "documents/d033.md",
+      "document_sha256": "d7a2cdbb70991fd2753b503cf2ad67b1f10fcfd29fa4605f5e166269908a6822",
+      "claim": "The tank holds 2 gallons.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "兩公升與兩加侖不是相同容量。",
+      "evidence": [
+        {
+          "source": "documents/d033.md",
+          "sha256": "d7a2cdbb70991fd2753b503cf2ad67b1f10fcfd29fa4605f5e166269908a6822",
+          "page": 1,
+          "start": 33,
+          "end": 57,
+          "quote": "The tank holds 2 liters."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": null
+    },
+    {
+      "case_id": "cl-033-3",
+      "document": "documents/d033.md",
+      "document_sha256": "d7a2cdbb70991fd2753b503cf2ad67b1f10fcfd29fa4605f5e166269908a6822",
+      "claim": "The tank is made of glass.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未說明材質。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": null
+    },
+    {
+      "case_id": "cl-036-1",
+      "document": "documents/d036.md",
+      "document_sha256": "39243a61901629a4f6f69c0914a5078350104fe600f78960df7291865125298b",
+      "claim": "A German edition of the manual exists.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "來源列出德語版本。",
+      "evidence": [
+        {
+          "source": "documents/d036.md",
+          "sha256": "39243a61901629a4f6f69c0914a5078350104fe600f78960df7291865125298b",
+          "page": 1,
+          "start": 43,
+          "end": 79,
+          "quote": "The manual lists English and German."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": null
+    },
+    {
+      "case_id": "cl-036-2",
+      "document": "documents/d036.md",
+      "document_sha256": "39243a61901629a4f6f69c0914a5078350104fe600f78960df7291865125298b",
+      "claim": "A Korean edition of the manual exists.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "來源明確說不存在其他語言版本。",
+      "evidence": [
+        {
+          "source": "documents/d036.md",
+          "sha256": "39243a61901629a4f6f69c0914a5078350104fe600f78960df7291865125298b",
+          "page": 1,
+          "start": 43,
+          "end": 121,
+          "quote": "The manual lists English and German. It says no other language edition exists."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": null
+    },
+    {
+      "case_id": "cl-036-3",
+      "document": "documents/d036.md",
+      "document_sha256": "39243a61901629a4f6f69c0914a5078350104fe600f78960df7291865125298b",
+      "claim": "The manual has a glossary.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提及 glossary。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "audit_flag": null
+    }
+  ]
+}

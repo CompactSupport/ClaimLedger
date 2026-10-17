@@ -88,6 +88,35 @@ def test_pre_review_flags_do_not_mark_rows_reviewed():
         assert reviews[flag["id"]]["reviewed_label"] == ""
 
 
+def test_ai_second_opinion_does_not_become_human_review():
+    annotation = json.loads(
+        (BASE / "ai_second_opinion" / "semantic_review_18.json").read_text(encoding="utf-8")
+    )
+    assert annotation["review_type"] == "AI_not_independent_human_review"
+    assert annotation["gold_eligible"] is False
+    assert annotation["paid_api_calls"] == 0
+    with (BASE / "review_queue.csv").open(encoding="utf-8", newline="") as handle:
+        reviews = {row["id"]: row for row in csv.DictReader(handle)}
+    disagreements = []
+    for result in annotation["results"]:
+        review = reviews[result["case_id"]]
+        assert review["expected"] == result["author_label"]
+        assert review["reviewed_label"] == ""
+        assert review["human_reviewed"] == "False"
+        assert review["reviewer"] == ""
+        assert review["reviewed_at"] == ""
+        assert result["review_type"] == "AI_semantic_second_opinion_not_human"
+        text = (BASE / result["document"]).read_text(encoding="utf-8")
+        digest = hashlib.sha256((BASE / result["document"]).read_bytes()).hexdigest()
+        assert digest == result["document_sha256"]
+        for evidence in result["evidence"]:
+            assert text[evidence["start"]:evidence["end"]] == evidence["quote"]
+        if not result["agrees_with_author"]:
+            disagreements.append(result["case_id"])
+    assert disagreements == ["cl-027-2"]
+    assert reviews["cl-027-2"]["expected"] == "contradicted"
+
+
 def test_corrected_quotes_name_the_relevant_statement():
     with (BASE / "review_queue.csv").open(encoding="utf-8", newline="") as handle:
         reviews = {row["id"]: row for row in csv.DictReader(handle)}

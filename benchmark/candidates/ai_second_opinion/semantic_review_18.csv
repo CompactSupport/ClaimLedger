@@ -1,0 +1,19 @@
+case_id,document,claim,author_label,ai_verdict,agrees_with_author,reason_zh,evidence_quote,evidence_start,evidence_end,audit_flag
+cl-021-1,documents/d021.md,The ferry departed at 07:10 on 3 May 2026.,supported,supported,True,來源明確記載出發時間。,"On 3 May 2026 the gate was open, and the ferry departed at 07:10.",87,152,
+cl-021-2,documents/d021.md,The ferry waited because the gate was closed on 3 May 2026.,contradicted,contradicted,True,當日閘門開啟且已出發，與 claim 矛盾。,"On 3 May 2026 the gate was open, and the ferry departed at 07:10.",87,152,
+cl-021-3,documents/d021.md,The ferry carried 40 passengers.,insufficient,insufficient,True,來源沒有乘客數資訊。,,,,
+cl-024-1,documents/d024.md,Route East took less time than Route West.,supported,supported,True,48 分鐘小於 53 分鐘，必須同時引用兩個比較數值。,Route East took 48 minutes. Route West took 53 minutes.,39,94,AUTHOR_EVIDENCE_INCOMPLETE
+cl-024-2,documents/d024.md,Route West was faster than Route East.,contradicted,contradicted,True,West 反而更慢，必須同時引用兩個比較數值。,Route East took 48 minutes. Route West took 53 minutes.,39,94,AUTHOR_EVIDENCE_INCOMPLETE
+cl-024-3,documents/d024.md,Route East costs less than Route West.,insufficient,insufficient,True,來源沒有票價比較。,,,,
+cl-027-1,documents/d027.md,The recipe uses honey.,supported,supported,True,來源直接包含蜂蜜。,The recipe uses oats and honey.,37,68,
+cl-027-2,documents/d027.md,The recipe includes nuts.,contradicted,insufficient,False,未提及堅果，不代表明確排除堅果；作者標籤值得人工裁定。,,,,AUTHOR_LABEL_DISAGREEMENT
+cl-027-3,documents/d027.md,The recipe is gluten-free.,insufficient,insufficient,True,未說明無麩質狀態或相關製程。,,,,
+cl-031-1,documents/d031.md,This batch had 8 intact vials.,supported,supported,True,來源明確記載八瓶完整。,This batch had 8 intact vials.,93,123,
+cl-031-2,documents/d031.md,This batch passed the intact-vial rule.,contradicted,contradicted,True,至少要九瓶，實際八瓶，不符合門檻；需引用兩個條件。,A batch passes when at least 9 of 10 vials are intact. This batch had 8 intact vials.,38,123,AUTHOR_EVIDENCE_INCOMPLETE
+cl-031-3,documents/d031.md,The vials contain saline.,insufficient,insufficient,True,來源未說明內容物。,,,,
+cl-033-1,documents/d033.md,The tank holds 2 liters.,supported,supported,True,來源直接支持。,The tank holds 2 liters.,33,57,
+cl-033-2,documents/d033.md,The tank holds 2 gallons.,contradicted,contradicted,True,兩公升與兩加侖不是相同容量。,The tank holds 2 liters.,33,57,
+cl-033-3,documents/d033.md,The tank is made of glass.,insufficient,insufficient,True,來源未說明材質。,,,,
+cl-036-1,documents/d036.md,A German edition of the manual exists.,supported,supported,True,來源列出德語版本。,The manual lists English and German.,43,79,
+cl-036-2,documents/d036.md,A Korean edition of the manual exists.,contradicted,contradicted,True,來源明確說不存在其他語言版本。,The manual lists English and German. It says no other language edition exists.,43,121,
+cl-036-3,documents/d036.md,The manual has a glossary.,insufficient,insufficient,True,來源未提及 glossary。,,,,
