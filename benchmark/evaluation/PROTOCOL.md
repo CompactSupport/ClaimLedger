@@ -35,6 +35,16 @@ Prompt version: `claimledger.inference_prompt.v1`. No evaluator is configured. P
 
 The packet's join file is `benchmark/evaluation/audit/calibration_mapping.json`, seed `20261018`. That file is also committed and publicly readable.
 
+Reviewer sheets are validated by `scripts/validate_calibration.py`. The committed sheets are empty, so the agreement report has no pairs and Cohen's kappa is null. A valid pair needs two different human reviewer ids, timezone-aware timestamps, a label from the three classes, and an evidence quote that matches a character span of the packet passage. An AI identity is rejected and is not counted as human review. Disagreements stay unresolved until a person adjudicates them.
+
+Copying an adjudicated label into `review_queue.csv` requires an approval record whose decision is `approved_for_queue_import`, with an approver, a timestamp, and an approval id. The validation command does not write that queue. An approved plan alone does not release a gold benchmark.
+
+## Controlled semantic pilot
+
+`claimledger.semantic_pilot` prepares one evaluation record per invocation, in a directory outside the repository, with credential environment variables removed. That is not an operating-system sandbox. The harness checks the model JSON, the evaluation id, and whether a quote is an exact substring of the passage it wrote. Scoring requires a declared subset and rejects duplicate, missing, and unknown ids. Predictions stay separate from human-reviewed labels.
+
+Codex runs only after authentication and subscription billing have both been verified. API-key billing is not a fallback. Real Codex execution is disabled in this revision. Tests use a mock runner only.
+
 ## Result classes
 
 | Class | Where it stands |

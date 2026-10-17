@@ -7,20 +7,20 @@
     "workflow": ".github/workflows/ci.yml",
     "requires_api_credentials": false,
     "observed_success": {
-      "commit": "e0c295ce8ad35ca941a8ac437f8b5266338908a1",
-      "run_id": 39065855750,
-      "url": "https://github.com/CompactSupport/ClaimLedger/actions/runs/39065855750",
+      "commit": "80ccf6c12618e86c7d9272a0c66ae3c8551fe114",
+      "run_id": 39068258264,
+      "url": "https://github.com/CompactSupport/ClaimLedger/actions/runs/39068258264",
       "jobs": ["test (3.11)", "test (3.12)", "secret-scan", "dependencies"],
-      "scope": "main after pull request 5 merged"
+      "scope": "main after pull request 6 merged"
     },
     "note": "This branch's own Actions run is not recorded here until GitHub reports it."
   },
   "tests": {
-    "local_pytest_passed": 90,
+    "local_pytest_passed": 99,
     "python_versions_run_locally": ["3.11.9", "3.12.10"],
     "line_coverage_percent": 87,
     "measured_on": "2026-10-17",
-    "note": "Line coverage 87% is from the local Python 3.11 run after the label-blind export. Python 3.12 passed the same 90 tests."
+    "note": "Line coverage 87% is from the local Python 3.11 run after the calibration and pilot harness. Python 3.12 passed the same 99 tests."
   },
   "benchmark": {
     "gold_set_rows": 0,
@@ -36,9 +36,14 @@
     "label_blind_model_runs": 0,
     "human_calibration_rows": 30,
     "human_calibration_decisions": 0,
+    "human_calibration_cohen_kappa": null,
+    "calibration_import_applied": false,
     "label_blind_is_external_test": false,
     "audit_mapping_is_access_controlled": false,
     "agent_directory_is_os_sandbox": false,
+    "semantic_pilot_real_runs": 0,
+    "codex_billing_mode": "unverified",
+    "codex_api_key_fallback": false,
     "smoke_rows": 6,
     "smoke_label_origin": "synthetic_author_labeled",
     "local_smoke_correct": 4,
@@ -66,7 +71,7 @@
     "retrieval_recall": null,
     "paid_inference_recorded": false,
     "measured_on": "2026-10-17",
-    "note": "Candidate scores are engineering smoke on fictional author labels, not a gold benchmark. AI agreement with those labels is 107 of 108 and is not an accuracy estimate. The case-id suffix currently encodes the label in the canonical queue. The label-blind export has no scored model run and is not an external test."
+    "note": "Candidate scores are engineering smoke on fictional author labels, not a gold benchmark. AI agreement with those labels is 107 of 108 and is not an accuracy estimate. The case-id suffix currently encodes the label in the canonical queue. The label-blind export has no scored model run and is not an external test. Calibration sheets have no decisions, so Cohen's kappa is null. Real Codex inference has not been run."
   },
   "contributors": ["CompactSupport"],
   "documented_adoption": []

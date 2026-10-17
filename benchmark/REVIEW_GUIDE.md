@@ -33,4 +33,5 @@ Running it on the current queue reports `reviewed_case_count=0`, `reviewed_subse
 - Leave `reviewed_label` blank if you are unsure.
 - Do not mark `human_reviewed` until the label is your own decision.
 - Do not report the local macro-F1 on these rows as the project's accuracy.
-- For a semantic-model run, use the isolated directory from [evaluation/PROTOCOL.md](evaluation/PROTOCOL.md). Do not give the model this queue, the case ids, or the AI notes.
+- For a semantic-model run, use one isolated record from [evaluation/PROTOCOL.md](evaluation/PROTOCOL.md). Do not give the model this queue, the case ids, the audit mapping, or the AI notes. A copied workspace is not an operating-system sandbox.
+- Calibration responses stay on the reviewer sheets until someone writes an import approval. Do not sign a sheet with an AI identity. Do not copy the author label or an AI verdict into `reviewed_label`.
