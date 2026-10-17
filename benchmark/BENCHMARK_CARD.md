@@ -56,6 +56,14 @@ The local baseline misses paraphrases, negation, unit changes, and comparisons. 
 - Every document currently has three rows, and the case-id suffix is the author label: `-1` supported, `-2` contradicted, `-3` insufficient. A model can guess the label from the id or from row order. A formal evaluation has to remove that cue and shuffle the order. The current local scores are not that evaluation.
 - AI second-opinion notes cover all 108 rows and match the author label on 107. That match count is not accuracy. The notes are in `benchmark/candidates/ai_second_opinion/`, and they do not fill `human_reviewed` or release a gold set. Human-reviewed rows remain 0.
 
+## Leakage risk
+
+The canonical queue still uses one supported, one contradicted, and one insufficient row per document, in that order. The case-id suffix is the author label. Those files stay unchanged so earlier runs remain auditable.
+
+`benchmark/evaluation/` is a separate export, protocol `claimledger.evaluation_export.v1`, seed `20261017`. It gives each case an opaque evaluation id, shuffles all 108 cases in one list, and writes model-visible inputs that contain only the claim and the source passage. The passage omits the scenario heading because that heading repeats the document number. The id-to-case mapping stays in `benchmark/evaluation/audit/`. That directory is committed in this public repository. It is publicly readable and not access-controlled. It is omitted from the model-visible file list, which is a packaging split, not a confidentiality control. Copying the model view outside the checkout is a file copy, not an operating-system sandbox.
+
+Residual risks remain. The same passage still accompanies every claim about that document, so a reader can group those claims. Someone who also has this repository can join the passage text back to the author label. No blinded model has been scored on the export. The export is not an independent external test set. Human-reviewed rows remain 0. The 30-case calibration packet hides author labels and AI notes and contains no decisions.
+
 ## Name check
 
 On 2026-10-17, `https://pypi.org/pypi/claimledger/json` returned 404. This repository was not published. Other GitHub projects already use the words ClaimLedger. No trademark search was done. Do not publish to PyPI or buy a domain without a separate decision.

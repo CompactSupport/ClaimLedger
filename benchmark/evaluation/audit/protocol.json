@@ -1,0 +1,38 @@
+{
+  "protocol_version": "claimledger.evaluation_export.v1",
+  "prompt_version": "claimledger.inference_prompt.v1",
+  "randomization_seed": 20261017,
+  "evaluation_id_seed": 20261019,
+  "human_packet_seed": 20261018,
+  "rng": "CPython random.Random",
+  "rejected_shuffles": 63,
+  "dataset_version": "candidates-2026-10-17.2",
+  "canonical_rows": 108,
+  "isolated_rows": 108,
+  "calibration_rows": 30,
+  "heading_redaction": "Model-visible passages omit the leading '# Fictional scenario NNN' line because that number is the canonical document number.",
+  "model_visible_directory": "benchmark/evaluation/isolated",
+  "audit_mapping": "benchmark/evaluation/audit/id_mapping.json",
+  "audit_mapping_access": "committed_in_the_public_repository",
+  "audit_mapping_is_access_controlled": false,
+  "agent_directory_is_os_sandbox": false,
+  "agent_rule": "The committed audit mapping is publicly readable. It is separate from the model-visible directory, and it is not access-controlled. Copying that directory outside the repository is a file copy, not an operating-system sandbox.",
+  "evaluator": {
+    "configured": false,
+    "backend": null,
+    "model": null,
+    "paid_inference": false,
+    "runs_completed": 0
+  },
+  "creates_external_blind_test": false,
+  "result_classes": {
+    "synthetic_author_label_smoke": "Local exact-match scores on author labels. Not a blinded semantic evaluation.",
+    "ai_second_opinion": "Annotations under benchmark/candidates/ai_second_opinion. Not human review and not an accuracy estimate.",
+    "human_reviewed_development": "The 30-case calibration packet has no recorded decisions.",
+    "internal_label_blinded_test": "The isolated export exists. No blinded model run has been scored.",
+    "independent_external_test": "Not available. This protocol does not create an external test set."
+  },
+  "isolated_inputs_sha256": "a69e6177d862ef651f100b4e3ae9c31a536ad2b90ee15dce10f60621f29be663",
+  "prompt_sha256": "4b418174ec43aaf65fcda655379419b84312b4bbe6fd2fe1119f557e740044eb",
+  "review_queue_sha256": "4b733dbb35f2f18a97e8f801463341ca2d50069b3354addc6fd82d336423704d"
+}

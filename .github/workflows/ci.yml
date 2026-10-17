@@ -22,6 +22,7 @@ jobs:
       - run: python -m claimledger verify --doc examples/aurora.md --claims examples/claims.json --out output/report.json --markdown output/report.md
       - run: python -m claimledger evaluate --dataset examples/eval.jsonl --out output/eval.json
       - run: python scripts/freeze_reviewed_labels.py --queue benchmark/candidates/review_queue.csv --out output/frozen_reviews.json --dataset-version candidates-2026-10-17.2
+      - run: python scripts/export_label_blind_evaluation.py --check
   secret-scan:
     runs-on: ubuntu-latest
     steps:
