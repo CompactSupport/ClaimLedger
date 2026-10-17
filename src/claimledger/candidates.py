@@ -23,6 +23,53 @@ def load_split(path: Path | None = None) -> dict[str, str]:
     return mapping
 
 
+def assert_dataset_complete(shard_rows: list[list[dict]], queue_rows: list[dict],
+                             manifest: dict, base: Path) -> None:
+    """Require the shards, queue, and manifest to describe the same dataset."""
+    if len(shard_rows) != manifest.get("shards"):
+        raise ValueError("Shard count does not match the manifest.")
+    flat = [row for rows in shard_rows for row in rows]
+    if len(flat) != manifest.get("rows"):
+        raise ValueError("Total case count does not match the manifest.")
+    if len(queue_rows) != manifest.get("rows"):
+        raise ValueError("Review queue count does not match the manifest.")
+    shard_ids = [row.get("id") for row in flat]
+    queue_ids = [row.get("id") for row in queue_rows]
+    if any(not case_id for case_id in shard_ids) or len(shard_ids) != len(set(shard_ids)):
+        raise ValueError("Shard case IDs are missing or duplicated.")
+    if any(not case_id for case_id in queue_ids) or len(queue_ids) != len(set(queue_ids)):
+        raise ValueError("Review-queue case IDs are missing or duplicated.")
+    if set(shard_ids) != set(queue_ids):
+        raise ValueError("Shard case IDs do not match the review queue.")
+    if not manifest.get("dataset_version"):
+        raise ValueError("Manifest is missing a dataset version.")
+    labels = manifest.get("labels") or {}
+    for label, expected_count in labels.items():
+        actual = sum(row.get("expected") == label for row in flat)
+        if actual != expected_count:
+            raise ValueError(f"Label count for {label} does not match the manifest.")
+    queue = {row["id"]: row for row in queue_rows}
+    seen_pairs: set[tuple[str, str]] = set()
+    root = base.resolve()
+    for row in flat:
+        review = queue[row["id"]]
+        if review["claim"] != row["claim"] or review["expected"] != row["expected"]:
+            raise ValueError(f"Case {row['id']} does not match the review queue.")
+        if review["document"] != row["document"]:
+            raise ValueError(f"Case {row['id']} points at a different document.")
+        pair = (row["document"], row["claim"])
+        if pair in seen_pairs:
+            raise ValueError(f"Duplicate document-claim pair in {row['id']}.")
+        seen_pairs.add(pair)
+        source = (root / row["document"]).resolve()
+        if not source.is_relative_to(root) or not source.is_file():
+            raise ValueError(f"Document path is not inside the benchmark directory: {row['document']}")
+        digest = hashlib.sha256(source.read_bytes()).hexdigest()
+        filename = Path(row["document"]).name
+        if manifest.get("document_sha256", {}).get(filename) != digest:
+            raise ValueError(f"Stale manifest hash for {filename}.")
+
+
 def assert_shard_outputs_match_sources(shard_outputs: list[dict], shard_rows: list[list[dict]],
                                        queue_rows: list[dict], manifest_hashes: dict[str, str],
                                        base: Path) -> None:
@@ -73,12 +120,16 @@ def aggregate(shard_outputs: list[dict], shard_rows: list[list[dict]],
     failures: list[dict] = []
     valid_quotes = 0
     total_quotes = 0
+    cases_with_valid_evidence = 0
     for output, rows in zip(shard_outputs, shard_rows, strict=True):
         cases = output["cases"]
         if len(cases) != len(rows):
             raise ValueError("Shard result row count does not match the JSONL.")
         valid_quotes += output.get("citation_valid_quotes", 0)
         total_quotes += output.get("citation_total_quotes", 0)
+        cases_with_valid_evidence += sum(
+            1 for case in cases if case.get("has_valid_evidence")
+        )
         for case, row in zip(cases, rows, strict=True):
             if case["claim"] != row["claim"] or case["expected"] != row["expected"]:
                 raise ValueError("Shard output does not match the source row.")
@@ -137,6 +188,12 @@ def aggregate(shard_outputs: list[dict], shard_rows: list[list[dict]],
         "citation_validity_note": (
             "This rate counts only quotes the baseline emitted. "
             "It is not evidence of citation reliability for cases with no quote."
+        ),
+        "evidence_coverage_rate": cases_with_valid_evidence / len(pairs),
+        "cases_with_valid_evidence": cases_with_valid_evidence,
+        "evidence_coverage_note": (
+            "Share of cases that received at least one validated quote. "
+            "Separate from quote validity among emitted quotes."
         ),
         "held_out_split_note": (
             "The held-out split is an internal partition of the same author-written set. "

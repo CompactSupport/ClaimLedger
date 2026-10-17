@@ -14,7 +14,15 @@
     "d011.md",
     "d012.md",
     "d013.md",
-    "d014.md"
+    "d014.md",
+    "d021.md",
+    "d022.md",
+    "d023.md",
+    "d024.md",
+    "d025.md",
+    "d026.md",
+    "d027.md",
+    "d028.md"
   ],
   "held_out_documents": [
     "d015.md",
@@ -22,6 +30,15 @@
     "d017.md",
     "d018.md",
     "d019.md",
-    "d020.md"
-  ]
+    "d020.md",
+    "d029.md",
+    "d030.md",
+    "d031.md",
+    "d032.md",
+    "d033.md",
+    "d034.md",
+    "d035.md",
+    "d036.md"
+  ],
+  "extension_note": "d021-d036 were added after the original d001-d020 assignment. Existing assignments were not moved."
 }

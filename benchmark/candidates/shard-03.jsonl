@@ -1,20 +1,20 @@
-{"document": "documents/d014.md", "claim": "The Mosaic dataset contains 700 text examples.", "expected": "contradicted", "id": "cl-014-2"}
-{"document": "documents/d014.md", "claim": "The Mosaic dataset includes videos with subtitles.", "expected": "insufficient", "id": "cl-014-3"}
-{"document": "documents/d015.md", "claim": "The Briar campaign collected a total of 56,000 dollars.", "expected": "supported", "id": "cl-015-1"}
-{"document": "documents/d015.md", "claim": "The Briar campaign collected a total of 65,000 dollars.", "expected": "contradicted", "id": "cl-015-2"}
-{"document": "documents/d015.md", "claim": "The campaign spent 6,000 dollars on printing.", "expected": "insufficient", "id": "cl-015-3"}
-{"document": "documents/d016.md", "claim": "The Comet bus arrives four times per hour during operating hours.", "expected": "supported", "id": "cl-016-1"}
-{"document": "documents/d016.md", "claim": "The Comet bus runs every 10 minutes.", "expected": "contradicted", "id": "cl-016-2"}
-{"document": "documents/d016.md", "claim": "A Comet bus ticket costs two dollars.", "expected": "insufficient", "id": "cl-016-3"}
-{"document": "documents/d017.md", "claim": "The Lotus pilot excluded carpet testing.", "expected": "supported", "id": "cl-017-1"}
-{"document": "documents/d017.md", "claim": "The Lotus pilot tested the robots on carpet.", "expected": "contradicted", "id": "cl-017-2"}
-{"document": "documents/d017.md", "claim": "The Lotus robots use lithium-iron-phosphate batteries.", "expected": "insufficient", "id": "cl-017-3"}
-{"document": "documents/d018.md", "claim": "The Seabird draft had no external referee review.", "expected": "supported", "id": "cl-018-1"}
-{"document": "documents/d018.md", "claim": "The Seabird draft received external referee review before posting.", "expected": "contradicted", "id": "cl-018-2"}
-{"document": "documents/d018.md", "claim": "The Seabird draft was later accepted to a journal.", "expected": "insufficient", "id": "cl-018-3"}
-{"document": "documents/d019.md", "claim": "The Lantern guidance was available in Japanese.", "expected": "supported", "id": "cl-019-1"}
-{"document": "documents/d019.md", "claim": "The Lantern guidance was available in French.", "expected": "contradicted", "id": "cl-019-2"}
-{"document": "documents/d019.md", "claim": "The Lantern guidance will be translated into Spanish.", "expected": "insufficient", "id": "cl-019-3"}
-{"document": "documents/d020.md", "claim": "The Riverstone experiments used random seed 17.", "expected": "supported", "id": "cl-020-1"}
-{"document": "documents/d020.md", "claim": "The Riverstone authors conducted a blinded trial.", "expected": "contradicted", "id": "cl-020-2"}
-{"document": "documents/d020.md", "claim": "The Riverstone models were trained on 10,000 examples.", "expected": "insufficient", "id": "cl-020-3"}
+{"id": "cl-014-2", "document": "documents/d014.md", "claim": "The Mosaic dataset contains 700 text examples.", "expected": "contradicted"}
+{"id": "cl-014-3", "document": "documents/d014.md", "claim": "The Mosaic dataset includes videos with subtitles.", "expected": "insufficient"}
+{"id": "cl-015-1", "document": "documents/d015.md", "claim": "The Briar campaign collected a total of 56,000 dollars.", "expected": "supported"}
+{"id": "cl-015-2", "document": "documents/d015.md", "claim": "The Briar campaign collected a total of 65,000 dollars.", "expected": "contradicted"}
+{"id": "cl-015-3", "document": "documents/d015.md", "claim": "The campaign spent 6,000 dollars on printing.", "expected": "insufficient"}
+{"id": "cl-016-1", "document": "documents/d016.md", "claim": "The Comet bus arrives four times per hour during operating hours.", "expected": "supported"}
+{"id": "cl-016-2", "document": "documents/d016.md", "claim": "The Comet bus runs every 10 minutes.", "expected": "contradicted"}
+{"id": "cl-016-3", "document": "documents/d016.md", "claim": "A Comet bus ticket costs two dollars.", "expected": "insufficient"}
+{"id": "cl-017-1", "document": "documents/d017.md", "claim": "The Lotus pilot excluded carpet testing.", "expected": "supported"}
+{"id": "cl-017-2", "document": "documents/d017.md", "claim": "The Lotus pilot tested the robots on carpet.", "expected": "contradicted"}
+{"id": "cl-017-3", "document": "documents/d017.md", "claim": "The Lotus robots use lithium-iron-phosphate batteries.", "expected": "insufficient"}
+{"id": "cl-018-1", "document": "documents/d018.md", "claim": "The Seabird draft had no external referee review.", "expected": "supported"}
+{"id": "cl-018-2", "document": "documents/d018.md", "claim": "The Seabird draft received external referee review before posting.", "expected": "contradicted"}
+{"id": "cl-018-3", "document": "documents/d018.md", "claim": "The Seabird draft was later accepted to a journal.", "expected": "insufficient"}
+{"id": "cl-019-1", "document": "documents/d019.md", "claim": "The Lantern guidance was available in Japanese.", "expected": "supported"}
+{"id": "cl-019-2", "document": "documents/d019.md", "claim": "The Lantern guidance was available in French.", "expected": "contradicted"}
+{"id": "cl-019-3", "document": "documents/d019.md", "claim": "The Lantern guidance will be translated into Spanish.", "expected": "insufficient"}
+{"id": "cl-020-1", "document": "documents/d020.md", "claim": "The Riverstone experiments used random seed 17.", "expected": "supported"}
+{"id": "cl-020-2", "document": "documents/d020.md", "claim": "The Riverstone authors conducted a blinded trial.", "expected": "contradicted"}
+{"id": "cl-020-3", "document": "documents/d020.md", "claim": "The Riverstone models were trained on 10,000 examples.", "expected": "insufficient"}

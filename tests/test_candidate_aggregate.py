@@ -54,7 +54,7 @@ def test_pooled_macro_f1_is_not_the_mean_of_shard_scores():
 
 def test_split_file_has_no_document_overlap():
     mapping = load_split()
-    assert len(mapping) == 20
+    assert len(mapping) == 36
     assert set(mapping.values()) == {"dev", "held_out"}
 
 

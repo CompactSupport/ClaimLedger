@@ -80,8 +80,9 @@ def evaluate_dataset(path: Path, backend: str, model: str) -> dict:
         confusion.setdefault(expected, {}).setdefault(actual, 0)
         confusion[expected][actual] += 1
         tokens += report["token_usage"]["total_tokens"]
+        evidence = report["results"][0]["evidence"]
         recorded = {"claim": case["claim"], "expected": expected, "actual": actual,
-                    "pass": actual == expected}
+                    "pass": actual == expected, "has_valid_evidence": bool(evidence)}
         if "id" in case:
             recorded["id"] = case["id"]
         cases.append(recorded)

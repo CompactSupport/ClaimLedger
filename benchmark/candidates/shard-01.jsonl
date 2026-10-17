@@ -1,20 +1,20 @@
-{"document": "documents/d001.md", "claim": "Project Orion evaluated 120 samples in April 2026.", "expected": "supported", "id": "cl-001-1"}
-{"document": "documents/d001.md", "claim": "Project Orion evaluated 150 samples in April 2026.", "expected": "contradicted", "id": "cl-001-2"}
-{"document": "documents/d001.md", "claim": "Project Orion was funded by a city government.", "expected": "insufficient", "id": "cl-001-3"}
-{"document": "documents/d002.md", "claim": "The Maple Archive digital collection went live on June 4, 2026.", "expected": "supported", "id": "cl-002-1"}
-{"document": "documents/d002.md", "claim": "The Maple Archive opened its digital collection on June 14, 2026.", "expected": "contradicted", "id": "cl-002-2"}
-{"document": "documents/d002.md", "claim": "The Maple Archive plans to release audio recordings next year.", "expected": "insufficient", "id": "cl-002-3"}
-{"document": "documents/d003.md", "claim": "The Nimbus test excluded synthetic fibers.", "expected": "supported", "id": "cl-003-1"}
-{"document": "documents/d003.md", "claim": "The Nimbus materials test included synthetic fibers.", "expected": "contradicted", "id": "cl-003-2"}
-{"document": "documents/d003.md", "claim": "The Nimbus test was funded by three universities.", "expected": "insufficient", "id": "cl-003-3"}
-{"document": "documents/d004.md", "claim": "The tracking apparatus consumed 14 kWh in one night.", "expected": "supported", "id": "cl-004-1"}
-{"document": "documents/d004.md", "claim": "The tracking apparatus used 14 MWh per night.", "expected": "contradicted", "id": "cl-004-2"}
-{"document": "documents/d004.md", "claim": "The Cedar Observatory is located at an elevation of 1,400 meters.", "expected": "insufficient", "id": "cl-004-3"}
-{"document": "documents/d005.md", "claim": "The Harbor shuttle has 14 stops.", "expected": "supported", "id": "cl-005-1"}
-{"document": "documents/d005.md", "claim": "The Harbor shuttle offers overnight service.", "expected": "contradicted", "id": "cl-005-2"}
-{"document": "documents/d005.md", "claim": "A ride on the Harbor shuttle costs three dollars.", "expected": "insufficient", "id": "cl-005-3"}
-{"document": "documents/d006.md", "claim": "Model A succeeded in more trials than Model B.", "expected": "supported", "id": "cl-006-1"}
-{"document": "documents/d006.md", "claim": "Model B succeeded in more trials than Model A.", "expected": "contradicted", "id": "cl-006-2"}
-{"document": "documents/d006.md", "claim": "Model A was cheaper to deploy than Model B.", "expected": "insufficient", "id": "cl-006-3"}
-{"document": "documents/d007.md", "claim": "The Ember storage pool has 80 GB free.", "expected": "supported", "id": "cl-007-1"}
-{"document": "documents/d007.md", "claim": "The Ember storage pool has 120 GB remaining.", "expected": "contradicted", "id": "cl-007-2"}
+{"id": "cl-001-1", "document": "documents/d001.md", "claim": "Project Orion evaluated 120 samples in April 2026.", "expected": "supported"}
+{"id": "cl-001-2", "document": "documents/d001.md", "claim": "Project Orion evaluated 150 samples in April 2026.", "expected": "contradicted"}
+{"id": "cl-001-3", "document": "documents/d001.md", "claim": "Project Orion was funded by a city government.", "expected": "insufficient"}
+{"id": "cl-002-1", "document": "documents/d002.md", "claim": "The Maple Archive digital collection went live on June 4, 2026.", "expected": "supported"}
+{"id": "cl-002-2", "document": "documents/d002.md", "claim": "The Maple Archive opened its digital collection on June 14, 2026.", "expected": "contradicted"}
+{"id": "cl-002-3", "document": "documents/d002.md", "claim": "The Maple Archive plans to release audio recordings next year.", "expected": "insufficient"}
+{"id": "cl-003-1", "document": "documents/d003.md", "claim": "The Nimbus test excluded synthetic fibers.", "expected": "supported"}
+{"id": "cl-003-2", "document": "documents/d003.md", "claim": "The Nimbus materials test included synthetic fibers.", "expected": "contradicted"}
+{"id": "cl-003-3", "document": "documents/d003.md", "claim": "The Nimbus test was funded by three universities.", "expected": "insufficient"}
+{"id": "cl-004-1", "document": "documents/d004.md", "claim": "The tracking apparatus consumed 14 kWh in one night.", "expected": "supported"}
+{"id": "cl-004-2", "document": "documents/d004.md", "claim": "The tracking apparatus used 14 MWh per night.", "expected": "contradicted"}
+{"id": "cl-004-3", "document": "documents/d004.md", "claim": "The Cedar Observatory is located at an elevation of 1,400 meters.", "expected": "insufficient"}
+{"id": "cl-005-1", "document": "documents/d005.md", "claim": "The Harbor shuttle has 14 stops.", "expected": "supported"}
+{"id": "cl-005-2", "document": "documents/d005.md", "claim": "The Harbor shuttle offers overnight service.", "expected": "contradicted"}
+{"id": "cl-005-3", "document": "documents/d005.md", "claim": "A ride on the Harbor shuttle costs three dollars.", "expected": "insufficient"}
+{"id": "cl-006-1", "document": "documents/d006.md", "claim": "Model A succeeded in more trials than Model B.", "expected": "supported"}
+{"id": "cl-006-2", "document": "documents/d006.md", "claim": "Model B succeeded in more trials than Model A.", "expected": "contradicted"}
+{"id": "cl-006-3", "document": "documents/d006.md", "claim": "Model A was cheaper to deploy than Model B.", "expected": "insufficient"}
+{"id": "cl-007-1", "document": "documents/d007.md", "claim": "The Ember storage pool has 80 GB free.", "expected": "supported"}
+{"id": "cl-007-2", "document": "documents/d007.md", "claim": "The Ember storage pool has 120 GB remaining.", "expected": "contradicted"}

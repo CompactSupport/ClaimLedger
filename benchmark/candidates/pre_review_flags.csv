@@ -1,0 +1,18 @@
+id,issue,author_label_changed,human_reviewed
+cl-002-1,"The quote says the collection opened on June 4. The claim says it went live. The sentence is relevant, but entailment is not a string match.",false,false
+cl-006-1,The quote gives two trial counts. The claim that Model A succeeded more often is an inference from those counts.,false,false
+cl-006-2,The quote gives two trial counts. The claim that Model B succeeded in more trials than Model A is an inference from those counts.,false,false
+cl-006-3,The document says energy consumption was not assessed. The claim is about deployment cost.,false,false
+cl-009-3,The document says the ninety-ninth percentile was not reported. The author label is insufficient rather than contradicted.,false,false
+cl-011-3,The document says turbidity was not recorded. The author label is insufficient rather than contradicted.,false,false
+cl-014-3,The document says there are no audio clips. The claim is about subtitled video.,false,false
+cl-015-1,The quote lists two amounts. Their sum is not written in the document.,false,false
+cl-015-2,The quote lists 31000 dollars online and 25000 dollars at events. The claim of 65000 dollars is an arithmetic inference and those amounts do not sum to 65000.,false,false
+cl-016-1,The quote says the bus runs every 15 minutes between 06:00 and 18:00. The claim says four times per hour. Endpoint scheduling can change that count.,false,false
+cl-018-1,"The quote is the fragment ""not by external referees."" It is on topic but not a complete sentence.",false,false
+cl-018-2,The quote is the same sentence fragment as cl-018-1.,false,false
+cl-024-1,Faster route is inferred from 48 and 53 minutes. The document does not use the word faster.,false,false
+cl-027-2,An AI second opinion says omission of nuts is not explicit exclusion and suggests insufficient. The author label contradicted was not changed.,false,false
+cl-029-1,The quote says the grant covers equipment bought in 2026. The claim says that equipment can be charged to the grant. Coverage and reimbursement are not automatically the same scope.,false,false
+cl-031-2,Passing is defined as 9 of 10 intact vials and this batch had 8. The failure is inferred from the rule.,false,false
+cl-032-1,The quote says the 3 March submission was rejected as late. The claim says it was late.,false,false

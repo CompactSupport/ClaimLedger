@@ -46,8 +46,9 @@ def test_unreviewed_rows_do_not_create_gold(tmp_path: Path):
     frozen = freeze_reviews(queue)
     assert frozen["reviewed_case_count"] == 0
     assert frozen["reviewed_subset_available"] is False
-    assert frozen["gold_benchmark_ready"] is False
-    assert frozen["independence_verified_from_reviewer_metadata"] is False
+    assert frozen["eligible_for_final_approval"] is False
+    assert frozen["gold_benchmark_released"] is False
+    assert frozen["independence_verified"] is False
     assert frozen["cases"] == []
 
 
@@ -64,7 +65,8 @@ def test_reviewed_label_is_frozen_with_exact_span(tmp_path: Path):
     frozen = freeze_reviews(queue)
     assert frozen["reviewed_case_count"] == 1
     assert frozen["reviewed_subset_available"] is True
-    assert frozen["gold_benchmark_ready"] is False
+    assert frozen["eligible_for_final_approval"] is False
+    assert frozen["gold_benchmark_released"] is False
     case = frozen["cases"][0]
     assert case["author_label"] == "supported"
     assert case["reviewed_label"] == "contradicted"
@@ -87,7 +89,7 @@ def test_frozen_case_cannot_change_its_span(tmp_path: Path):
     frozen = freeze_reviews(queue)
     changed = json.loads(json.dumps(frozen))
     changed["cases"][0]["evidence"]["end"] += 1
-    with pytest.raises(ValueError, match="immutable"):
+    with pytest.raises(ValueError, match="span"):
         freeze_reviews(queue, existing=changed)
 
 
@@ -100,11 +102,23 @@ def test_author_label_is_not_copied_when_review_label_is_missing(tmp_path: Path)
         freeze_reviews(queue)
 
 
-def test_gold_readiness_requires_one_hundred_cases_and_criteria(tmp_path: Path):
+def _criteria(root: Path) -> dict:
+    document = root / "QUALITY_CRITERIA.md"
+    document.write_text("version: criteria-1\nReviewed cases need a separate approval.\n", encoding="utf-8")
+    import hashlib
+    return {
+        "independence_attested": True,
+        "criteria_document": "QUALITY_CRITERIA.md",
+        "criteria_version": "criteria-1",
+        "criteria_sha256": hashlib.sha256(document.read_bytes()).hexdigest(),
+    }
+
+
+def test_counts_do_not_release_a_gold_benchmark(tmp_path: Path):
     note = tmp_path / "note.md"
     note.write_text("The sample count is 4.\n", encoding="utf-8")
-    criteria = {"independence_attested": True, "criteria_document": "benchmark/REVIEW_GUIDE.md"}
-    for count, subset, ready in (
+    criteria = _criteria(tmp_path)
+    for count, subset, eligible in (
         (0, False, False),
         (1, True, False),
         (99, True, False),
@@ -112,6 +126,8 @@ def test_gold_readiness_requires_one_hundred_cases_and_criteria(tmp_path: Path):
     ):
         rows = [_row(
             id=f"cl-800-{index}",
+            claim=f"Claim number {index}.",
+            evidence_quote="The sample count is 4.",
             human_reviewed="True",
             reviewed_label="supported",
             reviewer="ada",
@@ -119,22 +135,95 @@ def test_gold_readiness_requires_one_hundred_cases_and_criteria(tmp_path: Path):
         ) for index in range(count)]
         queue = tmp_path / f"queue-{count}.csv"
         _write_queue(queue, rows)
-        frozen = freeze_reviews(queue, quality_criteria=criteria if count == GOLD_READY_MIN_CASES else None)
+        frozen = freeze_reviews(
+            queue,
+            quality_criteria=criteria if count == GOLD_READY_MIN_CASES else None,
+            criteria_root=tmp_path,
+            dataset_version="candidates-test",
+        )
         assert frozen["reviewed_case_count"] == count
         assert frozen["reviewed_subset_available"] is subset
-        assert frozen["gold_benchmark_ready"] is ready
-    queue = tmp_path / "queue-metadata-only.csv"
-    _write_queue(queue, [_row(
-        id=f"cl-800-{index}",
+        assert frozen["eligible_for_final_approval"] is eligible
+        assert frozen["gold_benchmark_released"] is False
+        assert frozen["independence_verified"] is False
+
+
+def test_duplicate_claims_cannot_inflate_the_reviewed_count(tmp_path: Path):
+    note = tmp_path / "note.md"
+    note.write_text("The sample count is 4.\n", encoding="utf-8")
+    rows = [_row(
+        id=f"cl-dup-{index}",
         human_reviewed="True",
         reviewed_label="supported",
         reviewer="ada",
         reviewed_at="2026-10-17",
-    ) for index in range(GOLD_READY_MIN_CASES)])
-    metadata_only = freeze_reviews(queue)
-    assert metadata_only["reviewed_case_count"] == 100
-    assert metadata_only["gold_benchmark_ready"] is False
-    assert metadata_only["independence_verified_from_reviewer_metadata"] is False
+    ) for index in range(100)]
+    queue = tmp_path / "duplicates.csv"
+    _write_queue(queue, rows)
+    with pytest.raises(ValueError, match="Duplicate document-claim"):
+        freeze_reviews(queue, dataset_version="candidates-test")
+
+
+def test_forged_reviewer_metadata_is_not_verification(tmp_path: Path):
+    note = tmp_path / "note.md"
+    note.write_text("The sample count is 4.\n", encoding="utf-8")
+    queue = tmp_path / "forged.csv"
+    _write_queue(queue, [_row(
+        human_reviewed="True",
+        reviewed_label="supported",
+        reviewer="forged-reviewer",
+        reviewed_at="2026-10-17",
+    )])
+    frozen = freeze_reviews(queue, dataset_version="candidates-test")
+    assert frozen["independence_attestation_recorded"] is False
+    assert frozen["independence_verified"] is False
+    assert frozen["eligible_for_final_approval"] is False
+    assert frozen["gold_benchmark_released"] is False
+
+
+def test_missing_criteria_document_blocks_approval(tmp_path: Path):
+    note = tmp_path / "note.md"
+    note.write_text("The sample count is 4.\n", encoding="utf-8")
+    rows = [_row(
+        id=f"cl-801-{index}",
+        claim=f"Distinct claim {index}.",
+        human_reviewed="True",
+        reviewed_label="supported",
+        reviewer="ada",
+        reviewed_at="2026-10-17",
+    ) for index in range(GOLD_READY_MIN_CASES)]
+    queue = tmp_path / "missing-criteria.csv"
+    _write_queue(queue, rows)
+    frozen = freeze_reviews(
+        queue,
+        quality_criteria={
+            "independence_attested": True,
+            "criteria_document": "missing.md",
+            "criteria_version": "criteria-1",
+            "criteria_sha256": "0" * 64,
+        },
+        criteria_root=tmp_path,
+        dataset_version="candidates-test",
+    )
+    assert frozen["reviewed_case_count"] == 100
+    assert frozen["eligible_for_final_approval"] is False
+    assert frozen["gold_benchmark_released"] is False
+
+
+def test_modified_source_document_cannot_be_refrozen(tmp_path: Path):
+    note = tmp_path / "note.md"
+    note.write_text("The sample count is 4.\n", encoding="utf-8")
+    queue = tmp_path / "review_queue.csv"
+    _write_queue(queue, [_row(
+        human_reviewed="True",
+        reviewed_label="supported",
+        reviewer="ada",
+        reviewed_at="2026-10-17",
+    )])
+    frozen = freeze_reviews(queue, dataset_version="candidates-test")
+    note.write_text("The sample count is 4.\nEdited after review.\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="hash"):
+        freeze_reviews(queue, existing=frozen, dataset_version="candidates-test")
 
 
 def test_quote_span_must_be_unique():

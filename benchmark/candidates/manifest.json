@@ -3,14 +3,14 @@
   "release_status": "unreviewed_candidate_set",
   "gold_benchmark": false,
   "label_origin": "synthetic_author_labeled",
-  "original_synthetic_documents": 20,
-  "rows": 60,
+  "original_synthetic_documents": 36,
+  "rows": 108,
   "labels": {
-    "supported": 20,
-    "contradicted": 20,
-    "insufficient": 20
+    "supported": 36,
+    "contradicted": 36,
+    "insufficient": 36
   },
-  "shards": 3,
+  "shards": 5,
   "author_reviewed": false,
   "external_or_independent_reviewed": false,
   "licensed_sources": "100% fictional original test documents",
@@ -35,6 +35,24 @@
     "d017.md": "b3b1a2eee415b3643c4b831ae7434bf4978e5cd5b539c4bf3eaabe6b12ae3bf7",
     "d018.md": "424f46a0a9e17168fe13757e7ec372f16c527cd556ec3ddd20a223435f44217d",
     "d019.md": "a1721406ad0b9d45d597907a0c7dfb1d215882a5f3b3d47a935f9060be0d9642",
-    "d020.md": "67d5777a6fca56ba9f9d8585e1954dab215c58d6dbad1c395e96971181c11518"
-  }
+    "d020.md": "67d5777a6fca56ba9f9d8585e1954dab215c58d6dbad1c395e96971181c11518",
+    "d021.md": "072fbaf96ebcfe634d7964f58876f175756987d5a822a543f1ad67d58082b369",
+    "d022.md": "9ae6b4ebf6e9ba6a45398ed8468a17c42dbe422e710ef3d0e8c3a16341945019",
+    "d023.md": "f0ad517a617da99c6b4c78e9ac7c3d4e388d330cc64021a487cad84a8c31fc6e",
+    "d024.md": "949a26ab6a6f45da5d89258090907c084120cb3b3de77614ea3c43721436471b",
+    "d025.md": "e97b0f418cbbe0793373cca94291cb0584b446d0cad13c3228ea5a5523adffbb",
+    "d026.md": "4fd0290829a91a1340fb1cac74c38d9f64447841b3316997e49430eff91df21f",
+    "d027.md": "e1c1d5d2caff5c664ed5ee846d7882478cbfa998b01627137c89ea16c0e40ee9",
+    "d028.md": "87382505b630084e3ee770a760a96a98c287925f17ace0b27873820dfdf7d497",
+    "d029.md": "959fb2dcab26f2628258e7d8a550e18cf63c0d519a674f544168c3e1ded3f222",
+    "d030.md": "16385b5d9725cae16bd79d0e108452832a719e92ba5bc957893f921df264f672",
+    "d031.md": "617a182ccbbb41b4fefafaaa66e31347fd53f4a2f6ed5c8ca1d1179a9540fe40",
+    "d032.md": "5b17ad413685bd5a765270575198522d3f0448c45ac6a0030c08aff86d9d446b",
+    "d033.md": "d7a2cdbb70991fd2753b503cf2ad67b1f10fcfd29fa4605f5e166269908a6822",
+    "d034.md": "ebd4e4bbd675e7d4b0d1e62b38248ed51b4a9f7bd5010540fd2e55b144af54d6",
+    "d035.md": "a4592eafc128ff52d85ba1811d9ff8f47b869c53b78e03a2bc5049006e75e45b",
+    "d036.md": "39243a61901629a4f6f69c0914a5078350104fe600f78960df7291865125298b"
+  },
+  "dataset_version": "candidates-2026-10-17.2",
+  "external_evaluation_set": "not_available"
 }

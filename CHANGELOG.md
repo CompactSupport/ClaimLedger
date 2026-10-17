@@ -4,8 +4,17 @@ All notable changes to ClaimLedger are documented here. The project uses semanti
 
 ## Unreleased
 
+- Import the remaining 90 AI second-opinion annotations beside the first 18. Combined author-label agreement is 107 of 108 and is not an accuracy estimate. The case-id suffix still encodes the author label.
+- Import 18 AI second-opinion annotations beside the candidate queue. They do not change author labels or human-review fields.
+- Fix the freeze CLI so it reports the four release-state fields instead of the removed `gold_benchmark_ready` key.
+- Require the evaluated shards to match the manifest and review queue exactly, and revalidate frozen rows against current document bytes.
+- Add an unexecuted OpenAI pilot planner with an explicit USD preflight. A request cap is not a spending ceiling.
+- Stop duplicate document-claim pairs from inflating the reviewed count.
+- Separate a reviewed subset, eligibility for final approval, and a formally approved gold release. One hundred rows do not certify a benchmark, and an independence attestation is not a verification.
+- Add 48 fictional candidate rows in 16 new documents, a pre-review flag list, and an empty adjudication log.
+- Report evidence coverage separately from quote validity.
 - Correct five candidate evidence quotes that cited a true but irrelevant sentence: `cl-009-2`, `cl-010-2`, `cl-013-2`, `cl-019-2`, and `cl-020-2`.
-- Report `reviewed_case_count`, `reviewed_subset_available`, and `gold_benchmark_ready` separately. Readiness needs 100 reviewed cases plus documented criteria. Reviewer metadata is not treated as independence.
+- Keep author labels separate from reviewed labels. Reviewer metadata is not treated as independence.
 - Rename the insufficient-prediction share so it is not called system abstention, and add a document-level cluster bootstrap.
 - Add 20 fictional documents and 60 author-labeled candidate claims. They are not gold and have not been human reviewed.
 - Pool candidate macro-F1 from every case pair, and keep an always-abstain baseline beside the local exact-match baseline.

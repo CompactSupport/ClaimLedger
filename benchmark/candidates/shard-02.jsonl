@@ -1,20 +1,20 @@
-{"document": "documents/d007.md", "claim": "The Ember storage pool uses solid-state drives.", "expected": "insufficient", "id": "cl-007-3"}
-{"document": "documents/d008.md", "claim": "The Pine Workshop ran four afternoon sessions in July 2026.", "expected": "supported", "id": "cl-008-1"}
-{"document": "documents/d008.md", "claim": "The Pine Workshop ran seven afternoon sessions in July 2026.", "expected": "contradicted", "id": "cl-008-2"}
-{"document": "documents/d008.md", "claim": "The Pine Workshop was livestreamed to an international audience.", "expected": "insufficient", "id": "cl-008-3"}
-{"document": "documents/d009.md", "claim": "The Bluebird network had twelve nodes.", "expected": "supported", "id": "cl-009-1"}
-{"document": "documents/d009.md", "claim": "Median message latency was 24 milliseconds.", "expected": "contradicted", "id": "cl-009-2"}
-{"document": "documents/d009.md", "claim": "The ninety-ninth percentile latency was 120 milliseconds.", "expected": "insufficient", "id": "cl-009-3"}
-{"document": "documents/d010.md", "claim": "The Willow exhibition started on September 18, 2026.", "expected": "supported", "id": "cl-010-1"}
-{"document": "documents/d010.md", "claim": "The Willow museum opens to visitors every Monday.", "expected": "contradicted", "id": "cl-010-2"}
-{"document": "documents/d010.md", "claim": "The Willow exhibition closes in December 2026.", "expected": "insufficient", "id": "cl-010-3"}
-{"document": "documents/d011.md", "claim": "The recorded pH of the Canary sample was 7.2.", "expected": "supported", "id": "cl-011-1"}
-{"document": "documents/d011.md", "claim": "The Canary sensor recorded a pH of 7.4.", "expected": "contradicted", "id": "cl-011-2"}
-{"document": "documents/d011.md", "claim": "The Canary sample had a turbidity of 1.3 NTU.", "expected": "insufficient", "id": "cl-011-3"}
-{"document": "documents/d012.md", "claim": "The Quartz report did not use 2024 observations.", "expected": "supported", "id": "cl-012-1"}
-{"document": "documents/d012.md", "claim": "The Quartz report included data collected in 2024.", "expected": "contradicted", "id": "cl-012-2"}
-{"document": "documents/d012.md", "claim": "The Quartz report was cited by thirty other manuscripts.", "expected": "insufficient", "id": "cl-012-3"}
-{"document": "documents/d013.md", "claim": "Each Delta tower is twelve floors high.", "expected": "supported", "id": "cl-013-1"}
-{"document": "documents/d013.md", "claim": "The Delta complex consists of four towers.", "expected": "contradicted", "id": "cl-013-2"}
-{"document": "documents/d013.md", "claim": "The Delta complex has eight public elevators.", "expected": "insufficient", "id": "cl-013-3"}
-{"document": "documents/d014.md", "claim": "The Mosaic dataset contains 500 text examples.", "expected": "supported", "id": "cl-014-1"}
+{"id": "cl-007-3", "document": "documents/d007.md", "claim": "The Ember storage pool uses solid-state drives.", "expected": "insufficient"}
+{"id": "cl-008-1", "document": "documents/d008.md", "claim": "The Pine Workshop ran four afternoon sessions in July 2026.", "expected": "supported"}
+{"id": "cl-008-2", "document": "documents/d008.md", "claim": "The Pine Workshop ran seven afternoon sessions in July 2026.", "expected": "contradicted"}
+{"id": "cl-008-3", "document": "documents/d008.md", "claim": "The Pine Workshop was livestreamed to an international audience.", "expected": "insufficient"}
+{"id": "cl-009-1", "document": "documents/d009.md", "claim": "The Bluebird network had twelve nodes.", "expected": "supported"}
+{"id": "cl-009-2", "document": "documents/d009.md", "claim": "Median message latency was 24 milliseconds.", "expected": "contradicted"}
+{"id": "cl-009-3", "document": "documents/d009.md", "claim": "The ninety-ninth percentile latency was 120 milliseconds.", "expected": "insufficient"}
+{"id": "cl-010-1", "document": "documents/d010.md", "claim": "The Willow exhibition started on September 18, 2026.", "expected": "supported"}
+{"id": "cl-010-2", "document": "documents/d010.md", "claim": "The Willow museum opens to visitors every Monday.", "expected": "contradicted"}
+{"id": "cl-010-3", "document": "documents/d010.md", "claim": "The Willow exhibition closes in December 2026.", "expected": "insufficient"}
+{"id": "cl-011-1", "document": "documents/d011.md", "claim": "The recorded pH of the Canary sample was 7.2.", "expected": "supported"}
+{"id": "cl-011-2", "document": "documents/d011.md", "claim": "The Canary sensor recorded a pH of 7.4.", "expected": "contradicted"}
+{"id": "cl-011-3", "document": "documents/d011.md", "claim": "The Canary sample had a turbidity of 1.3 NTU.", "expected": "insufficient"}
+{"id": "cl-012-1", "document": "documents/d012.md", "claim": "The Quartz report did not use 2024 observations.", "expected": "supported"}
+{"id": "cl-012-2", "document": "documents/d012.md", "claim": "The Quartz report included data collected in 2024.", "expected": "contradicted"}
+{"id": "cl-012-3", "document": "documents/d012.md", "claim": "The Quartz report was cited by thirty other manuscripts.", "expected": "insufficient"}
+{"id": "cl-013-1", "document": "documents/d013.md", "claim": "Each Delta tower is twelve floors high.", "expected": "supported"}
+{"id": "cl-013-2", "document": "documents/d013.md", "claim": "The Delta complex consists of four towers.", "expected": "contradicted"}
+{"id": "cl-013-3", "document": "documents/d013.md", "claim": "The Delta complex has eight public elevators.", "expected": "insufficient"}
+{"id": "cl-014-1", "document": "documents/d014.md", "claim": "The Mosaic dataset contains 500 text examples.", "expected": "supported"}
