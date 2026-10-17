@@ -7,28 +7,42 @@
     "workflow": ".github/workflows/ci.yml",
     "requires_api_credentials": false,
     "observed_success": {
-      "commit": "0037cd6",
-      "run_id": 39011834110,
-      "url": "https://github.com/CompactSupport/ClaimLedger/actions/runs/39011834110",
-      "jobs": ["test (3.11)", "test (3.12)", "secret-scan", "dependencies"]
+      "commit": "26a2d31bfece74e8f289629cd1ba2b81e4954b10",
+      "run_id": 39051348851,
+      "url": "https://github.com/CompactSupport/ClaimLedger/actions/runs/39051348851",
+      "jobs": ["test (3.11)", "test (3.12)", "secret-scan", "dependencies"],
+      "scope": "main when feat/v0.3-benchmark-foundation was branched"
     },
-    "note": "The observed run is the parent commit. A later commit that only updates this file has its own Actions run."
+    "note": "This branch's own Actions run is not recorded here until GitHub reports it."
   },
   "tests": {
-    "local_pytest_passed": 46,
+    "local_pytest_passed": 59,
     "python_versions_run_locally": ["3.11.9", "3.12.10"],
-    "line_coverage_percent": 91,
+    "line_coverage_percent": 90,
     "measured_on": "2026-10-17",
-    "note": "Line coverage from pytest-cov on the local 3.11 and 3.12 runs. It is not a quality score."
+    "note": "Line coverage from pytest-cov on the local Python 3.11 run of this branch. It is not a quality score. Python 3.12 passed the same 59 tests."
   },
   "benchmark": {
     "gold_set_rows": 0,
+    "human_reviewed_rows": 0,
     "smoke_rows": 6,
     "smoke_label_origin": "synthetic_author_labeled",
     "local_smoke_correct": 4,
     "local_smoke_macro_f1": 0.5,
+    "candidate_rows": 60,
+    "candidate_documents": 20,
+    "candidate_label_origin": "synthetic_author_labeled",
+    "candidate_gold_benchmark": false,
+    "local_candidate_correct": 22,
+    "local_candidate_macro_f1": 0.23154623154623155,
+    "local_candidate_macro_f1_bootstrap_95": [0.1471861471861472, 0.3230994152046784],
+    "always_abstain_candidate_macro_f1": 0.16666666666666666,
+    "candidate_citation_validity_rate_on_emitted_quotes": 1.0,
+    "candidate_emitted_quotes": 2,
     "retrieval_recall": null,
-    "paid_inference_recorded": false
+    "paid_inference_recorded": false,
+    "measured_on": "2026-10-17",
+    "note": "Candidate scores are engineering smoke on fictional author labels, not a gold benchmark."
   },
   "contributors": ["CompactSupport"],
   "documented_adoption": []

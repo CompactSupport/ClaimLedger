@@ -1,0 +1,20 @@
+{"document": "documents/d001.md", "claim": "Project Orion evaluated 120 samples in April 2026.", "expected": "supported"}
+{"document": "documents/d001.md", "claim": "Project Orion evaluated 150 samples in April 2026.", "expected": "contradicted"}
+{"document": "documents/d001.md", "claim": "Project Orion was funded by a city government.", "expected": "insufficient"}
+{"document": "documents/d002.md", "claim": "The Maple Archive digital collection went live on June 4, 2026.", "expected": "supported"}
+{"document": "documents/d002.md", "claim": "The Maple Archive opened its digital collection on June 14, 2026.", "expected": "contradicted"}
+{"document": "documents/d002.md", "claim": "The Maple Archive plans to release audio recordings next year.", "expected": "insufficient"}
+{"document": "documents/d003.md", "claim": "The Nimbus test excluded synthetic fibers.", "expected": "supported"}
+{"document": "documents/d003.md", "claim": "The Nimbus materials test included synthetic fibers.", "expected": "contradicted"}
+{"document": "documents/d003.md", "claim": "The Nimbus test was funded by three universities.", "expected": "insufficient"}
+{"document": "documents/d004.md", "claim": "The tracking apparatus consumed 14 kWh in one night.", "expected": "supported"}
+{"document": "documents/d004.md", "claim": "The tracking apparatus used 14 MWh per night.", "expected": "contradicted"}
+{"document": "documents/d004.md", "claim": "The Cedar Observatory is located at an elevation of 1,400 meters.", "expected": "insufficient"}
+{"document": "documents/d005.md", "claim": "The Harbor shuttle has 14 stops.", "expected": "supported"}
+{"document": "documents/d005.md", "claim": "The Harbor shuttle offers overnight service.", "expected": "contradicted"}
+{"document": "documents/d005.md", "claim": "A ride on the Harbor shuttle costs three dollars.", "expected": "insufficient"}
+{"document": "documents/d006.md", "claim": "Model A succeeded in more trials than Model B.", "expected": "supported"}
+{"document": "documents/d006.md", "claim": "Model B succeeded in more trials than Model A.", "expected": "contradicted"}
+{"document": "documents/d006.md", "claim": "Model A was cheaper to deploy than Model B.", "expected": "insufficient"}
+{"document": "documents/d007.md", "claim": "The Ember storage pool has 80 GB free.", "expected": "supported"}
+{"document": "documents/d007.md", "claim": "The Ember storage pool has 120 GB remaining.", "expected": "contradicted"}

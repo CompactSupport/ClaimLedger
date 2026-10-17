@@ -1,0 +1,27 @@
+{
+  "policy": "Held-out documents must not be used to tune prompts, thresholds, or model choice. This split is fixed before any gold labels exist. The current baselines have no tuned parameters.",
+  "dev_documents": [
+    "d001.md",
+    "d002.md",
+    "d003.md",
+    "d004.md",
+    "d005.md",
+    "d006.md",
+    "d007.md",
+    "d008.md",
+    "d009.md",
+    "d010.md",
+    "d011.md",
+    "d012.md",
+    "d013.md",
+    "d014.md"
+  ],
+  "held_out_documents": [
+    "d015.md",
+    "d016.md",
+    "d017.md",
+    "d018.md",
+    "d019.md",
+    "d020.md"
+  ]
+}

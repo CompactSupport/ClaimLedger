@@ -102,6 +102,8 @@ def evaluate_dataset(path: Path, backend: str, model: str) -> dict:
             backend: metrics,
             "abstain": abstain_metrics,
         },
+        "citation_valid_quotes": valid_quotes,
+        "citation_total_quotes": total_quotes,
         "citation_validity_rate": valid_quotes / total_quotes if total_quotes else None,
         "retrieval_recall": None,
         "latency_seconds": time.perf_counter() - started,

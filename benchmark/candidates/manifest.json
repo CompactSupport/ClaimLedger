@@ -1,0 +1,40 @@
+{
+  "name": "ClaimLedger v0.3 candidate verification cases",
+  "release_status": "unreviewed_candidate_set",
+  "gold_benchmark": false,
+  "label_origin": "synthetic_author_labeled",
+  "original_synthetic_documents": 20,
+  "rows": 60,
+  "labels": {
+    "supported": 20,
+    "contradicted": 20,
+    "insufficient": 20
+  },
+  "shards": 3,
+  "author_reviewed": false,
+  "external_or_independent_reviewed": false,
+  "licensed_sources": "100% fictional original test documents",
+  "usage_policy": "Do not report scores on these cases as gold benchmark performance. Human review required.",
+  "document_sha256": {
+    "d001.md": "96e7c4ca465fb835a1a62c7ba12b3e3fe3195a6d45b5eb77476d28027e80ee61",
+    "d002.md": "f9c715b0d954dfa15ffc2b5f3db6b254c4886c9d70c195f26021b80088da9220",
+    "d003.md": "d71d2b741188beb582936da1823e0fa9d32795d63315af9915b0ce4f67542cdc",
+    "d004.md": "3c373a9e22e81835115b3a71dd9d791da8cda53967322d9a2724e3e17ec5f065",
+    "d005.md": "348b57334adc8fcdfc73a4a5bc7c38b074221bbf720d149ec4da58f697f982b4",
+    "d006.md": "ebbc5d0b7a5b24dd7ca1de699fa2c1647672502958840f1803e2b45c90a8ae1d",
+    "d007.md": "a69d6c3c7d4a613764486e55991b34d8c8932008c44d1fb314d4e6dd7264dbc0",
+    "d008.md": "b52228af2d0966c2b4769294821d072a92e27ebc744f3eb9c98ee7d2658525d1",
+    "d009.md": "78a4d7040dc75c944c0c6b5447b79e7bdc86cc042858a2557aa5fb155c9d9252",
+    "d010.md": "147f61fb8e31e9284eb22a2c639641031032456d5e7e114f7ef7f8ca54a7581d",
+    "d011.md": "d68a542eaa71a4654ed743912b0c9604601af411b56037910b37eba925c5bcb9",
+    "d012.md": "d52894c4054f78e740b4bf2e167debc75a4d7e38eb646e1398f61aad1f041faa",
+    "d013.md": "afd669c265149d4caa7d5b4ef226054f28c5dddec4941100a68ad1b3aef3037d",
+    "d014.md": "77c83c101089c92118b3291bb0f6b2dfe36c94f0d96c1ec510e8290f60e69f8b",
+    "d015.md": "697acbdc7ff63134e953155116d8b24d7ff4e64f9cd2e04c8452a6926998c980",
+    "d016.md": "ac1e472066e1b6041f62f4f25366907ce39670a92a114fa77a148760e5fa57a9",
+    "d017.md": "b3b1a2eee415b3643c4b831ae7434bf4978e5cd5b539c4bf3eaabe6b12ae3bf7",
+    "d018.md": "424f46a0a9e17168fe13757e7ec372f16c527cd556ec3ddd20a223435f44217d",
+    "d019.md": "a1721406ad0b9d45d597907a0c7dfb1d215882a5f3b3d47a935f9060be0d9642",
+    "d020.md": "67d5777a6fca56ba9f9d8585e1954dab215c58d6dbad1c395e96971181c11518"
+  }
+}

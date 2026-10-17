@@ -34,6 +34,7 @@ Thumbs.db
 
 # Local agent brief and private inputs. Never publish these.
 /CURSOR_PROMPT.md
+/CURSOR_NEXT_STEP.md
 private/
 user_data/
 *.log
