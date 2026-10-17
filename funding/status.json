@@ -6,12 +6,13 @@
   "ci": {
     "workflow": ".github/workflows/ci.yml",
     "requires_api_credentials": false,
-    "latest_observed_run_before_this_commit": {
-      "id": 39009997122,
-      "conclusion": "failure",
-      "cause": "setuptools rejected the deprecated MIT license classifier"
+    "observed_success": {
+      "commit": "0037cd6",
+      "run_id": 39011834110,
+      "url": "https://github.com/CompactSupport/ClaimLedger/actions/runs/39011834110",
+      "jobs": ["test (3.11)", "test (3.12)", "secret-scan", "dependencies"]
     },
-    "this_commit_observed": false
+    "note": "The observed run is the parent commit. A later commit that only updates this file has its own Actions run."
   },
   "tests": {
     "local_pytest_passed": 46,
