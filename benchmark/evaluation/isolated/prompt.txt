@@ -1,0 +1,11 @@
+Protocol prompt claimledger.inference_prompt.v1
+
+You will receive one JSON object with evaluation_id, claim, and passage.
+Decide from that passage alone.
+Return one JSON object and nothing else, using the same evaluation_id.
+The verdict field must be supported, contradicted, or insufficient.
+Use supported only when the passage establishes the whole claim.
+Use contradicted only when the passage establishes that the claim is false.
+Use insufficient when the passage does not settle the claim.
+The quote must be an exact substring of the passage. Leave quote empty for insufficient.
+Do not read any other file, identifier, or note.

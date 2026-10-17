@@ -1,0 +1,246 @@
+{
+  "protocol_version": "claimledger.evaluation_export.v1",
+  "human_packet_seed": 20261018,
+  "cases": [
+    {
+      "packet_id": "hr-bc24e166ae45",
+      "canonical_id": "cl-003-3",
+      "author_label": "insufficient",
+      "category": "class_balance",
+      "role": "class_balance",
+      "document_sha256": "d71d2b741188beb582936da1823e0fa9d32795d63315af9915b0ce4f67542cdc"
+    },
+    {
+      "packet_id": "hr-ae7f18afeab0",
+      "canonical_id": "cl-005-2",
+      "author_label": "contradicted",
+      "category": "class_balance",
+      "role": "class_balance",
+      "document_sha256": "348b57334adc8fcdfc73a4a5bc7c38b074221bbf720d149ec4da58f697f982b4"
+    },
+    {
+      "packet_id": "hr-afdae7d2b1a0",
+      "canonical_id": "cl-016-1",
+      "author_label": "supported",
+      "category": "temporal_boundary",
+      "role": "pre_review_flag",
+      "document_sha256": "ac1e472066e1b6041f62f4f25366907ce39670a92a114fa77a148760e5fa57a9"
+    },
+    {
+      "packet_id": "hr-00167c34dea2",
+      "canonical_id": "cl-031-2",
+      "author_label": "contradicted",
+      "category": "arithmetic",
+      "role": "pre_review_flag",
+      "document_sha256": "617a182ccbbb41b4fefafaaa66e31347fd53f4a2f6ed5c8ca1d1179a9540fe40"
+    },
+    {
+      "packet_id": "hr-13c8d23f529b",
+      "canonical_id": "cl-007-3",
+      "author_label": "insufficient",
+      "category": "class_balance",
+      "role": "class_balance",
+      "document_sha256": "a69d6c3c7d4a613764486e55991b34d8c8932008c44d1fb314d4e6dd7264dbc0"
+    },
+    {
+      "packet_id": "hr-1a328e6dfd71",
+      "canonical_id": "cl-001-2",
+      "author_label": "contradicted",
+      "category": "class_balance",
+      "role": "class_balance",
+      "document_sha256": "96e7c4ca465fb835a1a62c7ba12b3e3fe3195a6d45b5eb77476d28027e80ee61"
+    },
+    {
+      "packet_id": "hr-2bc4b0608fcf",
+      "canonical_id": "cl-009-3",
+      "author_label": "insufficient",
+      "category": "absence",
+      "role": "pre_review_flag",
+      "document_sha256": "78a4d7040dc75c944c0c6b5447b79e7bdc86cc042858a2557aa5fb155c9d9252"
+    },
+    {
+      "packet_id": "hr-1735c91b192c",
+      "canonical_id": "cl-024-1",
+      "author_label": "supported",
+      "category": "comparison",
+      "role": "pre_review_flag",
+      "document_sha256": "949a26ab6a6f45da5d89258090907c084120cb3b3de77614ea3c43721436471b"
+    },
+    {
+      "packet_id": "hr-953ea0228df8",
+      "canonical_id": "cl-003-1",
+      "author_label": "supported",
+      "category": "class_balance",
+      "role": "class_balance",
+      "document_sha256": "d71d2b741188beb582936da1823e0fa9d32795d63315af9915b0ce4f67542cdc"
+    },
+    {
+      "packet_id": "hr-0af0ec362abf",
+      "canonical_id": "cl-005-3",
+      "author_label": "insufficient",
+      "category": "class_balance",
+      "role": "class_balance",
+      "document_sha256": "348b57334adc8fcdfc73a4a5bc7c38b074221bbf720d149ec4da58f697f982b4"
+    },
+    {
+      "packet_id": "hr-d299916ec3ea",
+      "canonical_id": "cl-002-2",
+      "author_label": "contradicted",
+      "category": "class_balance",
+      "role": "class_balance",
+      "document_sha256": "f9c715b0d954dfa15ffc2b5f3db6b254c4886c9d70c195f26021b80088da9220"
+    },
+    {
+      "packet_id": "hr-5653083efb59",
+      "canonical_id": "cl-002-1",
+      "author_label": "supported",
+      "category": "paraphrase",
+      "role": "pre_review_flag",
+      "document_sha256": "f9c715b0d954dfa15ffc2b5f3db6b254c4886c9d70c195f26021b80088da9220"
+    },
+    {
+      "packet_id": "hr-f5d18c35e468",
+      "canonical_id": "cl-027-2",
+      "author_label": "contradicted",
+      "category": "author_ai_disagreement",
+      "role": "pre_review_flag",
+      "document_sha256": "e1c1d5d2caff5c664ed5ee846d7882478cbfa998b01627137c89ea16c0e40ee9"
+    },
+    {
+      "packet_id": "hr-1d7bb677be97",
+      "canonical_id": "cl-004-2",
+      "author_label": "contradicted",
+      "category": "class_balance",
+      "role": "class_balance",
+      "document_sha256": "3c373a9e22e81835115b3a71dd9d791da8cda53967322d9a2724e3e17ec5f065"
+    },
+    {
+      "packet_id": "hr-4b5fe6fc1c13",
+      "canonical_id": "cl-018-2",
+      "author_label": "contradicted",
+      "category": "fragment",
+      "role": "pre_review_flag",
+      "document_sha256": "424f46a0a9e17168fe13757e7ec372f16c527cd556ec3ddd20a223435f44217d"
+    },
+    {
+      "packet_id": "hr-908818e96c55",
+      "canonical_id": "cl-011-3",
+      "author_label": "insufficient",
+      "category": "absence",
+      "role": "pre_review_flag",
+      "document_sha256": "d68a542eaa71a4654ed743912b0c9604601af411b56037910b37eba925c5bcb9"
+    },
+    {
+      "packet_id": "hr-14400ed3160d",
+      "canonical_id": "cl-003-2",
+      "author_label": "contradicted",
+      "category": "class_balance",
+      "role": "class_balance",
+      "document_sha256": "d71d2b741188beb582936da1823e0fa9d32795d63315af9915b0ce4f67542cdc"
+    },
+    {
+      "packet_id": "hr-c5fab55caecb",
+      "canonical_id": "cl-015-2",
+      "author_label": "contradicted",
+      "category": "arithmetic",
+      "role": "pre_review_flag",
+      "document_sha256": "697acbdc7ff63134e953155116d8b24d7ff4e64f9cd2e04c8452a6926998c980"
+    },
+    {
+      "packet_id": "hr-849c75addd99",
+      "canonical_id": "cl-006-1",
+      "author_label": "supported",
+      "category": "comparison",
+      "role": "pre_review_flag",
+      "document_sha256": "ebbc5d0b7a5b24dd7ca1de699fa2c1647672502958840f1803e2b45c90a8ae1d"
+    },
+    {
+      "packet_id": "hr-e78a3a74eb91",
+      "canonical_id": "cl-015-1",
+      "author_label": "supported",
+      "category": "arithmetic",
+      "role": "pre_review_flag",
+      "document_sha256": "697acbdc7ff63134e953155116d8b24d7ff4e64f9cd2e04c8452a6926998c980"
+    },
+    {
+      "packet_id": "hr-bfb1fcc3a242",
+      "canonical_id": "cl-006-3",
+      "author_label": "insufficient",
+      "category": "related_metric",
+      "role": "pre_review_flag",
+      "document_sha256": "ebbc5d0b7a5b24dd7ca1de699fa2c1647672502958840f1803e2b45c90a8ae1d"
+    },
+    {
+      "packet_id": "hr-7db7793a9253",
+      "canonical_id": "cl-001-1",
+      "author_label": "supported",
+      "category": "class_balance",
+      "role": "class_balance",
+      "document_sha256": "96e7c4ca465fb835a1a62c7ba12b3e3fe3195a6d45b5eb77476d28027e80ee61"
+    },
+    {
+      "packet_id": "hr-d7b5833325e5",
+      "canonical_id": "cl-032-1",
+      "author_label": "supported",
+      "category": "temporal_boundary",
+      "role": "pre_review_flag",
+      "document_sha256": "5b17ad413685bd5a765270575198522d3f0448c45ac6a0030c08aff86d9d446b"
+    },
+    {
+      "packet_id": "hr-f541de60a8a9",
+      "canonical_id": "cl-029-1",
+      "author_label": "supported",
+      "category": "scope_equivalence",
+      "role": "pre_review_flag",
+      "document_sha256": "959fb2dcab26f2628258e7d8a550e18cf63c0d519a674f544168c3e1ded3f222"
+    },
+    {
+      "packet_id": "hr-84e66e402ffb",
+      "canonical_id": "cl-006-2",
+      "author_label": "contradicted",
+      "category": "comparison",
+      "role": "pre_review_flag",
+      "document_sha256": "ebbc5d0b7a5b24dd7ca1de699fa2c1647672502958840f1803e2b45c90a8ae1d"
+    },
+    {
+      "packet_id": "hr-07aa32960410",
+      "canonical_id": "cl-001-3",
+      "author_label": "insufficient",
+      "category": "class_balance",
+      "role": "class_balance",
+      "document_sha256": "96e7c4ca465fb835a1a62c7ba12b3e3fe3195a6d45b5eb77476d28027e80ee61"
+    },
+    {
+      "packet_id": "hr-b796bfb042f2",
+      "canonical_id": "cl-018-1",
+      "author_label": "supported",
+      "category": "fragment",
+      "role": "pre_review_flag",
+      "document_sha256": "424f46a0a9e17168fe13757e7ec372f16c527cd556ec3ddd20a223435f44217d"
+    },
+    {
+      "packet_id": "hr-7f20f28a0759",
+      "canonical_id": "cl-014-3",
+      "author_label": "insufficient",
+      "category": "absence",
+      "role": "pre_review_flag",
+      "document_sha256": "77c83c101089c92118b3291bb0f6b2dfe36c94f0d96c1ec510e8290f60e69f8b"
+    },
+    {
+      "packet_id": "hr-ad629275e82b",
+      "canonical_id": "cl-002-3",
+      "author_label": "insufficient",
+      "category": "class_balance",
+      "role": "class_balance",
+      "document_sha256": "f9c715b0d954dfa15ffc2b5f3db6b254c4886c9d70c195f26021b80088da9220"
+    },
+    {
+      "packet_id": "hr-3324d375bc4a",
+      "canonical_id": "cl-004-3",
+      "author_label": "insufficient",
+      "category": "class_balance",
+      "role": "class_balance",
+      "document_sha256": "3c373a9e22e81835115b3a71dd9d791da8cda53967322d9a2724e3e17ec5f065"
+    }
+  ]
+}
