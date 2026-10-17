@@ -1,4 +1,4 @@
-# Contributing to EvidenceForge
+# Contributing to ClaimLedger
 
 Thanks for helping. Keep changes small enough for one person to review.
 
@@ -32,8 +32,8 @@ python -m pip install -e ".[openai,dev]"
 ```bash
 python -m ruff check .
 python -m pytest -q
-python -m evidenceforge verify --doc examples/aurora.md --claims examples/claims.json --out output/report.json --markdown output/report.md
-python -m evidenceforge evaluate --dataset examples/eval.jsonl --out output/eval.json
+python -m claimledger verify --doc examples/aurora.md --claims examples/claims.json --out output/report.json --markdown output/report.md
+python -m claimledger evaluate --dataset examples/eval.jsonl --out output/eval.json
 ```
 
 These commands must pass without `OPENAI_API_KEY` and without calling the network.

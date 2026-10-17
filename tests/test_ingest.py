@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from evidenceforge.ingest import load_pages, split_into_units
-from evidenceforge.pipeline import verify_documents
+from claimledger.ingest import load_pages, split_into_units
+from claimledger.pipeline import verify_documents
 
 from pdfutil import make_text_pdf
 

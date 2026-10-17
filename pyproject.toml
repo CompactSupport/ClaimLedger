@@ -3,13 +3,13 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "evidenceforge-mvp"
-version = "0.1.0"
-description = "Local-first, traceable claim verification over your own documents"
+name = "claimledger"
+version = "0.2.0"
+description = "An auditable, reproducible verification layer for AI-generated research claims"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
-authors = [{name = "EvidenceForge contributors"}]
+authors = [{name = "ClaimLedger contributors"}]
 keywords = ["evaluation", "claims", "citations", "llm", "provenance"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -22,10 +22,15 @@ dependencies = ["pypdf>=5,<7"]
 
 [project.optional-dependencies]
 openai = ["openai>=1.70,<4"]
-dev = ["pytest>=8,<10", "ruff>=0.8,<1"]
+dev = ["pytest>=8,<10", "pytest-cov>=6,<8", "ruff>=0.8,<1"]
+
+[project.urls]
+Homepage = "https://github.com/CompactSupport/ClaimLedger"
+Issues = "https://github.com/CompactSupport/ClaimLedger/issues"
+Changelog = "https://github.com/CompactSupport/ClaimLedger/blob/main/CHANGELOG.md"
 
 [project.scripts]
-evidenceforge = "evidenceforge.cli:main"
+claimledger = "claimledger.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

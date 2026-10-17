@@ -8,7 +8,7 @@ def _safe_md(text: str) -> str:
 
 
 def markdown_report(report: dict[str, Any]) -> str:
-    lines = ["# EvidenceForge verification report", "",
+    lines = ["# ClaimLedger verification report", "",
              f"Backend: `{report['backend']}`; documents: {len(report['documents'])}; claims: {len(report['results'])}",
              "", "| Claim | Verdict |", "|---|---|"]
     for result in report["results"]:
