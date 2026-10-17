@@ -1,0 +1,64 @@
+"""Classification metrics for labeled claim checks.
+
+A class with gold examples but no predictions has recall 0, precision null, and F1 0.
+That class stays in the macro average so a missed contradiction is not dropped from the score.
+Precision is null, not zero, when the denominator would be zero.
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from .models import DocumentPage
+
+LABELS = ("supported", "contradicted", "insufficient")
+
+
+def classification_metrics(pairs: list[tuple[str, str]]) -> dict[str, Any]:
+    """Score ``(expected, actual)`` pairs. ``macro_f1`` is the unweighted mean of class F1."""
+    per_class: dict[str, dict[str, Any]] = {}
+    f1_values: list[float] = []
+    for label in LABELS:
+        true_positive = sum(expected == label and actual == label for expected, actual in pairs)
+        false_positive = sum(expected != label and actual == label for expected, actual in pairs)
+        false_negative = sum(expected == label and actual != label for expected, actual in pairs)
+        predicted = true_positive + false_positive
+        support = true_positive + false_negative
+        precision = true_positive / predicted if predicted else None
+        recall = true_positive / support if support else None
+        if precision is None or recall is None or precision + recall == 0:
+            f1 = 0.0 if support or predicted else None
+        else:
+            f1 = 2 * precision * recall / (precision + recall)
+        per_class[label] = {
+            "precision": precision,
+            "recall": recall,
+            "f1": f1,
+            "support": support,
+        }
+        if f1 is not None:
+            f1_values.append(f1)
+    count = len(pairs)
+    abstention_rate = (
+        sum(actual == "insufficient" for _, actual in pairs) / count if count else None
+    )
+    return {
+        "per_class": per_class,
+        "macro_f1": sum(f1_values) / len(f1_values) if f1_values else None,
+        "abstention_rate": abstention_rate,
+        "n": count,
+    }
+
+
+def citation_counts(pages: list[DocumentPage], results: list[dict[str, Any]]) -> tuple[int, int]:
+    """Return ``(valid_quotes, total_quotes)`` using extracted page text."""
+    lookup = {(page.source, page.sha256, page.page): page.text for page in pages}
+    valid = 0
+    total = 0
+    for result in results:
+        for quote in result["evidence"]:
+            total += 1
+            text = lookup.get((quote["source"], quote["sha256"], quote["page"]))
+            if text is not None and text[quote["start"]:quote["end"]] == quote["quote"]:
+                valid += 1
+    return valid, total

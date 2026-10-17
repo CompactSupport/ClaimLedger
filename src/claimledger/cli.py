@@ -3,8 +3,11 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from pathlib import Path
 
+from .ingest import load_pages
+from .metrics import citation_counts, classification_metrics
 from .pipeline import verify_documents
 from .report import markdown_report
 
@@ -29,7 +32,7 @@ def write_output(path: str | None, contents: str) -> None:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="evidenceforge", description="Traceable claim verification")
+    parser = argparse.ArgumentParser(prog="claimledger", description="Traceable claim verification")
     sub = parser.add_subparsers(dest="command", required=True)
     ver = sub.add_parser("verify", help="Verify supplied claims against supplied documents")
     ver.add_argument("--doc", action="append", required=True, help=".md, .txt or .pdf; repeatable")
@@ -57,6 +60,9 @@ def evaluate_dataset(path: Path, backend: str, model: str) -> dict:
     cases = []
     confusion: dict[str, dict[str, int]] = {}
     tokens = 0
+    valid_quotes = 0
+    total_quotes = 0
+    started = time.perf_counter()
     for i, case in enumerate(examples):
         expected = case["expected"]
         if expected not in {"supported", "contradicted", "insufficient"}:
@@ -65,18 +71,45 @@ def evaluate_dataset(path: Path, backend: str, model: str) -> dict:
         # Limit dataset paths to files inside the dataset directory.
         if not source.is_relative_to(path.parent.resolve()):
             raise ValueError("Dataset document paths must remain inside the dataset directory.")
+        pages = load_pages([source])
         report = verify_documents([source], [case["claim"]], backend=backend, model=model)
+        valid, total = citation_counts(pages, report["results"])
+        valid_quotes += valid
+        total_quotes += total
         actual = report["results"][0]["verdict"]
         confusion.setdefault(expected, {}).setdefault(actual, 0)
         confusion[expected][actual] += 1
         tokens += report["token_usage"]["total_tokens"]
         cases.append({"claim": case["claim"], "expected": expected, "actual": actual,
                       "pass": actual == expected})
-    return {"total": len(cases), "correct": sum(c["pass"] for c in cases),
-            "accuracy": sum(c["pass"] for c in cases) / len(cases),
-            "confusion": confusion, "total_tokens": tokens, "backend": backend,
-            "model": model if backend == "openai" else None, "cases": cases,
-            "warning": "This is a small transparent smoke-test dataset, not a representative quality benchmark."}
+    pairs = [(case["expected"], case["actual"]) for case in cases]
+    metrics = classification_metrics(pairs)
+    abstain_metrics = classification_metrics([(expected, "insufficient") for expected, _ in pairs])
+    return {
+        "total": len(cases),
+        "correct": sum(case["pass"] for case in cases),
+        "accuracy": sum(case["pass"] for case in cases) / len(cases),
+        "confusion": confusion,
+        "total_tokens": tokens,
+        "backend": backend,
+        "model": model if backend == "openai" else None,
+        "cases": cases,
+        "dataset_tier": "smoke",
+        "dataset_label_origin": "synthetic_author_labeled",
+        "gold_benchmark": False,
+        "metrics": metrics,
+        "baselines": {
+            backend: metrics,
+            "abstain": abstain_metrics,
+        },
+        "citation_validity_rate": valid_quotes / total_quotes if total_quotes else None,
+        "retrieval_recall": None,
+        "latency_seconds": time.perf_counter() - started,
+        "warning": (
+            "This is a small synthetic smoke fixture, not a human-reviewed gold benchmark. "
+            "retrieval_recall is null because rows do not name a relevant evidence unit."
+        ),
+    }
 
 
 def main(argv: list[str] | None = None) -> int:

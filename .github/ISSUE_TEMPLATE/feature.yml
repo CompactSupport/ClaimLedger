@@ -1,0 +1,17 @@
+name: Feature
+description: A focused change that keeps the local backend as the default
+title: "feature: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    attributes:
+      label: Proposal
+      description: Say which of provenance, evaluation, or providers it changes, and what it deliberately does not do.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Tests
+      description: Include the success case and the case that must abstain or fail closed.
+    validations:
+      required: true

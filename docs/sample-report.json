@@ -1,6 +1,6 @@
 {
-  "tool": "EvidenceForge",
-  "version": "0.1.0",
+  "tool": "ClaimLedger",
+  "version": "0.2.0",
   "created_utc": "2026-10-17T04:58:03.093474+00:00",
   "backend": "local",
   "model": null,

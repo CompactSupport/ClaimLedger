@@ -52,7 +52,7 @@ def verify_documents(documents: list[str | Path], claims: list[str], *,
     counts = {label: sum(r["verdict"] == label for r in serialized)
               for label in ("supported", "contradicted", "insufficient")}
     return {
-        "tool": "EvidenceForge",
+        "tool": "ClaimLedger",
         "version": __version__,
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "backend": backend,

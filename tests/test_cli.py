@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pytest
 
-from evidenceforge.cli import evaluate_dataset, main, read_claims
-from evidenceforge.pipeline import verify_documents
+from claimledger.cli import evaluate_dataset, main, read_claims
+from claimledger.pipeline import verify_documents
 
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLES = ROOT / "examples"
@@ -33,6 +33,15 @@ def test_offline_evaluation():
     assert result["total"] == 6
     assert result["correct"] == 4
     assert result["confusion"]["contradicted"]["insufficient"] == 2
+    assert result["gold_benchmark"] is False
+    assert result["dataset_label_origin"] == "synthetic_author_labeled"
+    assert result["metrics"]["macro_f1"] == 0.5
+    assert result["metrics"]["abstention_rate"] == 0.5
+    assert result["baselines"]["abstain"]["abstention_rate"] == 1.0
+    assert result["citation_validity_rate"] == 1.0
+    assert result["retrieval_recall"] is None
+    assert result["total_tokens"] == 0
+    assert result["latency_seconds"] >= 0
 
 
 def test_dataset_cannot_escape_root(tmp_path):
@@ -56,7 +65,7 @@ def test_openai_timeout_does_not_write_a_verdict(tmp_path, monkeypatch, capsys):
     def explode(*_args, **_kwargs):
         raise RuntimeError("OpenAI request timed out; no verdict was recorded.")
 
-    monkeypatch.setattr("evidenceforge.pipeline.openai_verify", explode)
+    monkeypatch.setattr("claimledger.pipeline.openai_verify", explode)
     out = tmp_path / "out.json"
     rc = main(["verify", "--doc", str(SAMPLES / "aurora.md"),
                "--claims", str(SAMPLES / "claims.json"),
@@ -80,6 +89,14 @@ def test_sample_json_matches_the_offline_demo():
     assert sample == live
 
 
+def test_package_metadata_uses_spdx_license():
+    text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert 'name = "claimledger"' in text
+    assert 'version = "0.2.0"' in text
+    assert 'license = "MIT"' in text
+    assert "License :: OSI Approved :: MIT License" not in text
+
+
 def test_ci_does_not_require_api_credentials():
     text = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
     lowered = text.lower()
@@ -87,5 +104,5 @@ def test_ci_does_not_require_api_credentials():
     assert "--backend openai" not in lowered
     assert "ruff check" in lowered
     assert "pytest" in lowered
-    assert "evidenceforge verify" in lowered
-    assert "evidenceforge evaluate" in lowered
+    assert "claimledger verify" in lowered
+    assert "claimledger evaluate" in lowered

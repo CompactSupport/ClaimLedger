@@ -1,4 +1,4 @@
-# EvidenceForge verification report
+# ClaimLedger verification report
 
 Backend: `local`; documents: 1; claims: 4
 

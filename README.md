@@ -1,8 +1,19 @@
-# EvidenceForge
+# ClaimLedger
 
-**A local-first prototype that checks claims against documents you already have.**
+**An auditable, reproducible verification layer for AI-generated research claims.**
 
-EvidenceForge records whether a cited quote really occurs in an ingested file, and where. It is a research prototype for auditable claim checks. It is not an automatic fact checker, and a quote that matches the file does not prove the verdict is semantically correct.
+Every factual verdict is linked to exact source evidence, independently auditable, and evaluated against transparent benchmarks.
+
+ClaimLedger checks claims against documents you supply. A quote that matches the file does not prove the verdict is semantically correct, and it does not prove the document is true. The project was renamed from EvidenceForge to avoid the unrelated Cisco Talos project of that name.
+
+## What exists in v0.2
+
+| Capability | Status |
+| --- | --- |
+| Deterministic provenance | Prototype. Each quote carries a document SHA-256, page number, and character span in the extracted text, and the span must match the quote exactly. |
+| Semantic verification | Optional OpenAI backend only. Model confidence is not treated as proof. Multi-model adjudication is not built. |
+| Reproducible evaluation | Metric code and a 6-row synthetic smoke fixture. A human-reviewed gold set of 100 or more examples is not built, and no benchmark score here is a quality claim. |
+| Provider independence | One verifier interface with local and OpenAI implementations. No other provider is implemented, and the local backend remains the default. |
 
 ```text
 your .md / .txt / .pdf
@@ -35,15 +46,15 @@ python -m pip install -e ".[dev]"
 
 `python` works in place of `py -3.11` when that command already points at Python 3.11+. PowerShell does not continue a command with a trailing backslash. Put each command on one line, or use a backtick.
 
-Packaging is in `pyproject.toml`. The `dev` extra installs pytest and ruff. The `openai` extra is optional and is not installed by CI.
+Packaging is in `pyproject.toml`. The `dev` extra installs pytest, pytest-cov, and ruff. The `openai` extra is optional and is not installed by CI. Version 0.2.0 is not published to PyPI.
 
 ## Offline demo
 
 No network access and no API key:
 
 ```bash
-python -m evidenceforge verify --doc examples/aurora.md --claims examples/claims.json --out output/report.json --markdown output/report.md
-python -m evidenceforge evaluate --dataset examples/eval.jsonl --out output/eval.json
+python -m claimledger verify --doc examples/aurora.md --claims examples/claims.json --out output/report.json --markdown output/report.md
+python -m claimledger evaluate --dataset examples/eval.jsonl --out output/eval.json
 python -m pytest -q
 ```
 
@@ -63,14 +74,14 @@ python -m pip install -e ".[openai,dev]"
 
 ```bash
 export OPENAI_API_KEY="YOUR_KEY"
-python -m evidenceforge verify --doc examples/aurora.md --claims examples/claims.json --backend openai --model gpt-5-mini --out output/report-openai.json --markdown output/report-openai.md
+python -m claimledger verify --doc examples/aurora.md --claims examples/claims.json --backend openai --model gpt-5-mini --out output/report-openai.json --markdown output/report-openai.md
 ```
 
 PowerShell:
 
 ```powershell
 $env:OPENAI_API_KEY = "YOUR_KEY"
-python -m evidenceforge verify --doc examples/aurora.md --claims examples/claims.json --backend openai --model gpt-5-mini --out output/report-openai.json --markdown output/report-openai.md
+python -m claimledger verify --doc examples/aurora.md --claims examples/claims.json --backend openai --model gpt-5-mini --out output/report-openai.json --markdown output/report-openai.md
 ```
 
 `gpt-5-mini` is only the default string. Pass a model your account can call and that supports [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs). The request uses `responses.create` with `text.format.type=json_schema`, `strict=true`, and `store=false`. Tests mock this call. CI does not install the OpenAI extra and does not set `OPENAI_API_KEY`.
@@ -161,20 +172,33 @@ GitHub Actions runs, on Python 3.11 and 3.12, without credentials:
 ```bash
 python -m pip install -e '.[dev]'
 python -m ruff check .
-python -m pytest -q
-python -m evidenceforge verify --doc examples/aurora.md --claims examples/claims.json --out output/report.json --markdown output/report.md
-python -m evidenceforge evaluate --dataset examples/eval.jsonl --out output/eval.json
+python -m pytest -q --cov=claimledger --cov-report=term-missing
+python -m claimledger verify --doc examples/aurora.md --claims examples/claims.json --out output/report.json --markdown output/report.md
+python -m claimledger evaluate --dataset examples/eval.jsonl --out output/eval.json
 ```
+
+The smoke evaluation reports macro-F1, per-class precision and recall, abstention, citation validity, latency, and token use. Retrieval recall is null for that fixture. See [benchmark/README.md](benchmark/README.md).
+
+## Public API
+
+```python
+from claimledger import verify_documents, verifier_for
+
+report = verify_documents(["notes.md"], ["The study used 120 samples."])
+local = verifier_for("local")
+```
+
+`verifier_for` returns `LocalVerifier` or `OpenAIVerifier`. A new provider implements `ClaimVerifier.verify(claim_id, claim, units)` and is registered in `verifier_for`. Do not send documents to a provider unless you choose that backend.
 
 ## Roadmap
 
-1. **v0.1 (this release):** exact quote provenance, a conservative local baseline, an optional OpenAI semantic verifier, and offline smoke tests.
-2. **v0.2:** a larger permissively licensed set with adversarial claims, plus reported macro-F1 and citation-validity numbers. Those numbers are not measured here.
-3. **Later, only if v0.1 stays small:** numeric and date checks that abstain on ambiguous units, optional cost logging from rates you supply, and a thin local UI.
+1. **v0.2 (this release):** provenance prototype, local and OpenAI verifiers, smoke metrics, and release hygiene. No PyPI publication yet.
+2. **Next:** a human-reviewed gold set of at least 100 original or permissively licensed examples, then additional providers.
+3. **Later:** numeric and date checks that abstain on ambiguous units, optional cost logging from rates you supply, and a thin local UI.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Security reports: [SECURITY.md](SECURITY.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md), [GOVERNANCE.md](GOVERNANCE.md), and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Security reports: [SECURITY.md](SECURITY.md). Grant-facing notes that separate measurements from plans are in [funding/](funding/PROJECT_OVERVIEW.md).
 
 ## License
 

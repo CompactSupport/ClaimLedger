@@ -4,7 +4,7 @@ Use GitHub private vulnerability reporting after the repository is published. Do
 
 ## Trust boundary
 
-EvidenceForge reads documents you supply. Those documents are data, not instructions. The local backend does not send them anywhere. `--backend openai` sends the claim and the retrieved excerpts to OpenAI. Do not use that mode for material you are not allowed to transmit.
+ClaimLedger reads documents you supply. Those documents are data, not instructions. The local backend does not send them anywhere. `--backend openai` sends the claim and the retrieved excerpts to OpenAI. Do not use that mode for material you are not allowed to transmit.
 
 A quote whose character span matches the extracted text only proves that the span exists. It does not prove the verdict is semantically correct, and it does not prove the source is true.
 

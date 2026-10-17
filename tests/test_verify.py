@@ -6,11 +6,11 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from evidenceforge.ingest import load_pages, split_into_units
-from evidenceforge.models import ClaimResult, DocumentPage, EvidenceQuote, EvidenceUnit
-from evidenceforge.pipeline import verify_documents
-from evidenceforge.retrieve import retrieve
-from evidenceforge.verify import (
+from claimledger.ingest import load_pages, split_into_units
+from claimledger.models import ClaimResult, DocumentPage, EvidenceQuote, EvidenceUnit
+from claimledger.pipeline import verify_documents
+from claimledger.retrieve import retrieve
+from claimledger.verify import (
     MAX_QUOTE_CHARS,
     VERIFICATION_SCHEMA,
     local_verify,
@@ -301,7 +301,7 @@ def test_pipeline_rejects_a_non_abstaining_verdict_with_a_bad_span(monkeypatch):
                             0, 4, "nope")
         return ClaimResult("c1", claim, "supported", "forged", [bad], "openai", "test-model")
 
-    monkeypatch.setattr("evidenceforge.pipeline.openai_verify", forged)
+    monkeypatch.setattr("claimledger.pipeline.openai_verify", forged)
     with pytest.raises(RuntimeError, match="do not match"):
         verify_documents([SAMPLE], [claim], backend="openai")
 

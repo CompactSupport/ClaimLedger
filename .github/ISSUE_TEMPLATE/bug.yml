@@ -1,0 +1,22 @@
+name: Bug
+description: A reproducible failure in the offline verifier, citation check, or packaging
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: textarea
+    attributes:
+      label: What happened
+      description: Use a synthetic or public document. Do not paste private data, credentials, or licensed reports.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: ClaimLedger version
+      placeholder: "0.2.0"
+    validations:
+      required: true
