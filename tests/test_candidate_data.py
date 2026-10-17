@@ -83,6 +83,7 @@ def test_pre_review_flags_do_not_mark_rows_reviewed():
     assert flags
     for flag in flags:
         assert flag["id"] in reviews
+        assert flag["author_label_changed"] == "false"
         assert flag["human_reviewed"] == "false"
         assert reviews[flag["id"]]["human_reviewed"] == "False"
         assert reviews[flag["id"]]["reviewed_label"] == ""
@@ -115,6 +116,66 @@ def test_ai_second_opinion_does_not_become_human_review():
             disagreements.append(result["case_id"])
     assert disagreements == ["cl-027-2"]
     assert reviews["cl-027-2"]["expected"] == "contradicted"
+
+
+def test_remaining_ai_annotations_do_not_release_gold():
+    second = json.loads(
+        (BASE / "ai_second_opinion" / "semantic_review_remaining_90.json").read_text(encoding="utf-8")
+    )
+    first = json.loads(
+        (BASE / "ai_second_opinion" / "semantic_review_18.json").read_text(encoding="utf-8")
+    )
+    assert second["review_type"] == "AI_semantic_second_opinion_not_human"
+    assert second["gold_eligible"] is False
+    assert second["reviewed_by_independent_human"] is False
+    assert second["paid_api_calls"] == 0
+    assert second["baseline_metrics_valid"] is False
+    assert second["n"] == second["author_label_agreement"] == 90
+    assert second["author_label_disagreements"] == []
+    with (BASE / "review_queue.csv").open(encoding="utf-8", newline="") as handle:
+        reviews = {row["id"]: row for row in csv.DictReader(handle)}
+    first_ids = {result["case_id"] for result in first["results"]}
+    second_ids = [result["case_id"] for result in second["results"]]
+    assert len(second_ids) == len(set(second_ids)) == 90
+    assert first_ids.isdisjoint(second_ids)
+    assert first_ids | set(second_ids) == set(reviews)
+    with (BASE / "pre_review_flags.csv").open(encoding="utf-8", newline="") as handle:
+        flagged = {row["id"] for row in csv.DictReader(handle)}
+    assert set(second["human_adjudication_flags"]) <= flagged
+    assert "cl-027-2" in flagged
+    for result in second["results"]:
+        review = reviews[result["case_id"]]
+        assert review["expected"] == result["author_label"] == result["ai_verdict"]
+        assert result["agrees_with_author"] is True
+        assert review["reviewed_label"] == ""
+        assert review["human_reviewed"] == "False"
+        assert review["reviewer"] == ""
+        assert review["reviewed_at"] == ""
+        text = (BASE / result["document"]).read_text(encoding="utf-8")
+        digest = hashlib.sha256((BASE / result["document"]).read_bytes()).hexdigest()
+        assert digest == result["document_sha256"]
+        for evidence in result["evidence"]:
+            assert text[evidence["start"]:evidence["end"]] == evidence["quote"]
+    status = json.loads((ROOT / "funding" / "status.json").read_text(encoding="utf-8"))
+    benchmark = status["benchmark"]
+    assert benchmark["human_reviewed_rows"] == 0
+    assert benchmark["gold_set_rows"] == 0
+    assert benchmark["gold_benchmark_released"] is False
+    assert benchmark["eligible_for_final_approval"] is False
+    assert benchmark["ai_second_opinion_is_human_review"] is False
+    assert benchmark["ai_second_opinion_agreement_is_accuracy"] is False
+    assert benchmark["ai_second_opinion_annotations"] == 108
+    assert benchmark["ai_second_opinion_author_agreement"] == 107
+
+
+def test_case_id_suffix_currently_encodes_the_author_label():
+    with (BASE / "review_queue.csv").open(encoding="utf-8", newline="") as handle:
+        reviews = list(csv.DictReader(handle))
+    expected_by_suffix = {"1": "supported", "2": "contradicted", "3": "insufficient"}
+    assert len(reviews) == 108
+    for review in reviews:
+        suffix = review["id"].rsplit("-", 1)[-1]
+        assert review["expected"] == expected_by_suffix[suffix]
 
 
 def test_corrected_quotes_name_the_relevant_statement():

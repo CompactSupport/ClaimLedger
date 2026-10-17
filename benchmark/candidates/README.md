@@ -22,7 +22,9 @@ All reported rows are **synthetic_author_labeled**, not manually verified gold. 
 python scripts/freeze_reviewed_labels.py --out output/frozen_reviews.json
 ```
 
-`gold_count` stays 0 while every `human_reviewed` value is false. Development documents are `d001.md` through `d014.md`. Held-out documents are `d015.md` through `d020.md`. Do not tune on the held-out documents. See [REVIEW_GUIDE.md](../REVIEW_GUIDE.md).
+`gold_count` stays 0 while every `human_reviewed` value is false. Document lists for the internal dev and held-out partition are in `split.json`. That partition is not a blind external test. Do not tune on the held-out documents. See [REVIEW_GUIDE.md](../REVIEW_GUIDE.md).
+
+Each document has three rows, and the case-id suffix is the author label: `-1` supported, `-2` contradicted, `-3` insufficient. A formal semantic evaluation has to drop that cue and shuffle the order. AI notes under `ai_second_opinion/` match the author label on 107 of 108 rows. That match is not accuracy, and it does not set `human_reviewed` or release gold. See [ai_second_opinion/README.md](ai_second_opinion/README.md).
 
 ## Human review before a gold release
 

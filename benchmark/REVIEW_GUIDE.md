@@ -1,6 +1,6 @@
 # Human review guide
 
-The 60 candidate rows are fictional and `synthetic_author_labeled`. None are gold. A frozen subset is not a gold benchmark until it has at least 100 valid reviewed cases and a separate quality-criteria record. Reviewer names do not prove independence. Use [SEMANTIC_REVIEW_CHECKLIST.md](SEMANTIC_REVIEW_CHECKLIST.md) before marking a row reviewed. `funding/status.json` keeps `gold_set_rows` at 0 until that bar is met.
+The 108 candidate rows are fictional and `synthetic_author_labeled`. None are gold. The case-id suffix currently encodes the author label (`-1` supported, `-2` contradicted, `-3` insufficient). Do not treat that pattern as evidence, and do not use it in a formal evaluation. AI notes in `benchmark/candidates/ai_second_opinion/` are not a review: do not copy `ai_verdict` into `reviewed_label` or set `human_reviewed` from them. Their agreement with the author is not an accuracy estimate. A frozen subset is not a gold benchmark until it has at least 100 valid reviewed cases and a separate quality-criteria record. Reviewer names do not prove independence. Use [SEMANTIC_REVIEW_CHECKLIST.md](SEMANTIC_REVIEW_CHECKLIST.md) before marking a row reviewed. `funding/status.json` keeps `gold_set_rows` at 0 until that bar is met.
 
 ## Acceptance policy for a future 100+ gold set
 
@@ -14,7 +14,7 @@ A row becomes gold only when all of the following are true:
 6. Numeric units, dates, negation, and comparisons that a reviewer cannot settle are labeled `insufficient` instead of forced into another class.
 7. The document stays inside `benchmark/candidates/`.
 8. At least 100 rows meet these rules before anyone calls the set a gold benchmark.
-9. Development documents (`d001.md`–`d014.md`) and held-out documents (`d015.md`–`d020.md`) stay separated. Do not tune prompts, thresholds, or model choice on held-out labels.
+9. Development and held-out documents stay separated as listed in `benchmark/candidates/split.json`. Do not tune prompts, thresholds, or model choice on held-out labels.
 10. When two people review the same row, keep both decisions and record agreement. Do not silently keep only the matching one.
 
 ## Freeze command

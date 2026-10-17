@@ -4,6 +4,7 @@ All notable changes to ClaimLedger are documented here. The project uses semanti
 
 ## Unreleased
 
+- Import the remaining 90 AI second-opinion annotations beside the first 18. Combined author-label agreement is 107 of 108 and is not an accuracy estimate. The case-id suffix still encodes the author label.
 - Import 18 AI second-opinion annotations beside the candidate queue. They do not change author labels or human-review fields.
 - Fix the freeze CLI so it reports the four release-state fields instead of the removed `gold_benchmark_ready` key.
 - Require the evaluated shards to match the manifest and review queue exactly, and revalidate frozen rows against current document bytes.

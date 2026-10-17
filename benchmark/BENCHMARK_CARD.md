@@ -53,6 +53,8 @@ The local baseline misses paraphrases, negation, unit changes, and comparisons. 
 - Held-out document names are listed in `benchmark/candidates/split.json` before any gold labels exist.
 - Dataset paths must stay inside the candidate directory.
 - No employer, customer, or licensed research PDF is in this set.
+- Every document currently has three rows, and the case-id suffix is the author label: `-1` supported, `-2` contradicted, `-3` insufficient. A model can guess the label from the id or from row order. A formal evaluation has to remove that cue and shuffle the order. The current local scores are not that evaluation.
+- AI second-opinion notes cover all 108 rows and match the author label on 107. That match count is not accuracy. The notes are in `benchmark/candidates/ai_second_opinion/`, and they do not fill `human_reviewed` or release a gold set. Human-reviewed rows remain 0.
 
 ## Name check
 

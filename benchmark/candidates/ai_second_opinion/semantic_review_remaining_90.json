@@ -1,0 +1,1837 @@
+{
+  "project": "ClaimLedger",
+  "repository": "https://github.com/CompactSupport/ClaimLedger",
+  "source_ref": "82f29b7d3ed5f51d03ba6f135c024f7d06b3c9a2",
+  "dataset_version": "candidates-2026-10-17.2",
+  "review_type": "AI_semantic_second_opinion_not_human",
+  "gold_eligible": false,
+  "reviewed_by_independent_human": false,
+  "paid_api_calls": 0,
+  "not_blind_note": "Not a genuinely blind evaluation: some case/author-label information was visible in prior discussion. This is qualitative second-opinion analysis, not a validated model benchmark.",
+  "source_document_hashes_verified": 30,
+  "evidence_note": "Each emitted evidence quote was validated as an exact unique substring of its source and anchored with 0-based Python character offsets.",
+  "n": 90,
+  "author_label_agreement": 90,
+  "author_label_disagreements": [],
+  "human_adjudication_flags": [
+    "cl-002-1",
+    "cl-006-1",
+    "cl-006-2",
+    "cl-006-3",
+    "cl-009-3",
+    "cl-011-3",
+    "cl-014-3",
+    "cl-015-1",
+    "cl-015-2",
+    "cl-016-1",
+    "cl-018-1",
+    "cl-018-2",
+    "cl-029-1"
+  ],
+  "results": [
+    {
+      "case_id": "cl-001-1",
+      "document": "documents/d001.md",
+      "document_sha256": "96e7c4ca465fb835a1a62c7ba12b3e3fe3195a6d45b5eb77476d28027e80ee61",
+      "claim": "Project Orion evaluated 120 samples in April 2026.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d001.md",
+          "sha256": "96e7c4ca465fb835a1a62c7ba12b3e3fe3195a6d45b5eb77476d28027e80ee61",
+          "page": 1,
+          "start": 36,
+          "end": 86,
+          "quote": "Project Orion evaluated 120 samples in April 2026."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-001-2",
+      "document": "documents/d001.md",
+      "document_sha256": "96e7c4ca465fb835a1a62c7ba12b3e3fe3195a6d45b5eb77476d28027e80ee61",
+      "claim": "Project Orion evaluated 150 samples in April 2026.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d001.md",
+          "sha256": "96e7c4ca465fb835a1a62c7ba12b3e3fe3195a6d45b5eb77476d28027e80ee61",
+          "page": 1,
+          "start": 36,
+          "end": 86,
+          "quote": "Project Orion evaluated 120 samples in April 2026."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-001-3",
+      "document": "documents/d001.md",
+      "document_sha256": "96e7c4ca465fb835a1a62c7ba12b3e3fe3195a6d45b5eb77476d28027e80ee61",
+      "claim": "Project Orion was funded by a city government.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-002-1",
+      "document": "documents/d002.md",
+      "document_sha256": "f9c715b0d954dfa15ffc2b5f3db6b254c4886c9d70c195f26021b80088da9220",
+      "claim": "The Maple Archive digital collection went live on June 4, 2026.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "開放 digital collection 與 went live 是自然語言近義轉換，仍建議人類檢查時態與語境。",
+      "evidence": [
+        {
+          "source": "documents/d002.md",
+          "sha256": "f9c715b0d954dfa15ffc2b5f3db6b254c4886c9d70c195f26021b80088da9220",
+          "page": 1,
+          "start": 33,
+          "end": 97,
+          "quote": "The Maple Archive opened its digital collection on June 4, 2026."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": true,
+      "audit_flag": "paraphrase_review"
+    },
+    {
+      "case_id": "cl-002-2",
+      "document": "documents/d002.md",
+      "document_sha256": "f9c715b0d954dfa15ffc2b5f3db6b254c4886c9d70c195f26021b80088da9220",
+      "claim": "The Maple Archive opened its digital collection on June 14, 2026.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d002.md",
+          "sha256": "f9c715b0d954dfa15ffc2b5f3db6b254c4886c9d70c195f26021b80088da9220",
+          "page": 1,
+          "start": 33,
+          "end": 97,
+          "quote": "The Maple Archive opened its digital collection on June 4, 2026."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-002-3",
+      "document": "documents/d002.md",
+      "document_sha256": "f9c715b0d954dfa15ffc2b5f3db6b254c4886c9d70c195f26021b80088da9220",
+      "claim": "The Maple Archive plans to release audio recordings next year.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-003-1",
+      "document": "documents/d003.md",
+      "document_sha256": "d71d2b741188beb582936da1823e0fa9d32795d63315af9915b0ce4f67542cdc",
+      "claim": "The Nimbus test excluded synthetic fibers.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d003.md",
+          "sha256": "d71d2b741188beb582936da1823e0fa9d32795d63315af9915b0ce4f67542cdc",
+          "page": 1,
+          "start": 96,
+          "end": 130,
+          "quote": "No synthetic fibers were included."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-003-2",
+      "document": "documents/d003.md",
+      "document_sha256": "d71d2b741188beb582936da1823e0fa9d32795d63315af9915b0ce4f67542cdc",
+      "claim": "The Nimbus materials test included synthetic fibers.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d003.md",
+          "sha256": "d71d2b741188beb582936da1823e0fa9d32795d63315af9915b0ce4f67542cdc",
+          "page": 1,
+          "start": 96,
+          "end": 130,
+          "quote": "No synthetic fibers were included."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-003-3",
+      "document": "documents/d003.md",
+      "document_sha256": "d71d2b741188beb582936da1823e0fa9d32795d63315af9915b0ce4f67542cdc",
+      "claim": "The Nimbus test was funded by three universities.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-004-1",
+      "document": "documents/d004.md",
+      "document_sha256": "3c373a9e22e81835115b3a71dd9d791da8cda53967322d9a2724e3e17ec5f065",
+      "claim": "The tracking apparatus consumed 14 kWh in one night.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d004.md",
+          "sha256": "3c373a9e22e81835115b3a71dd9d791da8cda53967322d9a2724e3e17ec5f065",
+          "page": 1,
+          "start": 33,
+          "end": 122,
+          "quote": "The Cedar Observatory measured a nightly energy use of 14 kWh for the tracking apparatus."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-004-2",
+      "document": "documents/d004.md",
+      "document_sha256": "3c373a9e22e81835115b3a71dd9d791da8cda53967322d9a2724e3e17ec5f065",
+      "claim": "The tracking apparatus used 14 MWh per night.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d004.md",
+          "sha256": "3c373a9e22e81835115b3a71dd9d791da8cda53967322d9a2724e3e17ec5f065",
+          "page": 1,
+          "start": 33,
+          "end": 122,
+          "quote": "The Cedar Observatory measured a nightly energy use of 14 kWh for the tracking apparatus."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-004-3",
+      "document": "documents/d004.md",
+      "document_sha256": "3c373a9e22e81835115b3a71dd9d791da8cda53967322d9a2724e3e17ec5f065",
+      "claim": "The Cedar Observatory is located at an elevation of 1,400 meters.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-005-1",
+      "document": "documents/d005.md",
+      "document_sha256": "348b57334adc8fcdfc73a4a5bc7c38b074221bbf720d149ec4da58f697f982b4",
+      "claim": "The Harbor shuttle has 14 stops.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d005.md",
+          "sha256": "348b57334adc8fcdfc73a4a5bc7c38b074221bbf720d149ec4da58f697f982b4",
+          "page": 1,
+          "start": 99,
+          "end": 155,
+          "quote": "It serves 14 stops and does not offer overnight service."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-005-2",
+      "document": "documents/d005.md",
+      "document_sha256": "348b57334adc8fcdfc73a4a5bc7c38b074221bbf720d149ec4da58f697f982b4",
+      "claim": "The Harbor shuttle offers overnight service.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d005.md",
+          "sha256": "348b57334adc8fcdfc73a4a5bc7c38b074221bbf720d149ec4da58f697f982b4",
+          "page": 1,
+          "start": 99,
+          "end": 155,
+          "quote": "It serves 14 stops and does not offer overnight service."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-005-3",
+      "document": "documents/d005.md",
+      "document_sha256": "348b57334adc8fcdfc73a4a5bc7c38b074221bbf720d149ec4da58f697f982b4",
+      "claim": "A ride on the Harbor shuttle costs three dollars.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-006-1",
+      "document": "documents/d006.md",
+      "document_sha256": "ebbc5d0b7a5b24dd7ca1de699fa2c1647672502958840f1803e2b45c90a8ae1d",
+      "claim": "Model A succeeded in more trials than Model B.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "42 > 39；比較判斷需同時出示兩個數值。",
+      "evidence": [
+        {
+          "source": "documents/d006.md",
+          "sha256": "ebbc5d0b7a5b24dd7ca1de699fa2c1647672502958840f1803e2b45c90a8ae1d",
+          "page": 1,
+          "start": 99,
+          "end": 148,
+          "quote": "Model A succeeded in 42 trials and Model B in 39."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": true,
+      "audit_flag": "multi_fact_inference"
+    },
+    {
+      "case_id": "cl-006-2",
+      "document": "documents/d006.md",
+      "document_sha256": "ebbc5d0b7a5b24dd7ca1de699fa2c1647672502958840f1803e2b45c90a8ae1d",
+      "claim": "Model B succeeded in more trials than Model A.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "39 < 42；比較判斷需同時出示兩個數值。",
+      "evidence": [
+        {
+          "source": "documents/d006.md",
+          "sha256": "ebbc5d0b7a5b24dd7ca1de699fa2c1647672502958840f1803e2b45c90a8ae1d",
+          "page": 1,
+          "start": 99,
+          "end": 148,
+          "quote": "Model A succeeded in 42 trials and Model B in 39."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": true,
+      "audit_flag": "multi_fact_inference"
+    },
+    {
+      "case_id": "cl-006-3",
+      "document": "documents/d006.md",
+      "document_sha256": "ebbc5d0b7a5b24dd7ca1de699fa2c1647672502958840f1803e2b45c90a8ae1d",
+      "claim": "Model A was cheaper to deploy than Model B.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "未評估 energy consumption 不等於沒有 deployment cost；成本缺少證據。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": true,
+      "audit_flag": "related_but_different_metric"
+    },
+    {
+      "case_id": "cl-007-1",
+      "document": "documents/d007.md",
+      "document_sha256": "a69d6c3c7d4a613764486e55991b34d8c8932008c44d1fb314d4e6dd7264dbc0",
+      "claim": "The Ember storage pool has 80 GB free.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d007.md",
+          "sha256": "a69d6c3c7d4a613764486e55991b34d8c8932008c44d1fb314d4e6dd7264dbc0",
+          "page": 1,
+          "start": 85,
+          "end": 148,
+          "quote": "The monitoring system reported 420 GB used and 80 GB remaining."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-007-2",
+      "document": "documents/d007.md",
+      "document_sha256": "a69d6c3c7d4a613764486e55991b34d8c8932008c44d1fb314d4e6dd7264dbc0",
+      "claim": "The Ember storage pool has 120 GB remaining.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d007.md",
+          "sha256": "a69d6c3c7d4a613764486e55991b34d8c8932008c44d1fb314d4e6dd7264dbc0",
+          "page": 1,
+          "start": 85,
+          "end": 148,
+          "quote": "The monitoring system reported 420 GB used and 80 GB remaining."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-007-3",
+      "document": "documents/d007.md",
+      "document_sha256": "a69d6c3c7d4a613764486e55991b34d8c8932008c44d1fb314d4e6dd7264dbc0",
+      "claim": "The Ember storage pool uses solid-state drives.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-008-1",
+      "document": "documents/d008.md",
+      "document_sha256": "b52228af2d0966c2b4769294821d072a92e27ebc744f3eb9c98ee7d2658525d1",
+      "claim": "The Pine Workshop ran four afternoon sessions in July 2026.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d008.md",
+          "sha256": "b52228af2d0966c2b4769294821d072a92e27ebc744f3eb9c98ee7d2658525d1",
+          "page": 1,
+          "start": 34,
+          "end": 93,
+          "quote": "The Pine Workshop ran four afternoon sessions in July 2026."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-008-2",
+      "document": "documents/d008.md",
+      "document_sha256": "b52228af2d0966c2b4769294821d072a92e27ebc744f3eb9c98ee7d2658525d1",
+      "claim": "The Pine Workshop ran seven afternoon sessions in July 2026.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d008.md",
+          "sha256": "b52228af2d0966c2b4769294821d072a92e27ebc744f3eb9c98ee7d2658525d1",
+          "page": 1,
+          "start": 34,
+          "end": 93,
+          "quote": "The Pine Workshop ran four afternoon sessions in July 2026."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-008-3",
+      "document": "documents/d008.md",
+      "document_sha256": "b52228af2d0966c2b4769294821d072a92e27ebc744f3eb9c98ee7d2658525d1",
+      "claim": "The Pine Workshop was livestreamed to an international audience.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-009-1",
+      "document": "documents/d009.md",
+      "document_sha256": "78a4d7040dc75c944c0c6b5447b79e7bdc86cc042858a2557aa5fb155c9d9252",
+      "claim": "The Bluebird network had twelve nodes.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d009.md",
+          "sha256": "78a4d7040dc75c944c0c6b5447b79e7bdc86cc042858a2557aa5fb155c9d9252",
+          "page": 1,
+          "start": 36,
+          "end": 79,
+          "quote": "The Bluebird test network had twelve nodes."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-009-2",
+      "document": "documents/d009.md",
+      "document_sha256": "78a4d7040dc75c944c0c6b5447b79e7bdc86cc042858a2557aa5fb155c9d9252",
+      "claim": "Median message latency was 24 milliseconds.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d009.md",
+          "sha256": "78a4d7040dc75c944c0c6b5447b79e7bdc86cc042858a2557aa5fb155c9d9252",
+          "page": 1,
+          "start": 80,
+          "end": 144,
+          "quote": "Median message latency was 42 milliseconds during the benchmark."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-009-3",
+      "document": "documents/d009.md",
+      "document_sha256": "78a4d7040dc75c944c0c6b5447b79e7bdc86cc042858a2557aa5fb155c9d9252",
+      "claim": "The ninety-ninth percentile latency was 120 milliseconds.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "「未報告 p99」不代表其真值不是 120ms，應列證據不足。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": true,
+      "audit_flag": "absence_is_not_refutation"
+    },
+    {
+      "case_id": "cl-010-1",
+      "document": "documents/d010.md",
+      "document_sha256": "147f61fb8e31e9284eb22a2c639641031032456d5e7e114f7ef7f8ca54a7581d",
+      "claim": "The Willow exhibition started on September 18, 2026.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d010.md",
+          "sha256": "147f61fb8e31e9284eb22a2c639641031032456d5e7e114f7ef7f8ca54a7581d",
+          "page": 1,
+          "start": 37,
+          "end": 88,
+          "quote": "The Willow exhibition opened on September 18, 2026."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-010-2",
+      "document": "documents/d010.md",
+      "document_sha256": "147f61fb8e31e9284eb22a2c639641031032456d5e7e114f7ef7f8ca54a7581d",
+      "claim": "The Willow museum opens to visitors every Monday.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d010.md",
+          "sha256": "147f61fb8e31e9284eb22a2c639641031032456d5e7e114f7ef7f8ca54a7581d",
+          "page": 1,
+          "start": 89,
+          "end": 133,
+          "quote": "The museum is closed to visitors on Mondays."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-010-3",
+      "document": "documents/d010.md",
+      "document_sha256": "147f61fb8e31e9284eb22a2c639641031032456d5e7e114f7ef7f8ca54a7581d",
+      "claim": "The Willow exhibition closes in December 2026.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-011-1",
+      "document": "documents/d011.md",
+      "document_sha256": "d68a542eaa71a4654ed743912b0c9604601af411b56037910b37eba925c5bcb9",
+      "claim": "The recorded pH of the Canary sample was 7.2.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d011.md",
+          "sha256": "d68a542eaa71a4654ed743912b0c9604601af411b56037910b37eba925c5bcb9",
+          "page": 1,
+          "start": 40,
+          "end": 108,
+          "quote": "The Canary stream sensor measured a pH of 7.2 at 25 degrees Celsius."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-011-2",
+      "document": "documents/d011.md",
+      "document_sha256": "d68a542eaa71a4654ed743912b0c9604601af411b56037910b37eba925c5bcb9",
+      "claim": "The Canary sensor recorded a pH of 7.4.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d011.md",
+          "sha256": "d68a542eaa71a4654ed743912b0c9604601af411b56037910b37eba925c5bcb9",
+          "page": 1,
+          "start": 40,
+          "end": 108,
+          "quote": "The Canary stream sensor measured a pH of 7.2 at 25 degrees Celsius."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-011-3",
+      "document": "documents/d011.md",
+      "document_sha256": "d68a542eaa71a4654ed743912b0c9604601af411b56037910b37eba925c5bcb9",
+      "claim": "The Canary sample had a turbidity of 1.3 NTU.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "「未記錄濁度」不等於已證實某一濁度數值為假。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": true,
+      "audit_flag": "absence_is_not_refutation"
+    },
+    {
+      "case_id": "cl-012-1",
+      "document": "documents/d012.md",
+      "document_sha256": "d52894c4054f78e740b4bf2e167debc75a4d7e38eb646e1398f61aad1f041faa",
+      "claim": "The Quartz report did not use 2024 observations.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d012.md",
+          "sha256": "d52894c4054f78e740b4bf2e167debc75a4d7e38eb646e1398f61aad1f041faa",
+          "page": 1,
+          "start": 92,
+          "end": 120,
+          "quote": "No data from 2024 were used."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-012-2",
+      "document": "documents/d012.md",
+      "document_sha256": "d52894c4054f78e740b4bf2e167debc75a4d7e38eb646e1398f61aad1f041faa",
+      "claim": "The Quartz report included data collected in 2024.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d012.md",
+          "sha256": "d52894c4054f78e740b4bf2e167debc75a4d7e38eb646e1398f61aad1f041faa",
+          "page": 1,
+          "start": 92,
+          "end": 120,
+          "quote": "No data from 2024 were used."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-012-3",
+      "document": "documents/d012.md",
+      "document_sha256": "d52894c4054f78e740b4bf2e167debc75a4d7e38eb646e1398f61aad1f041faa",
+      "claim": "The Quartz report was cited by thirty other manuscripts.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-013-1",
+      "document": "documents/d013.md",
+      "document_sha256": "afd669c265149d4caa7d5b4ef226054f28c5dddec4941100a68ad1b3aef3037d",
+      "claim": "Each Delta tower is twelve floors high.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d013.md",
+          "sha256": "afd669c265149d4caa7d5b4ef226054f28c5dddec4941100a68ad1b3aef3037d",
+          "page": 1,
+          "start": 78,
+          "end": 107,
+          "quote": "Each tower has twelve floors."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-013-2",
+      "document": "documents/d013.md",
+      "document_sha256": "afd669c265149d4caa7d5b4ef226054f28c5dddec4941100a68ad1b3aef3037d",
+      "claim": "The Delta complex consists of four towers.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d013.md",
+          "sha256": "afd669c265149d4caa7d5b4ef226054f28c5dddec4941100a68ad1b3aef3037d",
+          "page": 1,
+          "start": 34,
+          "end": 77,
+          "quote": "The Delta complex consists of three towers."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-013-3",
+      "document": "documents/d013.md",
+      "document_sha256": "afd669c265149d4caa7d5b4ef226054f28c5dddec4941100a68ad1b3aef3037d",
+      "claim": "The Delta complex has eight public elevators.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-014-1",
+      "document": "documents/d014.md",
+      "document_sha256": "77c83c101089c92118b3291bb0f6b2dfe36c94f0d96c1ec510e8290f60e69f8b",
+      "claim": "The Mosaic dataset contains 500 text examples.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d014.md",
+          "sha256": "77c83c101089c92118b3291bb0f6b2dfe36c94f0d96c1ec510e8290f60e69f8b",
+          "page": 1,
+          "start": 39,
+          "end": 108,
+          "quote": "The Mosaic dataset contains 500 text examples and 100 image examples."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-014-2",
+      "document": "documents/d014.md",
+      "document_sha256": "77c83c101089c92118b3291bb0f6b2dfe36c94f0d96c1ec510e8290f60e69f8b",
+      "claim": "The Mosaic dataset contains 700 text examples.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d014.md",
+          "sha256": "77c83c101089c92118b3291bb0f6b2dfe36c94f0d96c1ec510e8290f60e69f8b",
+          "page": 1,
+          "start": 39,
+          "end": 108,
+          "quote": "The Mosaic dataset contains 500 text examples and 100 image examples."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-014-3",
+      "document": "documents/d014.md",
+      "document_sha256": "77c83c101089c92118b3291bb0f6b2dfe36c94f0d96c1ec510e8290f60e69f8b",
+      "claim": "The Mosaic dataset includes videos with subtitles.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "「沒有 audio clips」不等於排除有字幕的影片，證據不足。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": true,
+      "audit_flag": "absence_is_not_refutation"
+    },
+    {
+      "case_id": "cl-015-1",
+      "document": "documents/d015.md",
+      "document_sha256": "697acbdc7ff63134e953155116d8b24d7ff4e64f9cd2e04c8452a6926998c980",
+      "claim": "The Briar campaign collected a total of 56,000 dollars.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "31,000 + 25,000 = 56,000，屬算術推論。",
+      "evidence": [
+        {
+          "source": "documents/d015.md",
+          "sha256": "697acbdc7ff63134e953155116d8b24d7ff4e64f9cd2e04c8452a6926998c980",
+          "page": 1,
+          "start": 39,
+          "end": 119,
+          "quote": "The Briar campaign collected 31,000 dollars online and 25,000 dollars at events."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": true,
+      "audit_flag": "arithmetic"
+    },
+    {
+      "case_id": "cl-015-2",
+      "document": "documents/d015.md",
+      "document_sha256": "697acbdc7ff63134e953155116d8b24d7ff4e64f9cd2e04c8452a6926998c980",
+      "claim": "The Briar campaign collected a total of 65,000 dollars.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "31,000 + 25,000 = 56,000 而非 65,000，屬算術推論。",
+      "evidence": [
+        {
+          "source": "documents/d015.md",
+          "sha256": "697acbdc7ff63134e953155116d8b24d7ff4e64f9cd2e04c8452a6926998c980",
+          "page": 1,
+          "start": 39,
+          "end": 119,
+          "quote": "The Briar campaign collected 31,000 dollars online and 25,000 dollars at events."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": true,
+      "audit_flag": "arithmetic"
+    },
+    {
+      "case_id": "cl-015-3",
+      "document": "documents/d015.md",
+      "document_sha256": "697acbdc7ff63134e953155116d8b24d7ff4e64f9cd2e04c8452a6926998c980",
+      "claim": "The campaign spent 6,000 dollars on printing.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-016-1",
+      "document": "documents/d016.md",
+      "document_sha256": "ac1e472066e1b6041f62f4f25366907ce39670a92a114fa77a148760e5fa57a9",
+      "claim": "The Comet bus arrives four times per hour during operating hours.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "每 15 分鐘一班通常是每小時四班，但端點排班的精確定義可能需要核對。",
+      "evidence": [
+        {
+          "source": "documents/d016.md",
+          "sha256": "ac1e472066e1b6041f62f4f25366907ce39670a92a114fa77a148760e5fa57a9",
+          "page": 1,
+          "start": 37,
+          "end": 97,
+          "quote": "The Comet bus runs every 15 minutes between 06:00 and 18:00."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": true,
+      "audit_flag": "temporal_boundary_ambiguity"
+    },
+    {
+      "case_id": "cl-016-2",
+      "document": "documents/d016.md",
+      "document_sha256": "ac1e472066e1b6041f62f4f25366907ce39670a92a114fa77a148760e5fa57a9",
+      "claim": "The Comet bus runs every 10 minutes.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d016.md",
+          "sha256": "ac1e472066e1b6041f62f4f25366907ce39670a92a114fa77a148760e5fa57a9",
+          "page": 1,
+          "start": 37,
+          "end": 97,
+          "quote": "The Comet bus runs every 15 minutes between 06:00 and 18:00."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-016-3",
+      "document": "documents/d016.md",
+      "document_sha256": "ac1e472066e1b6041f62f4f25366907ce39670a92a114fa77a148760e5fa57a9",
+      "claim": "A Comet bus ticket costs two dollars.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-017-1",
+      "document": "documents/d017.md",
+      "document_sha256": "b3b1a2eee415b3643c4b831ae7434bf4978e5cd5b539c4bf3eaabe6b12ae3bf7",
+      "claim": "The Lotus pilot excluded carpet testing.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d017.md",
+          "sha256": "b3b1a2eee415b3643c4b831ae7434bf4978e5cd5b539c4bf3eaabe6b12ae3bf7",
+          "page": 1,
+          "start": 105,
+          "end": 159,
+          "quote": "Carpet testing was explicitly excluded from the pilot."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-017-2",
+      "document": "documents/d017.md",
+      "document_sha256": "b3b1a2eee415b3643c4b831ae7434bf4978e5cd5b539c4bf3eaabe6b12ae3bf7",
+      "claim": "The Lotus pilot tested the robots on carpet.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d017.md",
+          "sha256": "b3b1a2eee415b3643c4b831ae7434bf4978e5cd5b539c4bf3eaabe6b12ae3bf7",
+          "page": 1,
+          "start": 105,
+          "end": 159,
+          "quote": "Carpet testing was explicitly excluded from the pilot."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-017-3",
+      "document": "documents/d017.md",
+      "document_sha256": "b3b1a2eee415b3643c4b831ae7434bf4978e5cd5b539c4bf3eaabe6b12ae3bf7",
+      "claim": "The Lotus robots use lithium-iron-phosphate batteries.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-018-1",
+      "document": "documents/d018.md",
+      "document_sha256": "424f46a0a9e17168fe13757e7ec372f16c527cd556ec3ddd20a223435f44217d",
+      "claim": "The Seabird draft had no external referee review.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "明確提到僅有內部審查，非外部 referee review。",
+      "evidence": [
+        {
+          "source": "documents/d018.md",
+          "sha256": "424f46a0a9e17168fe13757e7ec372f16c527cd556ec3ddd20a223435f44217d",
+          "page": 1,
+          "start": 92,
+          "end": 165,
+          "quote": "It was reviewed internally by two team members, not by external referees."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": true,
+      "audit_flag": "reviewer_scope"
+    },
+    {
+      "case_id": "cl-018-2",
+      "document": "documents/d018.md",
+      "document_sha256": "424f46a0a9e17168fe13757e7ec372f16c527cd556ec3ddd20a223435f44217d",
+      "claim": "The Seabird draft received external referee review before posting.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文否定外部 referee review。",
+      "evidence": [
+        {
+          "source": "documents/d018.md",
+          "sha256": "424f46a0a9e17168fe13757e7ec372f16c527cd556ec3ddd20a223435f44217d",
+          "page": 1,
+          "start": 92,
+          "end": 165,
+          "quote": "It was reviewed internally by two team members, not by external referees."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": true,
+      "audit_flag": "reviewer_scope"
+    },
+    {
+      "case_id": "cl-018-3",
+      "document": "documents/d018.md",
+      "document_sha256": "424f46a0a9e17168fe13757e7ec372f16c527cd556ec3ddd20a223435f44217d",
+      "claim": "The Seabird draft was later accepted to a journal.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-019-1",
+      "document": "documents/d019.md",
+      "document_sha256": "a1721406ad0b9d45d597907a0c7dfb1d215882a5f3b3d47a935f9060be0d9642",
+      "claim": "The Lantern guidance was available in Japanese.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d019.md",
+          "sha256": "a1721406ad0b9d45d597907a0c7dfb1d215882a5f3b3d47a935f9060be0d9642",
+          "page": 1,
+          "start": 37,
+          "end": 95,
+          "quote": "The Lantern pilot issued guidance in English and Japanese."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-019-2",
+      "document": "documents/d019.md",
+      "document_sha256": "a1721406ad0b9d45d597907a0c7dfb1d215882a5f3b3d47a935f9060be0d9642",
+      "claim": "The Lantern guidance was available in French.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d019.md",
+          "sha256": "a1721406ad0b9d45d597907a0c7dfb1d215882a5f3b3d47a935f9060be0d9642",
+          "page": 1,
+          "start": 96,
+          "end": 136,
+          "quote": "It did not provide a French translation."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-019-3",
+      "document": "documents/d019.md",
+      "document_sha256": "a1721406ad0b9d45d597907a0c7dfb1d215882a5f3b3d47a935f9060be0d9642",
+      "claim": "The Lantern guidance will be translated into Spanish.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-020-1",
+      "document": "documents/d020.md",
+      "document_sha256": "67d5777a6fca56ba9f9d8585e1954dab215c58d6dbad1c395e96971181c11518",
+      "claim": "The Riverstone experiments used random seed 17.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d020.md",
+          "sha256": "67d5777a6fca56ba9f9d8585e1954dab215c58d6dbad1c395e96971181c11518",
+          "page": 1,
+          "start": 40,
+          "end": 127,
+          "quote": "The Riverstone comparison used a fixed random seed of 17 for all published experiments."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-020-2",
+      "document": "documents/d020.md",
+      "document_sha256": "67d5777a6fca56ba9f9d8585e1954dab215c58d6dbad1c395e96971181c11518",
+      "claim": "The Riverstone authors conducted a blinded trial.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d020.md",
+          "sha256": "67d5777a6fca56ba9f9d8585e1954dab215c58d6dbad1c395e96971181c11518",
+          "page": 1,
+          "start": 128,
+          "end": 172,
+          "quote": "The authors did not conduct a blinded trial."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-020-3",
+      "document": "documents/d020.md",
+      "document_sha256": "67d5777a6fca56ba9f9d8585e1954dab215c58d6dbad1c395e96971181c11518",
+      "claim": "The Riverstone models were trained on 10,000 examples.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-022-1",
+      "document": "documents/d022.md",
+      "document_sha256": "9ae6b4ebf6e9ba6a45398ed8468a17c42dbe422e710ef3d0e8c3a16341945019",
+      "claim": "Every published chart used 2025 observations.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d022.md",
+          "sha256": "9ae6b4ebf6e9ba6a45398ed8468a17c42dbe422e710ef3d0e8c3a16341945019",
+          "page": 1,
+          "start": 39,
+          "end": 87,
+          "quote": "All six published charts used 2025 observations."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-022-2",
+      "document": "documents/d022.md",
+      "document_sha256": "9ae6b4ebf6e9ba6a45398ed8468a17c42dbe422e710ef3d0e8c3a16341945019",
+      "claim": "The appendix draft chart was published.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d022.md",
+          "sha256": "9ae6b4ebf6e9ba6a45398ed8468a17c42dbe422e710ef3d0e8c3a16341945019",
+          "page": 1,
+          "start": 88,
+          "end": 138,
+          "quote": "The draft chart in the appendix was not published."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-022-3",
+      "document": "documents/d022.md",
+      "document_sha256": "9ae6b4ebf6e9ba6a45398ed8468a17c42dbe422e710ef3d0e8c3a16341945019",
+      "claim": "The charts were printed in color.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-023-1",
+      "document": "documents/d023.md",
+      "document_sha256": "f0ad517a617da99c6b4c78e9ac7c3d4e388d330cc64021a487cad84a8c31fc6e",
+      "claim": "Site A samples were tested on Tuesday.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d023.md",
+          "sha256": "f0ad517a617da99c6b4c78e9ac7c3d4e388d330cc64021a487cad84a8c31fc6e",
+          "page": 1,
+          "start": 85,
+          "end": 128,
+          "quote": "Samples from Site A were tested on Tuesday."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-023-2",
+      "document": "documents/d023.md",
+      "document_sha256": "f0ad517a617da99c6b4c78e9ac7c3d4e388d330cc64021a487cad84a8c31fc6e",
+      "claim": "The lab tested samples from Site B.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d023.md",
+          "sha256": "f0ad517a617da99c6b4c78e9ac7c3d4e388d330cc64021a487cad84a8c31fc6e",
+          "page": 1,
+          "start": 43,
+          "end": 84,
+          "quote": "The lab did not test samples from Site B."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-023-3",
+      "document": "documents/d023.md",
+      "document_sha256": "f0ad517a617da99c6b4c78e9ac7c3d4e388d330cc64021a487cad84a8c31fc6e",
+      "claim": "Site A samples failed the test.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-025-1",
+      "document": "documents/d025.md",
+      "document_sha256": "e97b0f418cbbe0793373cca94291cb0584b446d0cad13c3228ea5a5523adffbb",
+      "claim": "The panel interviewed three candidates.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d025.md",
+          "sha256": "e97b0f418cbbe0793373cca94291cb0584b446d0cad13c3228ea5a5523adffbb",
+          "page": 1,
+          "start": 44,
+          "end": 99,
+          "quote": "The panel interviewed three candidates and no one else."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-025-2",
+      "document": "documents/d025.md",
+      "document_sha256": "e97b0f418cbbe0793373cca94291cb0584b446d0cad13c3228ea5a5523adffbb",
+      "claim": "The panel interviewed five candidates.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d025.md",
+          "sha256": "e97b0f418cbbe0793373cca94291cb0584b446d0cad13c3228ea5a5523adffbb",
+          "page": 1,
+          "start": 44,
+          "end": 99,
+          "quote": "The panel interviewed three candidates and no one else."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-025-3",
+      "document": "documents/d025.md",
+      "document_sha256": "e97b0f418cbbe0793373cca94291cb0584b446d0cad13c3228ea5a5523adffbb",
+      "claim": "The panel offered the role to the second candidate.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-026-1",
+      "document": "documents/d026.md",
+      "document_sha256": "4fd0290829a91a1340fb1cac74c38d9f64447841b3316997e49430eff91df21f",
+      "claim": "The desk answered calls at 09:00.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d026.md",
+          "sha256": "4fd0290829a91a1340fb1cac74c38d9f64447841b3316997e49430eff91df21f",
+          "page": 1,
+          "start": 40,
+          "end": 87,
+          "quote": "The desk answered calls from 09:00 until 17:00."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-026-2",
+      "document": "documents/d026.md",
+      "document_sha256": "4fd0290829a91a1340fb1cac74c38d9f64447841b3316997e49430eff91df21f",
+      "claim": "The desk answered a call at 18:30.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d026.md",
+          "sha256": "4fd0290829a91a1340fb1cac74c38d9f64447841b3316997e49430eff91df21f",
+          "page": 1,
+          "start": 88,
+          "end": 121,
+          "quote": "It did not answer calls at 18:30."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-026-3",
+      "document": "documents/d026.md",
+      "document_sha256": "4fd0290829a91a1340fb1cac74c38d9f64447841b3316997e49430eff91df21f",
+      "claim": "The desk employed four operators.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-028-1",
+      "document": "documents/d028.md",
+      "document_sha256": "87382505b630084e3ee770a760a96a98c287925f17ace0b27873820dfdf7d497",
+      "claim": "Mara recorded the measurements.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d028.md",
+          "sha256": "87382505b630084e3ee770a760a96a98c287925f17ace0b27873820dfdf7d497",
+          "page": 1,
+          "start": 34,
+          "end": 65,
+          "quote": "Mara recorded the measurements."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-028-2",
+      "document": "documents/d028.md",
+      "document_sha256": "87382505b630084e3ee770a760a96a98c287925f17ace0b27873820dfdf7d497",
+      "claim": "Luis recorded the measurements.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d028.md",
+          "sha256": "87382505b630084e3ee770a760a96a98c287925f17ace0b27873820dfdf7d497",
+          "page": 1,
+          "start": 66,
+          "end": 125,
+          "quote": "Luis transcribed the notes and did not record measurements."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-028-3",
+      "document": "documents/d028.md",
+      "document_sha256": "87382505b630084e3ee770a760a96a98c287925f17ace0b27873820dfdf7d497",
+      "claim": "Mara calibrated the instrument.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-029-1",
+      "document": "documents/d029.md",
+      "document_sha256": "959fb2dcab26f2628258e7d8a550e18cf63c0d519a674f544168c3e1ded3f222",
+      "claim": "Equipment bought in 2026 can be charged to the grant.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "「grant covers equipment」與「can be charged to grant」可能受報銷條款影響，建議人類確認等價性。",
+      "evidence": [
+        {
+          "source": "documents/d029.md",
+          "sha256": "959fb2dcab26f2628258e7d8a550e18cf63c0d519a674f544168c3e1ded3f222",
+          "page": 1,
+          "start": 37,
+          "end": 79,
+          "quote": "The grant covers equipment bought in 2026."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": true,
+      "audit_flag": "scope_equivalence_ambiguity"
+    },
+    {
+      "case_id": "cl-029-2",
+      "document": "documents/d029.md",
+      "document_sha256": "959fb2dcab26f2628258e7d8a550e18cf63c0d519a674f544168c3e1ded3f222",
+      "claim": "The grant covers salaries.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d029.md",
+          "sha256": "959fb2dcab26f2628258e7d8a550e18cf63c0d519a674f544168c3e1ded3f222",
+          "page": 1,
+          "start": 80,
+          "end": 107,
+          "quote": "It does not cover salaries."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-029-3",
+      "document": "documents/d029.md",
+      "document_sha256": "959fb2dcab26f2628258e7d8a550e18cf63c0d519a674f544168c3e1ded3f222",
+      "claim": "The grant covers travel.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-030-1",
+      "document": "documents/d030.md",
+      "document_sha256": "16385b5d9725cae16bd79d0e108452832a719e92ba5bc957893f921df264f672",
+      "claim": "The archive holds diaries.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d030.md",
+          "sha256": "16385b5d9725cae16bd79d0e108452832a719e92ba5bc957893f921df264f672",
+          "page": 1,
+          "start": 48,
+          "end": 86,
+          "quote": "The archive holds letters and diaries."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-030-2",
+      "document": "documents/d030.md",
+      "document_sha256": "16385b5d9725cae16bd79d0e108452832a719e92ba5bc957893f921df264f672",
+      "claim": "This archive holds the photographs.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d030.md",
+          "sha256": "16385b5d9725cae16bd79d0e108452832a719e92ba5bc957893f921df264f672",
+          "page": 1,
+          "start": 87,
+          "end": 149,
+          "quote": "Photographs were stored elsewhere and are not in this archive."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-030-3",
+      "document": "documents/d030.md",
+      "document_sha256": "16385b5d9725cae16bd79d0e108452832a719e92ba5bc957893f921df264f672",
+      "claim": "The diaries are digitized.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-032-1",
+      "document": "documents/d032.md",
+      "document_sha256": "5b17ad413685bd5a765270575198522d3f0448c45ac6a0030c08aff86d9d446b",
+      "claim": "A submission on 3 March 2026 was late.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "3/3 的提交被明確標記為 late，直接支持此主張。",
+      "evidence": [
+        {
+          "source": "documents/d032.md",
+          "sha256": "5b17ad413685bd5a765270575198522d3f0448c45ac6a0030c08aff86d9d446b",
+          "page": 1,
+          "start": 85,
+          "end": 135,
+          "quote": "A submission on 3 March 2026 was rejected as late."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-032-2",
+      "document": "documents/d032.md",
+      "document_sha256": "5b17ad413685bd5a765270575198522d3f0448c45ac6a0030c08aff86d9d446b",
+      "claim": "Submissions were accepted on 3 March 2026.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d032.md",
+          "sha256": "5b17ad413685bd5a765270575198522d3f0448c45ac6a0030c08aff86d9d446b",
+          "page": 1,
+          "start": 37,
+          "end": 135,
+          "quote": "Submissions were accepted through 2 March 2026. A submission on 3 March 2026 was rejected as late."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-032-3",
+      "document": "documents/d032.md",
+      "document_sha256": "5b17ad413685bd5a765270575198522d3f0448c45ac6a0030c08aff86d9d446b",
+      "claim": "The form required a PDF.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-034-1",
+      "document": "documents/d034.md",
+      "document_sha256": "ebd4e4bbd675e7d4b0d1e62b38248ed51b4a9f7bd5010540fd2e55b144af54d6",
+      "claim": "Both groups scored 15.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d034.md",
+          "sha256": "ebd4e4bbd675e7d4b0d1e62b38248ed51b4a9f7bd5010540fd2e55b144af54d6",
+          "page": 1,
+          "start": 79,
+          "end": 101,
+          "quote": "Both groups scored 15."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-034-2",
+      "document": "documents/d034.md",
+      "document_sha256": "ebd4e4bbd675e7d4b0d1e62b38248ed51b4a9f7bd5010540fd2e55b144af54d6",
+      "claim": "Group Red outscored Group Blue.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d034.md",
+          "sha256": "ebd4e4bbd675e7d4b0d1e62b38248ed51b4a9f7bd5010540fd2e55b144af54d6",
+          "page": 1,
+          "start": 40,
+          "end": 101,
+          "quote": "Group Red did not outscore Group Blue. Both groups scored 15."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-034-3",
+      "document": "documents/d034.md",
+      "document_sha256": "ebd4e4bbd675e7d4b0d1e62b38248ed51b4a9f7bd5010540fd2e55b144af54d6",
+      "claim": "Group Red finished earlier than Group Blue.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-035-1",
+      "document": "documents/d035.md",
+      "document_sha256": "a4592eafc128ff52d85ba1811d9ff8f47b869c53b78e03a2bc5049006e75e45b",
+      "claim": "The Tuesday sample was frozen.",
+      "ai_verdict": "supported",
+      "author_label": "supported",
+      "agrees_with_author": true,
+      "reason_zh": "原文可以推出這項主張。",
+      "evidence": [
+        {
+          "source": "documents/d035.md",
+          "sha256": "a4592eafc128ff52d85ba1811d9ff8f47b869c53b78e03a2bc5049006e75e45b",
+          "page": 1,
+          "start": 33,
+          "end": 68,
+          "quote": "Only the Tuesday sample was frozen."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-035-2",
+      "document": "documents/d035.md",
+      "document_sha256": "a4592eafc128ff52d85ba1811d9ff8f47b869c53b78e03a2bc5049006e75e45b",
+      "claim": "The Monday sample was frozen.",
+      "ai_verdict": "contradicted",
+      "author_label": "contradicted",
+      "agrees_with_author": true,
+      "reason_zh": "原文與這項主張明確矛盾。",
+      "evidence": [
+        {
+          "source": "documents/d035.md",
+          "sha256": "a4592eafc128ff52d85ba1811d9ff8f47b869c53b78e03a2bc5049006e75e45b",
+          "page": 1,
+          "start": 33,
+          "end": 68,
+          "quote": "Only the Tuesday sample was frozen."
+        }
+      ],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    },
+    {
+      "case_id": "cl-035-3",
+      "document": "documents/d035.md",
+      "document_sha256": "a4592eafc128ff52d85ba1811d9ff8f47b869c53b78e03a2bc5049006e75e45b",
+      "claim": "The freezer was set to -20 degrees.",
+      "ai_verdict": "insufficient",
+      "author_label": "insufficient",
+      "agrees_with_author": true,
+      "reason_zh": "來源未提供足以支持或否定這項主張的資訊。",
+      "evidence": [],
+      "review_type": "AI_semantic_second_opinion_not_human",
+      "needs_human_adjudication": false,
+      "audit_flag": ""
+    }
+  ],
+  "evaluation_protocol": "Manual in-chat AI semantic audit, not a controlled blinded model run",
+  "baseline_metrics_valid": false,
+  "potential_label_leakage": "Candidate cases use one supported, one contradicted, one insufficient row per document, consistently ordered by case ID suffix. This is a serious shortcut risk for future model benchmarks.",
+  "note": "Agreement with author labels is not an accuracy estimate; the annotations are meant to surface disagreements and evidence/semantic ambiguities, and this pass was not a controlled blind test."
+}
