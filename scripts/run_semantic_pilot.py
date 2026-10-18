@@ -1,14 +1,55 @@
 #!/usr/bin/env python3
-"""Report the semantic-pilot gate. This command does not launch a model."""
+"""Run the offline semantic-pilot gate.
+
+``--check`` executes mock integration checks only. It does not launch Codex,
+and a passing mock is not a semantic-model evaluation result. A subprocess
+command used by tests is not an operating-system sandbox and is not model
+execution.
+"""
 
 from __future__ import annotations
 
+import argparse
+import shutil
+import sys
+import tempfile
+from pathlib import Path
 
-def main() -> int:
+from claimledger.semantic_pilot import offline_mock_checks
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Run offline mock checks. Real Codex execution stays disabled.",
+    )
+    args = parser.parse_args(argv)
+    if not args.check:
+        print(
+            "Real Codex execution is disabled. Pass --check for the offline mock gate.",
+            file=sys.stderr,
+        )
+        return 2
+    workspace = Path(tempfile.mkdtemp(prefix="claimledger-pilot-check-"))
+    try:
+        report = offline_mock_checks(workspace, ROOT)
+    finally:
+        shutil.rmtree(workspace, ignore_errors=True)
+    if report["failures"]:
+        for item in report["failures"]:
+            print(item, file=sys.stderr)
+        return 1
+    print("offline_mock_checks=passed")
     print("real_codex_inference=disabled")
     print("api_key_fallback=refused")
     print("os_sandbox=false")
-    print("predictions_are_human_labels=false")
+    print("mock_results_are_model_evaluation=false")
+    print(f"paid_model_calls={report['paid_model_calls']}")
+    print(f"human_labels_synthesized={str(report['human_labels_synthesized']).lower()}")
     return 0
 
 

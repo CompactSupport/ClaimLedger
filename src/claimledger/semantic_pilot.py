@@ -164,6 +164,10 @@ def execute_restricted(invocation: dict, *, model: str, cli_version: str,
         "prompt_version": invocation["prompt_version"],
         "passage_sha256": invocation["passage_sha256"],
         "execution_status": result["status"],
+        "execution_kind": "subprocess_command" if runner_argv is not None else "in_process_mock",
+        "real_model_execution": False,
+        "os_sandbox": False,
+        "result_is_model_evaluation": False,
     })
     return result
 
@@ -189,7 +193,8 @@ def run_codex_subscription(billing: dict | None, *, allow_real_inference: bool =
 
 
 def score_subset(results: list[dict], *, subset: list[str], known_ids: set[str],
-                 author_labels: dict[str, str]) -> dict:
+                 author_labels: dict[str, str],
+                 label_source: str = "author_labels_from_the_audit_mapping") -> dict:
     """Score one declared subset. Author labels are passed in; the queue is not read."""
     if not subset:
         raise PilotRefused("A declared evaluation subset is required before scoring.")
@@ -219,6 +224,128 @@ def score_subset(results: list[dict], *, subset: list[str], known_ids: set[str],
         "subset_size": len(subset),
         "correct": correct,
         "human_reviewed": False,
-        "label_source": "author_labels_from_the_audit_mapping",
+        "label_source": label_source,
         "real_inference": False,
+        "result_is_model_evaluation": False,
+        "paid_model_calls": 0,
+    }
+
+
+def offline_mock_checks(workspace: Path, repo_root: Path) -> dict:
+    """Run the offline mock gate. Failures are strings. This does not call a model."""
+    failures: list[str] = []
+    record = {
+        "evaluation_id": "ev-001122334455",
+        "claim": "The sample count was 120.",
+        "passage_id": "p-001122334455",
+        "passage": "The sample count was 120 in April.\n",
+    }
+    environ = {
+        "SYSTEMROOT": os.environ.get("SYSTEMROOT", r"C:\Windows"),
+        "PATH": os.environ.get("PATH", ""),
+        "OPENAI_API_KEY": "blocked",
+        "GH_TOKEN": "blocked",
+    }
+
+    def expect_refusal(label: str, fn) -> None:
+        try:
+            fn()
+        except PilotRefused:
+            return
+        failures.append(f"{label}: the gate accepted a case it must refuse")
+
+    expect_refusal(
+        "one-record",
+        lambda: prepare_invocation([record, dict(record, evaluation_id="ev-aabbccddeeff")],
+                                   workspace / "many", repo_root, environ),
+    )
+    try:
+        invocation = prepare_invocation([record], workspace / "one", repo_root, environ)
+    except PilotRefused as exc:
+        failures.append(f"one-record preparation: {exc}")
+        invocation = None
+    if invocation is not None:
+        names = {path.name for path in invocation["cwd"].iterdir()}
+        if names != {"input.json", "prompt.txt"}:
+            failures.append("one-record preparation wrote unexpected files")
+        if "OPENAI_API_KEY" in invocation["env"] or "GH_TOKEN" in invocation["env"]:
+            failures.append("credential filtering left a credential in the environment")
+        if invocation["os_sandbox"] is not False:
+            failures.append("the workspace was described as an operating-system sandbox")
+        bad_schema = validate_model_output("not-json", record)
+        if bad_schema["status"] != "rejected_schema":
+            failures.append("schema validation accepted non-JSON")
+        bad_quote = validate_model_output(json.dumps({
+            "evaluation_id": record["evaluation_id"],
+            "verdict": "supported",
+            "quote": "a sentence that was not written",
+        }), record)
+        if bad_quote["status"] != "rejected_quote":
+            failures.append("quote verification accepted a quote that is not in the passage")
+        try:
+            result = execute_restricted(
+                invocation,
+                model="mock-model",
+                cli_version="mock-0",
+                runner=lambda _cwd, _env: json.dumps({
+                    "evaluation_id": record["evaluation_id"],
+                    "verdict": "supported",
+                    "quote": "The sample count was 120",
+                }),
+            )
+        except PilotRefused as exc:
+            failures.append(f"mock execution: {exc}")
+            result = None
+        if result is not None:
+            provenance = ("model", "cli_version", "prompt_version", "passage_sha256", "execution_kind")
+            if any(not result.get(key) for key in provenance):
+                failures.append("result provenance is incomplete")
+            if result.get("real_model_execution") is not False or result.get("result_is_model_evaluation") is not False:
+                failures.append("a mock result was marked as model evaluation")
+            if result.get("execution_kind") != "in_process_mock":
+                failures.append("the mock runner was not separated from model execution")
+            known = {record["evaluation_id"]}
+            labels = {record["evaluation_id"]: "supported"}
+            expect_refusal(
+                "subset-empty",
+                lambda: score_subset([result], subset=[], known_ids=known, author_labels=labels),
+            )
+            expect_refusal(
+                "subset-incomplete",
+                lambda: score_subset(
+                    [result], subset=[record["evaluation_id"], "ev-missing"],
+                    known_ids=known | {"ev-missing"}, author_labels={**labels, "ev-missing": "insufficient"},
+                ),
+            )
+            try:
+                scored = score_subset(
+                    [result], subset=[record["evaluation_id"]], known_ids=known, author_labels=labels,
+                    label_source="offline_mock_fixture_not_a_human_label",
+                )
+            except PilotRefused as exc:
+                failures.append(f"subset-complete: {exc}")
+                scored = None
+            if scored is not None and (
+                scored.get("real_inference") is not False
+                or scored.get("result_is_model_evaluation") is not False
+                or scored.get("paid_model_calls") != 0
+                or scored.get("human_reviewed") is not False
+            ):
+                failures.append("the mock score was reported as a real evaluation")
+    expect_refusal("codex-unverified", lambda: run_codex_subscription(None))
+    expect_refusal(
+        "codex-disabled",
+        lambda: run_codex_subscription({
+            "authenticated": True,
+            "billing_mode": "subscription",
+            "api_key_present": False,
+        }, allow_real_inference=True),
+    )
+    return {
+        "failures": failures,
+        "paid_model_calls": 0,
+        "real_model_execution": False,
+        "os_sandbox": False,
+        "mock_results_are_model_evaluation": False,
+        "human_labels_synthesized": False,
     }

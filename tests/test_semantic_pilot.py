@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -12,6 +13,7 @@ import pytest
 from claimledger.semantic_pilot import (
     PilotRefused,
     execute_restricted,
+    offline_mock_checks,
     prepare_invocation,
     restricted_env,
     run_codex_subscription,
@@ -187,3 +189,25 @@ def test_scoring_requires_a_subset_and_stays_apart_from_human_labels():
     assert scored["human_reviewed"] is False
     assert scored["result_class"] == "internal_label_blinded_test"
     assert scored["real_inference"] is False
+    assert scored["result_is_model_evaluation"] is False
+
+
+def test_check_command_runs_the_offline_mock_gate(tmp_path):
+    report = offline_mock_checks(tmp_path / "gate", ROOT)
+    assert report["failures"] == []
+    assert report["paid_model_calls"] == 0
+    assert report["mock_results_are_model_evaluation"] is False
+    assert report["human_labels_synthesized"] is False
+    script = ROOT / "scripts" / "run_semantic_pilot.py"
+    missing = subprocess.run([sys.executable, str(script)], cwd=ROOT, capture_output=True, text=True)
+    assert missing.returncode == 2
+    completed = subprocess.run(
+        [sys.executable, str(script), "--check"], cwd=ROOT, capture_output=True, text=True,
+    )
+    assert completed.returncode == 0, completed.stderr
+    assert "offline_mock_checks=passed" in completed.stdout
+    assert "paid_model_calls=0" in completed.stdout
+    assert "mock_results_are_model_evaluation=false" in completed.stdout
+    assert "os_sandbox=false" in completed.stdout
+    assert "macro_f1" not in completed.stdout
+    assert "macro-f1" not in completed.stdout.lower()

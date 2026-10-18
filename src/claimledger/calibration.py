@@ -16,7 +16,9 @@ from pathlib import Path
 from .label_blind import CLASSES, permitted_passage
 
 REPORT_SCHEMA = "claimledger.calibration_report.v1"
+PLAN_SCHEMA = "claimledger.calibration_import_plan.v1"
 IMPORT_DECISION = "approved_for_queue_import"
+WRITE_DECISION = "approved_queue_write"
 AI_REVIEWER_RE = re.compile(
     r"(?i)(?:^|[^a-z])(ai|gpt|codex|claude|gemini|openai|llm|model)(?:[^a-z]|$)"
 )
@@ -138,6 +140,7 @@ def _index_sources(packet_rows: list[dict], mapping_cases: list[dict],
             "passage_sha256": _sha256(passage),
             "document_sha256": digest,
             "claim": row["claim"],
+            "canonical_id": joined["canonical_id"],
         }
     return sources
 
@@ -182,6 +185,8 @@ def _sheet_rows(rows: list[dict], slot: str, sources: dict[str, dict]) -> tuple[
             continue
         checked["passage_sha256"] = source["passage_sha256"]
         checked["document_sha256"] = source["document_sha256"]
+        checked["claim"] = source["claim"]
+        checked["canonical_id"] = source["canonical_id"]
         accepted[packet_id] = checked
     return accepted, errors
 
@@ -209,10 +214,20 @@ def validate_sheets(packet_rows: list[dict], sheet_a: list[dict], sheet_b: list[
             continue
         pair = {
             "packet_id": packet_id,
+            "canonical_id": left["canonical_id"],
+            "claim": left["claim"],
             "reviewer_a": left["reviewer_id"],
             "reviewer_b": right["reviewer_id"],
             "label_a": left["reviewed_label"],
             "label_b": right["reviewed_label"],
+            "reviewed_at_a": left["reviewed_at"],
+            "reviewed_at_b": right["reviewed_at"],
+            "evidence_quote_a": left.get("evidence_quote") or "",
+            "evidence_quote_b": right.get("evidence_quote") or "",
+            "evidence_start_a": left.get("evidence_start") or "",
+            "evidence_end_a": left.get("evidence_end") or "",
+            "evidence_start_b": left.get("evidence_start") or "",
+            "evidence_end_b": left.get("evidence_end") or "",
             "passage_sha256": left["passage_sha256"],
             "document_sha256": left["document_sha256"],
             "agree": left["reviewed_label"] == right["reviewed_label"],
@@ -245,6 +260,9 @@ def validate_sheets(packet_rows: list[dict], sheet_a: list[dict], sheet_b: list[
         "gold_benchmark_released": False,
         "human_reviewed_rows": 0,
         "uses_ai_annotations_as_human_review": False,
+        "reviewer_name_proves_identity": False,
+        "independence_verified": False,
+        "validated_pairs": pairs,
     }
 
 
@@ -278,55 +296,171 @@ def report_for_repository(root: Path) -> dict:
     )
 
 
-def plan_queue_import(adjudications: list[dict], approval: dict | None,
-                      mapping_cases: list[dict]) -> dict:
-    """Return an import plan. This function does not write a file."""
+def adjudication_digest(adjudications: list[dict]) -> str:
+    """Hash the adjudication records exactly as submitted."""
+    payload = json.dumps(adjudications, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _field(row: dict, key: str) -> str:
+    value = row.get(key)
+    if value is None:
+        return ""
+    return str(value).strip()
+
+
+def _require_complete(row: dict) -> None:
+    required = (
+        "packet_id", "canonical_id", "claim", "dataset_version", "document_sha256",
+        "passage_sha256", "adjudicated_label", "adjudicator", "adjudicated_at",
+        "reviewer_a_id", "reviewer_b_id", "reviewer_a_label", "reviewer_b_label",
+        "reviewer_a_reviewed_at", "reviewer_b_reviewed_at",
+    )
+    missing = [key for key in required if not _field(row, key)]
+    if missing or "evidence_quote" not in row or "evidence_start" not in row or "evidence_end" not in row:
+        raise ImportRefused("Adjudication record is incomplete.")
+
+
+def plan_queue_import(adjudications: list[dict], approval: dict | None, *,
+                      validated_pairs: list[dict], queue_rows: list[dict],
+                      dataset_version: str, documents: dict[str, bytes],
+                      manifest_hashes: dict[str, str]) -> dict:
+    """Plan an import only when each decision is tied to two validated human submissions.
+
+    A reviewer name in this plan does not prove a real-world identity or independence.
+    This function does not write the queue.
+    """
     if not approval or approval.get("decision") != IMPORT_DECISION:
         raise ImportRefused(
             "Adjudicated labels stay out of the canonical queue without an explicit import approval."
         )
-    for field in ("approver", "approved_at", "approval_id"):
-        if not (approval.get(field) or "").strip():
-            raise ImportRefused("Import approval is missing approver, approved_at, or approval_id.")
+    for field in ("approver", "approved_at", "approval_id", "dataset_version", "adjudication_sha256"):
+        if not _field(approval, field):
+            raise ImportRefused("Import approval is missing approver, time, id, dataset version, or digest.")
     _parse_timestamp(approval["approved_at"])
     if AI_REVIEWER_RE.search(approval["approver"]):
         raise ImportRefused("An AI identity cannot approve a human-label import.")
-    by_packet = {row["packet_id"]: row for row in mapping_cases}
+    if approval["dataset_version"] != dataset_version:
+        raise ImportRefused("Import approval is not bound to this dataset version.")
+    digest = adjudication_digest(adjudications)
+    if approval["adjudication_sha256"] != digest:
+        raise ImportRefused("Import approval is not bound to this adjudication artifact.")
+    by_hash = {}
+    for name, file_hash in manifest_hashes.items():
+        if file_hash in by_hash:
+            raise ImportRefused(f"Document hash is not unique: {name}")
+        by_hash[file_hash] = name
+    pairs = {row["packet_id"]: row for row in validated_pairs}
+    queue = {row["id"]: row for row in queue_rows}
+    seen: set[str] = set()
     planned = []
     for row in adjudications:
-        packet_id = row.get("packet_id")
-        joined = by_packet.get(packet_id)
-        if joined is None:
-            raise ImportRefused(f"Adjudication packet id is unknown: {packet_id}")
-        label = (row.get("adjudicated_label") or "").strip()
-        adjudicator = (row.get("adjudicator") or "").strip()
-        adjudicated_at = (row.get("adjudicated_at") or "").strip()
-        if label not in CLASSES or not adjudicator or not adjudicated_at:
-            raise ImportRefused("An adjudicated row needs a label, adjudicator, and timestamp.")
+        _require_complete(row)
+        packet_id = _field(row, "packet_id")
+        if packet_id in seen:
+            raise ImportRefused("Adjudication packet id is duplicated.")
+        seen.add(packet_id)
+        pair = pairs.get(packet_id)
+        if pair is None:
+            raise ImportRefused(
+                "Adjudication requires two distinct validated human submissions for this case."
+            )
+        if _field(row, "dataset_version") != dataset_version:
+            raise ImportRefused("Adjudication dataset version is stale.")
+        if _field(row, "canonical_id") != pair["canonical_id"]:
+            raise ImportRefused("Adjudication canonical id does not match the validated submissions.")
+        canonical = queue.get(pair["canonical_id"])
+        if canonical is None or canonical["claim"] != _field(row, "claim") or pair["claim"] != canonical["claim"]:
+            raise ImportRefused("Claim identity does not match the canonical queue.")
+        if pair["reviewer_a"] == pair["reviewer_b"]:
+            raise ImportRefused("The two human submissions are not distinct.")
+        if (
+            _field(row, "reviewer_a_id") != pair["reviewer_a"]
+            or _field(row, "reviewer_b_id") != pair["reviewer_b"]
+            or _field(row, "reviewer_a_label") != pair["label_a"]
+            or _field(row, "reviewer_b_label") != pair["label_b"]
+            or _field(row, "reviewer_a_reviewed_at") != pair["reviewed_at_a"].strip()
+            or _field(row, "reviewer_b_reviewed_at") != pair["reviewed_at_b"].strip()
+        ):
+            raise ImportRefused("Adjudication reviewer metadata does not match the validated submissions.")
+        if _field(row, "document_sha256") != pair["document_sha256"]:
+            raise ImportRefused("Adjudication document hash does not match the validated submissions.")
+        if _field(row, "passage_sha256") != pair["passage_sha256"]:
+            raise ImportRefused("Adjudication passage hash does not match the validated submissions.")
+        filename = by_hash.get(pair["document_sha256"])
+        raw = documents.get(filename or "")
+        if filename is None or raw is None or hashlib.sha256(raw).hexdigest() != pair["document_sha256"]:
+            raise ImportRefused("Source document hash is stale or unknown.")
+        passage = permitted_passage(raw.decode("utf-8"))
+        if _sha256(passage) != pair["passage_sha256"]:
+            raise ImportRefused("Passage hash is stale.")
+        label = _field(row, "adjudicated_label")
+        if label not in CLASSES:
+            raise ImportRefused("Adjudicated label is not one of the three classes.")
+        if pair["agree"] and label != pair["label_a"]:
+            raise ImportRefused("The adjudicated label does not match the agreeing human submissions.")
+        adjudicator = _field(row, "adjudicator")
         if AI_REVIEWER_RE.search(adjudicator):
             raise ImportRefused("An AI identity cannot adjudicate a human review.")
-        _parse_timestamp(adjudicated_at)
+        adjudicated_at = _parse_timestamp(_field(row, "adjudicated_at"))
+        if (
+            adjudicated_at <= _parse_timestamp(pair["reviewed_at_a"])
+            or adjudicated_at <= _parse_timestamp(pair["reviewed_at_b"])
+        ):
+            raise ImportRefused("Adjudication timestamp is not after both human submissions.")
+        _check_span(passage, {
+            "reviewed_label": label,
+            "evidence_start": _field(row, "evidence_start"),
+            "evidence_end": _field(row, "evidence_end"),
+            "evidence_quote": row.get("evidence_quote") or "",
+        })
         planned.append({
             "packet_id": packet_id,
-            "canonical_id": joined["canonical_id"],
+            "canonical_id": pair["canonical_id"],
             "adjudicated_label": label,
             "adjudicator": adjudicator,
-            "adjudicated_at": adjudicated_at,
+            "adjudicated_at": _field(row, "adjudicated_at"),
+            "tied_to_validated_submissions": True,
         })
     return {
+        "schema": PLAN_SCHEMA,
         "approved": True,
+        "provenance_verified": True,
         "approval_id": approval["approval_id"],
+        "dataset_version": dataset_version,
+        "adjudication_sha256": digest,
         "queue_write": False,
         "gold_benchmark_released": False,
+        "reviewer_name_proves_identity": False,
+        "independence_verified": False,
         "rows": planned,
     }
 
 
-def apply_plan(queue_rows: list[dict], plan: dict) -> list[dict]:
-    """Return a new queue list. The caller has to write it; this does not."""
-    if not plan.get("approved") or plan.get("queue_write") is not False:
-        raise ImportRefused("Refusing a plan that was not created by the approval gate.")
-    updates = {row["canonical_id"]: row for row in plan["rows"]}
+def apply_plan(queue_rows: list[dict], plan: dict, *, write_action: dict | None = None) -> list[dict]:
+    """Return a new queue list only after a separate write approval.
+
+    The returned list is not written to disk. The author label in ``expected`` is copied through.
+    """
+    if plan.get("schema") != PLAN_SCHEMA or plan.get("provenance_verified") is not True:
+        raise ImportRefused("A fabricated plan cannot mark a queue row human-reviewed.")
+    if not write_action or write_action.get("decision") != WRITE_DECISION:
+        raise ImportRefused("Queue writes stay disabled until a separate write action is approved.")
+    if write_action.get("adjudication_sha256") != plan.get("adjudication_sha256"):
+        raise ImportRefused("The write action is not bound to this adjudication artifact.")
+    if write_action.get("dataset_version") != plan.get("dataset_version"):
+        raise ImportRefused("The write action is not bound to this dataset version.")
+    updates = {}
+    for row in plan.get("rows") or []:
+        if row.get("tied_to_validated_submissions") is not True:
+            raise ImportRefused("A plan row is not tied to validated human submissions.")
+        canonical_id = row.get("canonical_id")
+        if canonical_id in updates:
+            raise ImportRefused("Adjudication canonical id is duplicated.")
+        updates[canonical_id] = row
+    known = {row["id"] for row in queue_rows}
+    if not set(updates).issubset(known):
+        raise ImportRefused("Adjudication canonical id is not in the queue.")
     updated = []
     for row in queue_rows:
         copied = dict(row)
@@ -336,5 +470,7 @@ def apply_plan(queue_rows: list[dict], plan: dict) -> list[dict]:
             copied["human_reviewed"] = "True"
             copied["reviewer"] = change["adjudicator"]
             copied["reviewed_at"] = change["adjudicated_at"]
+        if copied.get("expected") != row.get("expected"):
+            raise ImportRefused("The author label was not preserved.")
         updated.append(copied)
     return updated

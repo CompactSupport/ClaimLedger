@@ -10,6 +10,7 @@ import pytest
 
 from claimledger.calibration import (
     ImportRefused,
+    adjudication_digest,
     apply_plan,
     plan_queue_import,
     report_for_repository,
@@ -133,40 +134,156 @@ def test_invalid_reviews_are_rejected_and_not_counted_as_human():
     assert report["human_reviewed_rows"] == 0
 
 
-def test_import_requires_approval_and_does_not_rewrite_the_committed_queue():
-    before = QUEUE.read_bytes()
-    mapping = json.loads(
-        (EVALUATION / "audit" / "calibration_mapping.json").read_text(encoding="utf-8")
-    )["cases"]
-    adjudication = [{
-        "packet_id": mapping[0]["packet_id"],
-        "adjudicated_label": "insufficient",
-        "adjudicator": "cy-lane",
-        "adjudicated_at": "2026-10-17T19:00:00+00:00",
-    }]
-    with pytest.raises(ImportRefused, match="explicit import approval"):
-        plan_queue_import(adjudication, None, mapping)
-    with pytest.raises(ImportRefused, match="AI identity"):
-        plan_queue_import(adjudication, {
-            "decision": "approved_for_queue_import",
-            "approver": "codex",
-            "approved_at": "2026-10-17T19:00:00+00:00",
-            "approval_id": "import-1",
-        }, mapping)
-    plan = plan_queue_import(adjudication, {
+def _queue_rows() -> list[dict]:
+    with QUEUE.open(encoding="utf-8", newline="") as handle:
+        return list(csv.DictReader(handle))
+
+
+def _dataset_version() -> str:
+    return json.loads((CANDIDATES / "manifest.json").read_text(encoding="utf-8"))["dataset_version"]
+
+
+def _approval(adjudications: list[dict], version: str, **overrides) -> dict:
+    approval = {
         "decision": "approved_for_queue_import",
         "approver": "cy-lane",
-        "approved_at": "2026-10-17T19:00:00+00:00",
+        "approved_at": "2026-10-17T20:00:00+00:00",
         "approval_id": "import-1",
-    }, mapping)
+        "dataset_version": version,
+        "adjudication_sha256": adjudication_digest(adjudications),
+    }
+    approval.update(overrides)
+    return approval
+
+
+def _import_kwargs(documents=None):
+    hashes, _mapping, loaded = _sources()
+    return {
+        "validated_pairs": [],
+        "queue_rows": _queue_rows(),
+        "dataset_version": _dataset_version(),
+        "documents": loaded if documents is None else documents,
+        "manifest_hashes": hashes,
+    }
+
+
+def test_fabricated_adjudication_cannot_become_human_reviewed():
+    before = QUEUE.read_bytes()
+    rows = _queue_rows()
+    version = _dataset_version()
+    fake = [{
+        "packet_id": "hr-fabricated",
+        "canonical_id": rows[0]["id"],
+        "claim": rows[0]["claim"],
+        "dataset_version": version,
+        "document_sha256": "abc",
+        "passage_sha256": "def",
+        "adjudicated_label": "supported",
+        "evidence_quote": "x",
+        "evidence_start": "0",
+        "evidence_end": "1",
+        "adjudicator": "cy-lane",
+        "adjudicated_at": "2026-10-17T19:00:00+00:00",
+        "reviewer_a_id": "ada-lane",
+        "reviewer_b_id": "bea-lane",
+        "reviewer_a_label": "supported",
+        "reviewer_b_label": "supported",
+        "reviewer_a_reviewed_at": "2026-10-17T18:00:00+00:00",
+        "reviewer_b_reviewed_at": "2026-10-17T18:00:00+00:00",
+    }]
+    with pytest.raises(ImportRefused, match="two distinct validated human submissions"):
+        plan_queue_import(fake, _approval(fake, version), **_import_kwargs())
+    forged_plan = {
+        "approved": True,
+        "provenance_verified": False,
+        "rows": [{
+            "canonical_id": rows[0]["id"],
+            "adjudicated_label": "supported",
+            "adjudicator": "cy-lane",
+            "adjudicated_at": "2026-10-17T19:00:00+00:00",
+            "tied_to_validated_submissions": True,
+        }],
+        "adjudication_sha256": "0" * 64,
+        "dataset_version": version,
+        "queue_write": False,
+    }
+    with pytest.raises(ImportRefused, match="fabricated"):
+        apply_plan(rows, forged_plan, write_action={
+            "decision": "approved_queue_write",
+            "adjudication_sha256": "0" * 64,
+            "dataset_version": version,
+        })
+    assert all(row["human_reviewed"] == "False" for row in rows)
+    assert QUEUE.read_bytes() == before
+
+
+def test_proven_import_preserves_the_author_label_and_stays_unwritten():
+    before = QUEUE.read_bytes()
+    packet = _packet()[:1]
+    hashes, mapping, documents = _sources()
+    version = _dataset_version()
+    sheet_a = [_review(packet[0], "A", "ada-lane", "supported", quote=True)]
+    sheet_b = [_review(packet[0], "B", "bea-lane", "supported", quote=True)]
+    report = validate_sheets(packet, sheet_a, sheet_b, mapping, hashes, documents)
+    pair = report["validated_pairs"][0]
+    passage = packet[0]["passage"]
+    end = min(12, len(passage.strip()))
+    adjudication = [{
+        "packet_id": pair["packet_id"],
+        "canonical_id": pair["canonical_id"],
+        "claim": pair["claim"],
+        "dataset_version": version,
+        "document_sha256": pair["document_sha256"],
+        "passage_sha256": pair["passage_sha256"],
+        "adjudicated_label": "supported",
+        "evidence_quote": passage[:end],
+        "evidence_start": "0",
+        "evidence_end": str(end),
+        "adjudicator": "cy-lane",
+        "adjudicated_at": "2026-10-17T19:00:00+00:00",
+        "reviewer_a_id": pair["reviewer_a"],
+        "reviewer_b_id": pair["reviewer_b"],
+        "reviewer_a_label": pair["label_a"],
+        "reviewer_b_label": pair["label_b"],
+        "reviewer_a_reviewed_at": pair["reviewed_at_a"],
+        "reviewer_b_reviewed_at": pair["reviewed_at_b"],
+    }]
+    kwargs = {
+        "validated_pairs": report["validated_pairs"],
+        "queue_rows": _queue_rows(),
+        "dataset_version": version,
+        "documents": documents,
+        "manifest_hashes": hashes,
+    }
+    plan = plan_queue_import(adjudication, _approval(adjudication, version), **kwargs)
+    assert plan["provenance_verified"] is True
     assert plan["queue_write"] is False
+    assert plan["reviewer_name_proves_identity"] is False
+    assert plan["independence_verified"] is False
     assert plan["gold_benchmark_released"] is False
-    with QUEUE.open(encoding="utf-8", newline="") as handle:
-        rows = list(csv.DictReader(handle))
-    updated = apply_plan(rows, plan)
-    changed = next(row for row in updated if row["id"] == plan["rows"][0]["canonical_id"])
-    original = next(row for row in rows if row["id"] == changed["id"])
+    with pytest.raises(ImportRefused, match="separate write"):
+        apply_plan(kwargs["queue_rows"], plan)
+    updated = apply_plan(kwargs["queue_rows"], plan, write_action={
+        "decision": "approved_queue_write",
+        "adjudication_sha256": plan["adjudication_sha256"],
+        "dataset_version": version,
+    })
+    changed = next(row for row in updated if row["id"] == pair["canonical_id"])
+    original = next(row for row in kwargs["queue_rows"] if row["id"] == pair["canonical_id"])
     assert changed["expected"] == original["expected"]
-    assert changed["reviewed_label"] == "insufficient"
+    assert changed["reviewed_label"] == "supported"
     assert changed["human_reviewed"] == "True"
     assert QUEUE.read_bytes() == before
+    forged = [dict(adjudication[0], reviewer_a_id="forged-person")]
+    with pytest.raises(ImportRefused, match="reviewer metadata"):
+        plan_queue_import(forged, _approval(forged, version), **kwargs)
+    stale = {name: (b"\x00" + blob[1:] if blob else b"\x00") for name, blob in documents.items()}
+    with pytest.raises(ImportRefused, match="hash"):
+        plan_queue_import(adjudication, _approval(adjudication, version), **{**kwargs, "documents": stale})
+    mismatched = _approval(adjudication, version, adjudication_sha256="0" * 64)
+    with pytest.raises(ImportRefused, match="adjudication artifact"):
+        plan_queue_import(adjudication, mismatched, **kwargs)
+    incomplete = [dict(adjudication[0])]
+    del incomplete[0]["evidence_end"]
+    with pytest.raises(ImportRefused, match="incomplete"):
+        plan_queue_import(incomplete, _approval(incomplete, version), **kwargs)

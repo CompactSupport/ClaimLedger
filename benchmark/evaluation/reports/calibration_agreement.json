@@ -12,5 +12,8 @@
   "queue_updated": false,
   "gold_benchmark_released": false,
   "human_reviewed_rows": 0,
-  "uses_ai_annotations_as_human_review": false
+  "uses_ai_annotations_as_human_review": false,
+  "reviewer_name_proves_identity": false,
+  "independence_verified": false,
+  "validated_pairs": []
 }
