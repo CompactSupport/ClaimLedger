@@ -24,7 +24,7 @@ python scripts/freeze_reviewed_labels.py --out output/frozen_reviews.json
 
 `gold_count` stays 0 while every `human_reviewed` value is false. Document lists for the internal dev and held-out partition are in `split.json`. That partition is not a blind external test. Do not tune on the held-out documents. See [REVIEW_GUIDE.md](../REVIEW_GUIDE.md).
 
-Each document has three rows, and the case-id suffix is the author label: `-1` supported, `-2` contradicted, `-3` insufficient. Those ids stay here. A semantic-model run uses the shuffled export in [../evaluation/PROTOCOL.md](../evaluation/PROTOCOL.md), which does not include them. AI notes under `ai_second_opinion/` match the author label on 107 of 108 rows. That match is not accuracy, and it does not set `human_reviewed` or release gold. See [ai_second_opinion/README.md](ai_second_opinion/README.md).
+Each document has three rows, and the case-id suffix is the author label: `-1` supported, `-2` contradicted, `-3` insufficient. Those ids stay here. A semantic-model run uses the shuffled export in [../evaluation/PROTOCOL.md](../evaluation/PROTOCOL.md), which does not include them. The stored notes under `ai_second_opinion/` match the author label on 107 of 108 rows. Ninety of those notes copy the case-id suffix and are not semantic model predictions. The match is not accuracy, and it does not set `human_reviewed` or release gold. See [ai_second_opinion/README.md](ai_second_opinion/README.md).
 
 ## Human review before a gold release
 

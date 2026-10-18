@@ -26,16 +26,20 @@
       "paid_api_calls": 0,
       "dataset_version": "candidates-2026-10-17.2",
       "n": 18,
+      "inference_class": "unspecified_not_a_blind_model_run",
+      "independent_semantic_inference": false,
       "rigorous_independent_blind_protocol": false
     },
     {
       "file": "benchmark/candidates/ai_second_opinion/semantic_review_remaining_90.json",
-      "sha256": "ced3f1b34d08749be63e0c0921d19f82436a8bbeca60b27408c92fe505ecc363",
+      "sha256": "942418a77fc85b754a7da2bb25fec15eb09b48758006d936962a1c728de53b34",
       "recorded_commit": "82f29b7d3ed5f51d03ba6f135c024f7d06b3c9a2",
       "review_type": "AI_semantic_second_opinion_not_human",
       "paid_api_calls": 0,
       "dataset_version": "candidates-2026-10-17.2",
       "n": 90,
+      "inference_class": "label_derived_not_independent",
+      "independent_semantic_inference": false,
       "rigorous_independent_blind_protocol": false
     }
   ],

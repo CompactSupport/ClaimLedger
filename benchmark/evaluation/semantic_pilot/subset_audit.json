@@ -1,0 +1,82 @@
+{
+  "schema": "claimledger.semantic_pilot_subset_audit.v1",
+  "selection_seed": 20261018,
+  "case_set_sha256": "d221389a0ec88a420e1cdd5d966bb1ae2e8cf947db4a95bbe6e2bcfc8235a297",
+  "dataset_version": "candidates-2026-10-17.2",
+  "dataset_git_commit": "24c8c8e5824c98bf0f7cc68c46fcdbbe5164e73f",
+  "comparison_label": "adjudicated_human_label",
+  "independent_external_test": false,
+  "label_derived_annotations_included": false,
+  "cases": [
+    {
+      "canonical_id": "cl-003-3",
+      "document": "documents/d003.md",
+      "evaluation_id": "ev-176485808969",
+      "adjudicated_label": "insufficient",
+      "claim": "The Nimbus test was funded by three universities."
+    },
+    {
+      "canonical_id": "cl-003-1",
+      "document": "documents/d003.md",
+      "evaluation_id": "ev-326954034369",
+      "adjudicated_label": "supported",
+      "claim": "The Nimbus test excluded synthetic fibers."
+    },
+    {
+      "canonical_id": "cl-003-2",
+      "document": "documents/d003.md",
+      "evaluation_id": "ev-cd9a75fe1b23",
+      "adjudicated_label": "contradicted",
+      "claim": "The Nimbus materials test included synthetic fibers."
+    },
+    {
+      "canonical_id": "cl-004-3",
+      "document": "documents/d004.md",
+      "evaluation_id": "ev-d93b050022d1",
+      "adjudicated_label": "insufficient",
+      "claim": "The Cedar Observatory is located at an elevation of 1,400 meters."
+    },
+    {
+      "canonical_id": "cl-004-2",
+      "document": "documents/d004.md",
+      "evaluation_id": "ev-db1140beb268",
+      "adjudicated_label": "contradicted",
+      "claim": "The tracking apparatus used 14 MWh per night."
+    },
+    {
+      "canonical_id": "cl-024-1",
+      "document": "documents/d024.md",
+      "evaluation_id": "ev-26cfa8dba797",
+      "adjudicated_label": "supported",
+      "claim": "Route East took less time than Route West."
+    },
+    {
+      "canonical_id": "cl-027-2",
+      "document": "documents/d027.md",
+      "evaluation_id": "ev-016b2345c1f3",
+      "adjudicated_label": "insufficient",
+      "claim": "The recipe includes nuts."
+    },
+    {
+      "canonical_id": "cl-029-1",
+      "document": "documents/d029.md",
+      "evaluation_id": "ev-db6154cd9391",
+      "adjudicated_label": "supported",
+      "claim": "Equipment bought in 2026 can be charged to the grant."
+    },
+    {
+      "canonical_id": "cl-031-2",
+      "document": "documents/d031.md",
+      "evaluation_id": "ev-ce8ea279a236",
+      "adjudicated_label": "contradicted",
+      "claim": "This batch passed the intact-vial rule."
+    },
+    {
+      "canonical_id": "cl-032-1",
+      "document": "documents/d032.md",
+      "evaluation_id": "ev-5aaeb7ea57c6",
+      "adjudicated_label": "supported",
+      "claim": "A submission on 3 March 2026 was late."
+    }
+  ]
+}

@@ -3,7 +3,7 @@
 - Commit: `82f29b7d3ed5f51d03ba6f135c024f7d06b3c9a2`
 - Dataset: `candidates-2026-10-17.2`
 - Scope: 90 claims from 30 documents; does not duplicate the existing 18-case review.
-- AI author-label agreement: **90/90**. **Not a valid estimate of model accuracy**.
+- Stored author-label match: **90/90**. These verdicts are `label_derived_not_independent`. Each one follows the case-id suffix. This is not a semantic model prediction and not an accuracy estimate.
 - Unique source SHA-256s checked: 30/30; all emitted quote spans checked.
 - Paid API calls: 0. No GitHub changes or merges were performed.
 - Not independent human review; do not modify gold counts or `human_reviewed`.

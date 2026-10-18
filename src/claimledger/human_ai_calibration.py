@@ -63,6 +63,8 @@ def _load_ai(directory: Path) -> tuple[dict[str, str], list[dict]]:
             "paid_api_calls": payload.get("paid_api_calls"),
             "dataset_version": payload.get("dataset_version"),
             "n": payload.get("n"),
+            "inference_class": payload.get("inference_class", "unspecified_not_a_blind_model_run"),
+            "independent_semantic_inference": payload.get("independent_semantic_inference", False),
             "rigorous_independent_blind_protocol": False,
         })
         for result in payload["results"]:
@@ -351,7 +353,8 @@ def render_report_markdown(study: dict) -> str:
     for source in study["ai_sources"]:
         lines.append(
             f"  - `{source['file']}` commit `{source['recorded_commit']}`, "
-            f"SHA-256 `{source['sha256']}`, paid API calls {source['paid_api_calls']}."
+            f"SHA-256 `{source['sha256']}`, paid API calls {source['paid_api_calls']}, "
+            f"inference class `{source['inference_class']}`."
         )
     lines.extend([
         "",
