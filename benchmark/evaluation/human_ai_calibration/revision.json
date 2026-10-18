@@ -1,0 +1,15 @@
+{
+  "position": 13,
+  "packet_id": "hr-f5d18c35e468",
+  "event": "human_error_corrected_after_ai_feedback",
+  "original_human_label": "contradicted",
+  "ai_second_opinion": "insufficient",
+  "revised_human_label": "insufficient",
+  "revision_trigger": "AI_feedback_and_user_reconsideration",
+  "revision_reason": "absence_of_evidence_is_not_evidence_of_absence",
+  "revision_reason_text": "The source says the recipe uses oats and honey and does not mention nuts. Not mentioning nuts does not establish their absence. Therefore the evidence is insufficient to determine whether the recipe includes nuts.",
+  "revision_confirmed_by_user": true,
+  "independent_adjudicator": false,
+  "author_label_changed": false,
+  "original_response_overwritten": false
+}

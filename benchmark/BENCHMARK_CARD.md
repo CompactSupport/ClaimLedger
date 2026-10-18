@@ -66,6 +66,8 @@ Residual risks remain. The same passage still accompanies every claim about that
 
 The semantic-pilot harness sends one isolated record at a time and strips credential environment variables. It is not an operating-system sandbox. Real Codex inference is disabled until subscription authentication and billing are verified, and API-key billing is not a fallback. No real model call has been made.
 
+One conversational Human–AI session on the 30-case packet is recorded in `benchmark/evaluation/human_ai_calibration/`. Its metric is `human_ai_agreement`. The original comparison and the later consensus after feedback are separate. Neither is accuracy, independent inter-annotator agreement, or a gold result. Reviewer B's sheet is still empty.
+
 ## Name check
 
 On 2026-10-17, `https://pypi.org/pypi/claimledger/json` returned 404. This repository was not published. Other GitHub projects already use the words ClaimLedger. No trademark search was done. Do not publish to PyPI or buy a domain without a separate decision.

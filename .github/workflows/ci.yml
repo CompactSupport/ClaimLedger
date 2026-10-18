@@ -25,6 +25,7 @@ jobs:
       - run: python scripts/export_label_blind_evaluation.py --check
       - run: python scripts/validate_calibration.py --check
       - run: python scripts/run_semantic_pilot.py --check
+      - run: python scripts/report_human_ai_calibration.py --check
   secret-scan:
     runs-on: ubuntu-latest
     steps:
