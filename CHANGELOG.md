@@ -4,6 +4,7 @@ All notable changes to ClaimLedger are documented here. The project uses semanti
 
 ## Unreleased
 
+- Record a second conversational 30-label set beside the original Human–AI session. It does not replace the original answers or become a formal human review.
 - Record one 30-case Human–AI calibration session. Original agreement stays separate from the post-feedback consensus, and neither is accuracy or a gold label.
 - Refuse a human-reviewed queue row unless the adjudication is tied to two validated human submissions, the approval digest, and the dataset version. A reviewer name does not prove identity. Queue writes stay off without a separate write approval.
 - Make `scripts/run_semantic_pilot.py --check` run the offline mock gate and exit nonzero on failure. Mock output is not a semantic-model score, and real Codex execution stays disabled.

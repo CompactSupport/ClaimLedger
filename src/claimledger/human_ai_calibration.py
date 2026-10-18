@@ -1,8 +1,8 @@
-"""Document one conversational Human–AI calibration session.
+"""Document conversational Human–AI calibration labels.
 
 Statistics are computed from the stored responses and the committed AI files.
-This module does not write the canonical review queue, invent a second human
-reviewer, or treat agreement as accuracy.
+This module does not write the canonical review queue, invent a reviewer
+identity, or treat agreement as accuracy.
 """
 
 from __future__ import annotations
@@ -180,6 +180,40 @@ def build_study(root: Path) -> dict:
         raise CalibrationStudyError("Reviewer B's sheet is no longer empty.")
     if any(row["human_reviewed"] != "False" or row["reviewed_label"] != "" for row in queue):
         raise CalibrationStudyError("The canonical queue has a human-reviewed row.")
+    second_doc = json.loads((study_dir / "second_reviewer_responses.json").read_text(encoding="utf-8"))
+    second_labels = _labels_from_codes(second_doc["original_codes_in_packet_order"])
+    if len(second_labels) != len(joined):
+        raise CalibrationStudyError("The second reviewer response list is not 30 rows.")
+    for row, label in zip(joined, second_labels, strict=True):
+        row["second_reviewer_label"] = label
+    second_vs_original = _agreement_block(
+        second_labels,
+        [row["original_human_label"] for row in joined],
+        "second_reviewer_vs_original_human",
+    )
+    second_vs_revised = _agreement_block(
+        second_labels,
+        revised_labels,
+        "second_reviewer_vs_revised_human",
+    )
+    second_vs_ai = _agreement_block(
+        second_labels,
+        [row["ai_second_opinion"] for row in joined],
+        "second_reviewer_vs_ai",
+    )
+    second_differences = [
+        {
+            "position": row["position"],
+            "packet_id": row["packet_id"],
+            "canonical_id": row["canonical_id"],
+            "claim": row["claim"],
+            "original_human_label": row["original_human_label"],
+            "second_reviewer_label": row["second_reviewer_label"],
+            "ai_second_opinion": row["ai_second_opinion"],
+        }
+        for row in joined
+        if row["second_reviewer_label"] != row["original_human_label"]
+    ]
     manifest = json.loads((candidates / "manifest.json").read_text(encoding="utf-8"))
     by_hash = {digest: name for name, digest in manifest["document_sha256"].items()}
     source_name = by_hash[by_packet[target["packet_id"]]["document_sha256"]]
@@ -228,6 +262,18 @@ def build_study(root: Path) -> dict:
             "consensus_after_feedback": True,
             "replaces_original_result": False,
         },
+        "second_reviewer": {
+            "response_origin": second_doc["response_origin"],
+            "user_described_as_independent_reviewer": True,
+            "reviewer_identity_verified": False,
+            "response_timestamp": None,
+            "formal_review_sheet": False,
+            "counted_as_completed_two_human_review": False,
+            "differences_from_original_human": second_differences,
+            "versus_original_human": second_vs_original,
+            "versus_revised_human": second_vs_revised,
+            "versus_ai": second_vs_ai,
+        },
         "integrity": {
             "review_queue_sha256": _sha256(queue_path),
             "human_reviewed_rows_in_queue": 0,
@@ -247,8 +293,9 @@ def render_report_json(study: dict) -> str:
     return json.dumps(study, indent=2, ensure_ascii=False) + "\n"
 
 
-def _matrix_table(matrix: dict[str, dict[str, int]]) -> list[str]:
-    header = "| Human \\ AI | " + " | ".join(CLASSES) + " |"
+def _matrix_table(matrix: dict[str, dict[str, int]], row_name: str = "Human",
+                  column_name: str = "AI") -> list[str]:
+    header = f"| {row_name} \\ {column_name} | " + " | ".join(CLASSES) + " |"
     rule = "| --- | " + " | ".join("---" for _ in CLASSES) + " |"
     lines = [header, rule]
     for human in CLASSES:
@@ -383,6 +430,53 @@ def render_report_markdown(study: dict) -> str:
         f"{revised['agreements']}/{revised['n']} is consensus after feedback. It is not "
         "independent accuracy, and it is not evidence that the AI judgments are all correct.",
         "",
+        "## Second reviewer",
+        "",
+        "A later set of 30 labels was supplied as another reviewer's answers. The user "
+        "described that person as independent. Their identity was not verified, no timestamp "
+        "was available, and the labels were not entered on reviewer B's formal sheet. This "
+        "does not complete a two-human review and does not release gold. The original "
+        f"{original['agreements']}/{original['n']} comparison is unchanged.",
+        "",
+    ])
+    second = study["second_reviewer"]
+    versus_original = second["versus_original_human"]
+    versus_ai = second["versus_ai"]
+    versus_revised = second["versus_revised_human"]
+    lines.extend([
+        f"- Agreements with the original human labels: "
+        f"{versus_original['agreements']}/{versus_original['n']}.",
+        f"- Cohen's kappa against the original human labels: {versus_original['cohen_kappa']:.2f}.",
+        f"- Agreements with the AI second opinions: "
+        f"{versus_ai['agreements']}/{versus_ai['n']}.",
+        f"- Agreements with the first person's revised labels: "
+        f"{versus_revised['agreements']}/{versus_revised['n']}.",
+        "",
+        "Positions that differ from the original human label:",
+        "",
+    ])
+    if not second["differences_from_original_human"]:
+        lines.append("None.")
+    for row in second["differences_from_original_human"]:
+        lines.append(
+            f"- {row['position']}. `{row['packet_id']}` / `{row['canonical_id']}`: "
+            f"original human `{row['original_human_label']}`, "
+            f"second reviewer `{row['second_reviewer_label']}`, "
+            f"AI `{row['ai_second_opinion']}`."
+        )
+    lines.extend([
+        "",
+        "Confusion matrix, second reviewer by row and original human label by column:",
+        "",
+        *_matrix_table(
+            versus_original["confusion_matrix_human_rows_ai_columns"],
+            "Second reviewer",
+            "Original human",
+        ),
+        "",
+        "These comparisons are `human_ai_agreement` or conversational label agreement. "
+        "They are not accuracy.",
+        "",
         "## Threats to validity",
         "",
         "- The candidate set is synthetic and author-labeled.",
@@ -393,17 +487,30 @@ def render_report_markdown(study: dict) -> str:
         "- The revised label depends on seeing the AI comparison.",
         "- The 30 rows are a small, intentionally class-balanced calibration subset, not a "
         "random sample of a broader population.",
-        "- Reviewer B's sheet is empty. There is no second human rater.",
+        "- Reviewer B's formal sheet is still empty. The additional 30 labels are a "
+        "conversational record. Identity, independence, and evidence spans were not verified.",
         "",
         "## Next steps",
         "",
-        "Keep this session out of the gold queue. A later study needs a second person who "
-        "did not write the items, timestamped sheets with evidence spans, and the label-blind "
-        "export so case-id suffixes are not visible. Do not import these conversational "
-        "labels through the calibration approval gate.",
+        "Keep this session out of the gold queue. The additional conversational labels still "
+        "need a timestamped sheet and evidence spans before they can enter the review queue. "
+        "Do not import these conversational labels through the calibration approval gate.",
         "",
     ])
     return "\n".join(lines)
+
+
+def render_second_reviewer_csv(root: Path) -> str:
+    study_dir = root / "benchmark" / "evaluation" / "human_ai_calibration"
+    original = json.loads((study_dir / "human_original_responses.json").read_text(encoding="utf-8"))
+    second = json.loads((study_dir / "second_reviewer_responses.json").read_text(encoding="utf-8"))
+    labels = _labels_from_codes(second["original_codes_in_packet_order"])
+    lines = ["position,packet_id,second_reviewer_label"]
+    for position, (packet_id, label) in enumerate(
+        zip(original["packet_ids_in_order"], labels, strict=True), start=1,
+    ):
+        lines.append(f"{position},{packet_id},{label}")
+    return "\n".join(lines) + "\n"
 
 
 def render_original_csv(root: Path) -> str:

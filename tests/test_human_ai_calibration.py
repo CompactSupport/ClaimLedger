@@ -74,3 +74,19 @@ def test_original_session_is_immutable_and_not_gold():
     assert status["human_ai_original_agreement_is_accuracy"] is False
     assert status["human_reviewed_rows"] == 0
     assert status["gold_benchmark_released"] is False
+    original_codes = original["original_codes_in_packet_order"]
+    second_doc = json.loads((STUDY / "second_reviewer_responses.json").read_text(encoding="utf-8"))
+    second_codes = second_doc["original_codes_in_packet_order"]
+    assert second_doc["reviewer_identity_verified"] is False
+    assert second_doc["formal_review_sheet"] is False
+    assert len(second_codes) == 30
+    assert [index for index, (left, right) in enumerate(zip(original_codes, second_codes, strict=True), start=1) if left != right] == [13]
+    assert first["cases"][12]["second_reviewer_label"] == "insufficient"
+    assert first["cases"][12]["original_human_label"] == "contradicted"
+    second = first["second_reviewer"]
+    assert second["counted_as_completed_two_human_review"] is False
+    assert second["versus_original_human"]["agreements"] == 29
+    assert second["versus_revised_human"]["agreements"] == 30
+    assert second["versus_ai"]["agreements"] == 30
+    assert second["versus_ai"]["is_accuracy"] is False
+    assert second["versus_original_human"]["is_independent_inter_annotator_agreement"] is False

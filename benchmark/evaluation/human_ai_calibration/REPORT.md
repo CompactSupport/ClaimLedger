@@ -113,6 +113,29 @@ These figures are separate from the original result. They do not replace 29/30.
 
 30/30 is consensus after feedback. It is not independent accuracy, and it is not evidence that the AI judgments are all correct.
 
+## Second reviewer
+
+A later set of 30 labels was supplied as another reviewer's answers. The user described that person as independent. Their identity was not verified, no timestamp was available, and the labels were not entered on reviewer B's formal sheet. This does not complete a two-human review and does not release gold. The original 29/30 comparison is unchanged.
+
+- Agreements with the original human labels: 29/30.
+- Cohen's kappa against the original human labels: 0.95.
+- Agreements with the AI second opinions: 30/30.
+- Agreements with the first person's revised labels: 30/30.
+
+Positions that differ from the original human label:
+
+- 13. `hr-f5d18c35e468` / `cl-027-2`: original human `contradicted`, second reviewer `insufficient`, AI `insufficient`.
+
+Confusion matrix, second reviewer by row and original human label by column:
+
+| Second reviewer \ Original human | supported | contradicted | insufficient |
+| --- | --- | --- | --- |
+| supported | 10 | 0 | 0 |
+| contradicted | 0 | 9 | 0 |
+| insufficient | 0 | 1 | 10 |
+
+These comparisons are `human_ai_agreement` or conversational label agreement. They are not accuracy.
+
 ## Threats to validity
 
 - The candidate set is synthetic and author-labeled.
@@ -120,8 +143,8 @@ These figures are separate from the original result. They do not replace 29/30.
 - The person who labeled these 30 rows may overlap with the dataset author or project maintainer. Identity was not verified.
 - The revised label depends on seeing the AI comparison.
 - The 30 rows are a small, intentionally class-balanced calibration subset, not a random sample of a broader population.
-- Reviewer B's sheet is empty. There is no second human rater.
+- Reviewer B's formal sheet is still empty. The additional 30 labels are a conversational record. Identity, independence, and evidence spans were not verified.
 
 ## Next steps
 
-Keep this session out of the gold queue. A later study needs a second person who did not write the items, timestamped sheets with evidence spans, and the label-blind export so case-id suffixes are not visible. Do not import these conversational labels through the calibration approval gate.
+Keep this session out of the gold queue. The additional conversational labels still need a timestamped sheet and evidence spans before they can enter the review queue. Do not import these conversational labels through the calibration approval gate.

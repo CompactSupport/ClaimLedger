@@ -16,6 +16,7 @@ from claimledger.human_ai_calibration import (
     render_original_csv,
     render_report_json,
     render_report_markdown,
+    render_second_reviewer_csv,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,6 +29,7 @@ def rendered(root: Path = ROOT) -> dict[str, str]:
         "report.json": render_report_json(study),
         "REPORT.md": render_report_markdown(study),
         "human_original_responses.csv": render_original_csv(root),
+        "second_reviewer_responses.csv": render_second_reviewer_csv(root),
     }
 
 

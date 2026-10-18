@@ -47,7 +47,8 @@
       "canonical_id": "cl-003-3",
       "claim": "The Nimbus test was funded by three universities.",
       "original_human_label": "insufficient",
-      "ai_second_opinion": "insufficient"
+      "ai_second_opinion": "insufficient",
+      "second_reviewer_label": "insufficient"
     },
     {
       "position": 2,
@@ -55,7 +56,8 @@
       "canonical_id": "cl-005-2",
       "claim": "The Harbor shuttle offers overnight service.",
       "original_human_label": "contradicted",
-      "ai_second_opinion": "contradicted"
+      "ai_second_opinion": "contradicted",
+      "second_reviewer_label": "contradicted"
     },
     {
       "position": 3,
@@ -63,7 +65,8 @@
       "canonical_id": "cl-016-1",
       "claim": "The Comet bus arrives four times per hour during operating hours.",
       "original_human_label": "supported",
-      "ai_second_opinion": "supported"
+      "ai_second_opinion": "supported",
+      "second_reviewer_label": "supported"
     },
     {
       "position": 4,
@@ -71,7 +74,8 @@
       "canonical_id": "cl-031-2",
       "claim": "This batch passed the intact-vial rule.",
       "original_human_label": "contradicted",
-      "ai_second_opinion": "contradicted"
+      "ai_second_opinion": "contradicted",
+      "second_reviewer_label": "contradicted"
     },
     {
       "position": 5,
@@ -79,7 +83,8 @@
       "canonical_id": "cl-007-3",
       "claim": "The Ember storage pool uses solid-state drives.",
       "original_human_label": "insufficient",
-      "ai_second_opinion": "insufficient"
+      "ai_second_opinion": "insufficient",
+      "second_reviewer_label": "insufficient"
     },
     {
       "position": 6,
@@ -87,7 +92,8 @@
       "canonical_id": "cl-001-2",
       "claim": "Project Orion evaluated 150 samples in April 2026.",
       "original_human_label": "contradicted",
-      "ai_second_opinion": "contradicted"
+      "ai_second_opinion": "contradicted",
+      "second_reviewer_label": "contradicted"
     },
     {
       "position": 7,
@@ -95,7 +101,8 @@
       "canonical_id": "cl-009-3",
       "claim": "The ninety-ninth percentile latency was 120 milliseconds.",
       "original_human_label": "insufficient",
-      "ai_second_opinion": "insufficient"
+      "ai_second_opinion": "insufficient",
+      "second_reviewer_label": "insufficient"
     },
     {
       "position": 8,
@@ -103,7 +110,8 @@
       "canonical_id": "cl-024-1",
       "claim": "Route East took less time than Route West.",
       "original_human_label": "supported",
-      "ai_second_opinion": "supported"
+      "ai_second_opinion": "supported",
+      "second_reviewer_label": "supported"
     },
     {
       "position": 9,
@@ -111,7 +119,8 @@
       "canonical_id": "cl-003-1",
       "claim": "The Nimbus test excluded synthetic fibers.",
       "original_human_label": "supported",
-      "ai_second_opinion": "supported"
+      "ai_second_opinion": "supported",
+      "second_reviewer_label": "supported"
     },
     {
       "position": 10,
@@ -119,7 +128,8 @@
       "canonical_id": "cl-005-3",
       "claim": "A ride on the Harbor shuttle costs three dollars.",
       "original_human_label": "insufficient",
-      "ai_second_opinion": "insufficient"
+      "ai_second_opinion": "insufficient",
+      "second_reviewer_label": "insufficient"
     },
     {
       "position": 11,
@@ -127,7 +137,8 @@
       "canonical_id": "cl-002-2",
       "claim": "The Maple Archive opened its digital collection on June 14, 2026.",
       "original_human_label": "contradicted",
-      "ai_second_opinion": "contradicted"
+      "ai_second_opinion": "contradicted",
+      "second_reviewer_label": "contradicted"
     },
     {
       "position": 12,
@@ -135,7 +146,8 @@
       "canonical_id": "cl-002-1",
       "claim": "The Maple Archive digital collection went live on June 4, 2026.",
       "original_human_label": "supported",
-      "ai_second_opinion": "supported"
+      "ai_second_opinion": "supported",
+      "second_reviewer_label": "supported"
     },
     {
       "position": 13,
@@ -143,7 +155,8 @@
       "canonical_id": "cl-027-2",
       "claim": "The recipe includes nuts.",
       "original_human_label": "contradicted",
-      "ai_second_opinion": "insufficient"
+      "ai_second_opinion": "insufficient",
+      "second_reviewer_label": "insufficient"
     },
     {
       "position": 14,
@@ -151,7 +164,8 @@
       "canonical_id": "cl-004-2",
       "claim": "The tracking apparatus used 14 MWh per night.",
       "original_human_label": "contradicted",
-      "ai_second_opinion": "contradicted"
+      "ai_second_opinion": "contradicted",
+      "second_reviewer_label": "contradicted"
     },
     {
       "position": 15,
@@ -159,7 +173,8 @@
       "canonical_id": "cl-018-2",
       "claim": "The Seabird draft received external referee review before posting.",
       "original_human_label": "contradicted",
-      "ai_second_opinion": "contradicted"
+      "ai_second_opinion": "contradicted",
+      "second_reviewer_label": "contradicted"
     },
     {
       "position": 16,
@@ -167,7 +182,8 @@
       "canonical_id": "cl-011-3",
       "claim": "The Canary sample had a turbidity of 1.3 NTU.",
       "original_human_label": "insufficient",
-      "ai_second_opinion": "insufficient"
+      "ai_second_opinion": "insufficient",
+      "second_reviewer_label": "insufficient"
     },
     {
       "position": 17,
@@ -175,7 +191,8 @@
       "canonical_id": "cl-003-2",
       "claim": "The Nimbus materials test included synthetic fibers.",
       "original_human_label": "contradicted",
-      "ai_second_opinion": "contradicted"
+      "ai_second_opinion": "contradicted",
+      "second_reviewer_label": "contradicted"
     },
     {
       "position": 18,
@@ -183,7 +200,8 @@
       "canonical_id": "cl-015-2",
       "claim": "The Briar campaign collected a total of 65,000 dollars.",
       "original_human_label": "contradicted",
-      "ai_second_opinion": "contradicted"
+      "ai_second_opinion": "contradicted",
+      "second_reviewer_label": "contradicted"
     },
     {
       "position": 19,
@@ -191,7 +209,8 @@
       "canonical_id": "cl-006-1",
       "claim": "Model A succeeded in more trials than Model B.",
       "original_human_label": "supported",
-      "ai_second_opinion": "supported"
+      "ai_second_opinion": "supported",
+      "second_reviewer_label": "supported"
     },
     {
       "position": 20,
@@ -199,7 +218,8 @@
       "canonical_id": "cl-015-1",
       "claim": "The Briar campaign collected a total of 56,000 dollars.",
       "original_human_label": "supported",
-      "ai_second_opinion": "supported"
+      "ai_second_opinion": "supported",
+      "second_reviewer_label": "supported"
     },
     {
       "position": 21,
@@ -207,7 +227,8 @@
       "canonical_id": "cl-006-3",
       "claim": "Model A was cheaper to deploy than Model B.",
       "original_human_label": "insufficient",
-      "ai_second_opinion": "insufficient"
+      "ai_second_opinion": "insufficient",
+      "second_reviewer_label": "insufficient"
     },
     {
       "position": 22,
@@ -215,7 +236,8 @@
       "canonical_id": "cl-001-1",
       "claim": "Project Orion evaluated 120 samples in April 2026.",
       "original_human_label": "supported",
-      "ai_second_opinion": "supported"
+      "ai_second_opinion": "supported",
+      "second_reviewer_label": "supported"
     },
     {
       "position": 23,
@@ -223,7 +245,8 @@
       "canonical_id": "cl-032-1",
       "claim": "A submission on 3 March 2026 was late.",
       "original_human_label": "supported",
-      "ai_second_opinion": "supported"
+      "ai_second_opinion": "supported",
+      "second_reviewer_label": "supported"
     },
     {
       "position": 24,
@@ -231,7 +254,8 @@
       "canonical_id": "cl-029-1",
       "claim": "Equipment bought in 2026 can be charged to the grant.",
       "original_human_label": "supported",
-      "ai_second_opinion": "supported"
+      "ai_second_opinion": "supported",
+      "second_reviewer_label": "supported"
     },
     {
       "position": 25,
@@ -239,7 +263,8 @@
       "canonical_id": "cl-006-2",
       "claim": "Model B succeeded in more trials than Model A.",
       "original_human_label": "contradicted",
-      "ai_second_opinion": "contradicted"
+      "ai_second_opinion": "contradicted",
+      "second_reviewer_label": "contradicted"
     },
     {
       "position": 26,
@@ -247,7 +272,8 @@
       "canonical_id": "cl-001-3",
       "claim": "Project Orion was funded by a city government.",
       "original_human_label": "insufficient",
-      "ai_second_opinion": "insufficient"
+      "ai_second_opinion": "insufficient",
+      "second_reviewer_label": "insufficient"
     },
     {
       "position": 27,
@@ -255,7 +281,8 @@
       "canonical_id": "cl-018-1",
       "claim": "The Seabird draft had no external referee review.",
       "original_human_label": "supported",
-      "ai_second_opinion": "supported"
+      "ai_second_opinion": "supported",
+      "second_reviewer_label": "supported"
     },
     {
       "position": 28,
@@ -263,7 +290,8 @@
       "canonical_id": "cl-014-3",
       "claim": "The Mosaic dataset includes videos with subtitles.",
       "original_human_label": "insufficient",
-      "ai_second_opinion": "insufficient"
+      "ai_second_opinion": "insufficient",
+      "second_reviewer_label": "insufficient"
     },
     {
       "position": 29,
@@ -271,7 +299,8 @@
       "canonical_id": "cl-002-3",
       "claim": "The Maple Archive plans to release audio recordings next year.",
       "original_human_label": "insufficient",
-      "ai_second_opinion": "insufficient"
+      "ai_second_opinion": "insufficient",
+      "second_reviewer_label": "insufficient"
     },
     {
       "position": 30,
@@ -279,7 +308,8 @@
       "canonical_id": "cl-004-3",
       "claim": "The Cedar Observatory is located at an elevation of 1,400 meters.",
       "original_human_label": "insufficient",
-      "ai_second_opinion": "insufficient"
+      "ai_second_opinion": "insufficient",
+      "second_reviewer_label": "insufficient"
     }
   ],
   "original": {
@@ -322,7 +352,8 @@
       "canonical_id": "cl-027-2",
       "claim": "The recipe includes nuts.",
       "original_human_label": "contradicted",
-      "ai_second_opinion": "insufficient"
+      "ai_second_opinion": "insufficient",
+      "second_reviewer_label": "insufficient"
     }
   ],
   "revision": {
@@ -378,6 +409,124 @@
     "is_evidence_of_ai_correctness": false,
     "consensus_after_feedback": true,
     "replaces_original_result": false
+  },
+  "second_reviewer": {
+    "response_origin": "user_provided_second_reviewer_conversational_judgment",
+    "user_described_as_independent_reviewer": true,
+    "reviewer_identity_verified": false,
+    "response_timestamp": null,
+    "formal_review_sheet": false,
+    "counted_as_completed_two_human_review": false,
+    "differences_from_original_human": [
+      {
+        "position": 13,
+        "packet_id": "hr-f5d18c35e468",
+        "canonical_id": "cl-027-2",
+        "claim": "The recipe includes nuts.",
+        "original_human_label": "contradicted",
+        "second_reviewer_label": "insufficient",
+        "ai_second_opinion": "insufficient"
+      }
+    ],
+    "versus_original_human": {
+      "metric": "second_reviewer_vs_original_human",
+      "n": 30,
+      "agreements": 29,
+      "disagreements": 1,
+      "observed_agreement": 0.9666666666666667,
+      "cohen_kappa": 0.9500000000000001,
+      "confusion_matrix_human_rows_ai_columns": {
+        "supported": {
+          "supported": 10,
+          "contradicted": 0,
+          "insufficient": 0
+        },
+        "contradicted": {
+          "supported": 0,
+          "contradicted": 9,
+          "insufficient": 0
+        },
+        "insufficient": {
+          "supported": 0,
+          "contradicted": 1,
+          "insufficient": 10
+        }
+      },
+      "per_class_agreement_counts": {
+        "supported": 10,
+        "contradicted": 9,
+        "insufficient": 10
+      },
+      "is_accuracy": false,
+      "is_independent_inter_annotator_agreement": false,
+      "is_evidence_of_ai_correctness": false
+    },
+    "versus_revised_human": {
+      "metric": "second_reviewer_vs_revised_human",
+      "n": 30,
+      "agreements": 30,
+      "disagreements": 0,
+      "observed_agreement": 1.0,
+      "cohen_kappa": 1.0,
+      "confusion_matrix_human_rows_ai_columns": {
+        "supported": {
+          "supported": 10,
+          "contradicted": 0,
+          "insufficient": 0
+        },
+        "contradicted": {
+          "supported": 0,
+          "contradicted": 9,
+          "insufficient": 0
+        },
+        "insufficient": {
+          "supported": 0,
+          "contradicted": 0,
+          "insufficient": 11
+        }
+      },
+      "per_class_agreement_counts": {
+        "supported": 10,
+        "contradicted": 9,
+        "insufficient": 11
+      },
+      "is_accuracy": false,
+      "is_independent_inter_annotator_agreement": false,
+      "is_evidence_of_ai_correctness": false
+    },
+    "versus_ai": {
+      "metric": "second_reviewer_vs_ai",
+      "n": 30,
+      "agreements": 30,
+      "disagreements": 0,
+      "observed_agreement": 1.0,
+      "cohen_kappa": 1.0,
+      "confusion_matrix_human_rows_ai_columns": {
+        "supported": {
+          "supported": 10,
+          "contradicted": 0,
+          "insufficient": 0
+        },
+        "contradicted": {
+          "supported": 0,
+          "contradicted": 9,
+          "insufficient": 0
+        },
+        "insufficient": {
+          "supported": 0,
+          "contradicted": 0,
+          "insufficient": 11
+        }
+      },
+      "per_class_agreement_counts": {
+        "supported": 10,
+        "contradicted": 9,
+        "insufficient": 11
+      },
+      "is_accuracy": false,
+      "is_independent_inter_annotator_agreement": false,
+      "is_evidence_of_ai_correctness": false
+    }
   },
   "integrity": {
     "review_queue_sha256": "4b733dbb35f2f18a97e8f801463341ca2d50069b3354addc6fd82d336423704d",
