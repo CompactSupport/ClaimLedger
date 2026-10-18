@@ -421,6 +421,8 @@ def plan_queue_import(adjudications: list[dict], approval: dict | None, *,
             "adjudicator": adjudicator,
             "adjudicated_at": _field(row, "adjudicated_at"),
             "tied_to_validated_submissions": True,
+            "evidence_quote": row.get("evidence_quote") or "",
+            "review_notes": row.get("review_notes") or "",
         })
     return {
         "schema": PLAN_SCHEMA,
@@ -470,6 +472,10 @@ def apply_plan(queue_rows: list[dict], plan: dict, *, write_action: dict | None 
             copied["human_reviewed"] = "True"
             copied["reviewer"] = change["adjudicator"]
             copied["reviewed_at"] = change["adjudicated_at"]
+            if "evidence_quote" in change:
+                copied["evidence_quote"] = change["evidence_quote"]
+            if change.get("review_notes"):
+                copied["review_notes"] = change["review_notes"]
         if copied.get("expected") != row.get("expected"):
             raise ImportRefused("The author label was not preserved.")
         updated.append(copied)

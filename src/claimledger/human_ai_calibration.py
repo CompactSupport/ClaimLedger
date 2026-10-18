@@ -12,8 +12,15 @@ import hashlib
 import json
 from pathlib import Path
 
-from .calibration import cohen_kappa
+from .calibration import (
+    adjudication_digest,
+    apply_plan,
+    cohen_kappa,
+    plan_queue_import,
+    validate_sheets,
+)
 from .label_blind import CLASSES, permitted_passage
+from .review import locate_unique_quote
 
 STUDY_SCHEMA = "claimledger.human_ai_calibration_report.v1"
 CODE_MAP = {"S": "supported", "C": "contradicted", "I": "insufficient"}
@@ -176,10 +183,14 @@ def build_study(root: Path) -> dict:
     reviewer_b_decisions = _sheet_decision_count(
         evaluation / "human_review" / "response_sheet_B.csv"
     )
-    if reviewer_b_decisions != 0:
-        raise CalibrationStudyError("Reviewer B's sheet is no longer empty.")
-    if any(row["human_reviewed"] != "False" or row["reviewed_label"] != "" for row in queue):
-        raise CalibrationStudyError("The canonical queue has a human-reviewed row.")
+    reviewed_queue_rows = [
+        row for row in queue
+        if row["human_reviewed"] == "True" or row["reviewed_label"] != ""
+    ]
+    if any(row["human_reviewed"] != "True" or row["reviewed_label"] == "" for row in reviewed_queue_rows):
+        raise CalibrationStudyError("A queue row mixes a review label with an unreviewed flag.")
+    if any(row["expected"] == "" for row in queue):
+        raise CalibrationStudyError("An author label is missing.")
     second_doc = json.loads((study_dir / "second_reviewer_responses.json").read_text(encoding="utf-8"))
     second_labels = _labels_from_codes(second_doc["original_codes_in_packet_order"])
     if len(second_labels) != len(joined):
@@ -268,7 +279,7 @@ def build_study(root: Path) -> dict:
             "reviewer_identity_verified": False,
             "response_timestamp": None,
             "formal_review_sheet": False,
-            "counted_as_completed_two_human_review": False,
+            "formal_queue_import_recorded": sum(row["human_reviewed"] == "True" for row in queue) == 30,
             "differences_from_original_human": second_differences,
             "versus_original_human": second_vs_original,
             "versus_revised_human": second_vs_revised,
@@ -276,11 +287,11 @@ def build_study(root: Path) -> dict:
         },
         "integrity": {
             "review_queue_sha256": _sha256(queue_path),
-            "human_reviewed_rows_in_queue": 0,
+            "human_reviewed_rows_in_queue": sum(row["human_reviewed"] == "True" for row in queue),
             "reviewed_labels_empty": True,
             "author_expected_preserved": True,
             "question_13_author_expected": author_label,
-            "reviewer_b_decisions": 0,
+            "reviewer_b_decisions": reviewer_b_decisions,
             "gold_set_rows": benchmark["gold_set_rows"],
             "gold_benchmark_released": benchmark["gold_benchmark_released"],
             "calibration_import_applied": benchmark["calibration_import_applied"],
@@ -433,9 +444,11 @@ def render_report_markdown(study: dict) -> str:
         "## Second reviewer",
         "",
         "A later set of 30 labels was supplied as another reviewer's answers. The user "
-        "described that person as independent. Their identity was not verified, no timestamp "
-        "was available, and the labels were not entered on reviewer B's formal sheet. This "
-        "does not complete a two-human review and does not release gold. The original "
+        "described that person as independent. The formal sheets name Steven and David. "
+        "Those names, and the adjudicator account id, do not prove a real-world identity. "
+        "The completed sheets and the queue import are in `benchmark/evaluation/formal_review/`. "
+        "The label-blind template for reviewer B stays empty. The import does not release gold. "
+        "The original "
         f"{original['agreements']}/{original['n']} comparison is unchanged.",
         "",
     ])
@@ -498,6 +511,186 @@ def render_report_markdown(study: dict) -> str:
         "",
     ])
     return "\n".join(lines)
+
+
+def _csv_text(rows: list[dict], fieldnames: list[str]) -> str:
+    import io
+    buffer = io.StringIO()
+    writer = csv.DictWriter(buffer, fieldnames=fieldnames, lineterminator="\n", extrasaction="ignore")
+    writer.writeheader()
+    writer.writerows(rows)
+    return buffer.getvalue()
+
+
+def _evidence_span(passage: str, label: str, quote: str, position: int) -> tuple[str, str, str]:
+    if label == "insufficient":
+        return "", "", ""
+    if not quote or passage.find(quote) < 0 or passage.find(quote, passage.find(quote) + 1) != -1:
+        raise CalibrationStudyError(f"Position {position} has no unique evidence quote.")
+    start = passage.find(quote)
+    return str(start), str(start + len(quote)), quote
+
+
+def assemble_formal_review(root: Path) -> dict:
+    """Build the two formal sheets and the queue update. This does not write files."""
+    study_dir = root / "benchmark" / "evaluation" / "human_ai_calibration"
+    candidates = root / "benchmark" / "candidates"
+    evaluation = root / "benchmark" / "evaluation"
+    original = json.loads((study_dir / "human_original_responses.json").read_text(encoding="utf-8"))
+    second = json.loads((study_dir / "second_reviewer_responses.json").read_text(encoding="utf-8"))
+    evidence = json.loads((study_dir / "reviewer_evidence.json").read_text(encoding="utf-8"))
+    author_quotes = json.loads((study_dir / "author_evidence_quotes.json").read_text(encoding="utf-8"))
+    packet = _read_jsonl(evaluation / "human_review" / "calibration_packet.jsonl")
+    mapping = json.loads((evaluation / "audit" / "calibration_mapping.json").read_text(encoding="utf-8"))
+    manifest = json.loads((candidates / "manifest.json").read_text(encoding="utf-8"))
+    by_packet = {row["packet_id"]: row for row in mapping["cases"]}
+    by_hash = {digest: name for name, digest in manifest["document_sha256"].items()}
+    steven_labels = _labels_from_codes(original["original_codes_in_packet_order"])
+    david_labels = _labels_from_codes(second["original_codes_in_packet_order"])
+    quotes = {int(key): value for key, value in evidence["quotes_by_position"].items()}
+    overrides = {int(key): value for key, value in evidence["adjudication_overrides_by_position"].items()}
+    if not (len(packet) == len(steven_labels) == len(david_labels) == 30):
+        raise CalibrationStudyError("Formal review inputs are not 30 rows.")
+    sheet_fields = [
+        "packet_id", "reviewer_slot", "reviewer_id", "reviewed_at", "reviewed_label",
+        "evidence_start", "evidence_end", "evidence_quote", "notes",
+    ]
+    steven_rows = []
+    david_rows = []
+    adjudications = []
+    documents = {
+        name: (candidates / "documents" / name).read_bytes()
+        for name in manifest["document_sha256"]
+    }
+    with (candidates / "review_queue.csv").open(encoding="utf-8", newline="") as handle:
+        queue_rows = list(csv.DictReader(handle))
+    for position, row in enumerate(packet, start=1):
+        packet_id = row["packet_id"]
+        if packet_id != original["packet_ids_in_order"][position - 1]:
+            raise CalibrationStudyError("Formal review packet order does not match the frozen ids.")
+        passage = row["passage"]
+        steven_label = steven_labels[position - 1]
+        david_label = david_labels[position - 1]
+        quote = quotes.get(position, "")
+        steven_start, steven_end, steven_quote = _evidence_span(passage, steven_label, quote, position)
+        david_start, david_end, david_quote = _evidence_span(passage, david_label, quote, position)
+        if steven_label == david_label:
+            adjudicated = steven_label
+            if position in overrides and overrides[position] != adjudicated:
+                raise CalibrationStudyError(f"Position {position} already agrees.")
+        else:
+            adjudicated = overrides.get(position)
+            if adjudicated not in CLASSES:
+                raise CalibrationStudyError(f"Position {position} needs an adjudication label.")
+        if adjudicated == "insufficient" and not quote:
+            adj_start, adj_end, adj_quote = "", "", ""
+        else:
+            if not quote or passage.find(quote) < 0:
+                raise CalibrationStudyError(f"Position {position} is missing a source quote.")
+            adj_start_i = passage.find(quote)
+            adj_start, adj_end, adj_quote = str(adj_start_i), str(adj_start_i + len(quote)), quote
+        mapped = by_packet[packet_id]
+        filename = by_hash[mapped["document_sha256"]]
+        full_text = (candidates / "documents" / filename).read_text(encoding="utf-8")
+        if adj_quote:
+            locate_unique_quote(full_text, adj_quote)
+        if steven_quote:
+            locate_unique_quote(full_text, steven_quote)
+        if david_quote:
+            locate_unique_quote(full_text, david_quote)
+        author_quote = author_quotes[str(position)]
+        notes = ""
+        if author_quote and author_quote != adj_quote:
+            notes = f"author_evidence_quote={author_quote}"
+        steven_rows.append({
+            "packet_id": packet_id,
+            "reviewer_slot": "A",
+            "reviewer_id": original["reviewer_id"],
+            "reviewed_at": original["reviewed_at"],
+            "reviewed_label": steven_label,
+            "evidence_start": steven_start,
+            "evidence_end": steven_end,
+            "evidence_quote": steven_quote,
+            "notes": "",
+        })
+        david_rows.append({
+            "packet_id": packet_id,
+            "reviewer_slot": "B",
+            "reviewer_id": second["reviewer_id"],
+            "reviewed_at": second["reviewed_at"],
+            "reviewed_label": david_label,
+            "evidence_start": david_start,
+            "evidence_end": david_end,
+            "evidence_quote": david_quote,
+            "notes": "",
+        })
+        adjudications.append({
+            "packet_id": packet_id,
+            "canonical_id": mapped["canonical_id"],
+            "claim": row["claim"],
+            "dataset_version": manifest["dataset_version"],
+            "document_sha256": mapped["document_sha256"],
+            "passage_sha256": hashlib.sha256(passage.encode("utf-8")).hexdigest(),
+            "adjudicated_label": adjudicated,
+            "evidence_quote": adj_quote,
+            "evidence_start": adj_start,
+            "evidence_end": adj_end,
+            "adjudicator": evidence["adjudicator_id"],
+            "adjudicated_at": evidence["adjudicated_at"],
+            "reviewer_a_id": original["reviewer_id"],
+            "reviewer_b_id": second["reviewer_id"],
+            "reviewer_a_label": steven_label,
+            "reviewer_b_label": david_label,
+            "reviewer_a_reviewed_at": original["reviewed_at"],
+            "reviewer_b_reviewed_at": second["reviewed_at"],
+            "review_notes": notes,
+        })
+    validated = validate_sheets(
+        packet, steven_rows, david_rows, mapping["cases"], manifest["document_sha256"], documents,
+    )
+    approval = {
+        "decision": "approved_for_queue_import",
+        "approver": evidence["adjudicator_id"],
+        "approved_at": evidence["write_approved_at"],
+        "approval_id": f"{evidence['adjudicator_id']}-{evidence['write_approved_at']}",
+        "dataset_version": manifest["dataset_version"],
+        "adjudication_sha256": adjudication_digest(adjudications),
+        "independence_attested": evidence["independence_attested_by_user"],
+        "independence_verified": False,
+    }
+    plan = plan_queue_import(
+        adjudications,
+        approval,
+        validated_pairs=validated["validated_pairs"],
+        queue_rows=queue_rows,
+        dataset_version=manifest["dataset_version"],
+        documents=documents,
+        manifest_hashes=manifest["document_sha256"],
+    )
+    write_action = {
+        "decision": "approved_queue_write",
+        "approver": evidence["adjudicator_id"],
+        "approved_at": evidence["write_approved_at"],
+        "dataset_version": manifest["dataset_version"],
+        "adjudication_sha256": plan["adjudication_sha256"],
+    }
+    updated = apply_plan(queue_rows, plan, write_action=write_action)
+    fieldnames = list(queue_rows[0].keys())
+    return {
+        "queue_csv": _csv_text(updated, fieldnames),
+        "sheet_steven": _csv_text(steven_rows, sheet_fields),
+        "sheet_david": _csv_text(david_rows, sheet_fields),
+        "adjudications_json": json.dumps(adjudications, indent=2, ensure_ascii=False) + "\n",
+        "approval_json": json.dumps(
+            {"approval": approval, "write_action": write_action, "plan_gold_benchmark_released": plan["gold_benchmark_released"]},
+            indent=2,
+            ensure_ascii=False,
+        ) + "\n",
+        "paired_cases": validated["paired_cases"],
+        "sheet_disagreements": validated["disagreements"],
+        "gold_benchmark_released": plan["gold_benchmark_released"],
+        "independence_verified": plan["independence_verified"],
+    }
 
 
 def render_second_reviewer_csv(root: Path) -> str:

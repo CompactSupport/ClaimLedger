@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from claimledger.human_ai_calibration import build_study, render_report_json
+from claimledger.human_ai_calibration import assemble_formal_review, build_study, render_report_json
 
 ROOT = Path(__file__).resolve().parents[1]
 QUEUE = ROOT / "benchmark" / "candidates" / "review_queue.csv"
@@ -62,8 +62,12 @@ def test_original_session_is_immutable_and_not_gold():
     assert first["encrypted_ai_answer_artifact_used"] is False
     with QUEUE.open(encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
-    assert all(row["human_reviewed"] == "False" and row["reviewed_label"] == "" for row in rows)
-    assert next(row["expected"] for row in rows if row["id"] == "cl-027-2") == "contradicted"
+    reviewed = [row for row in rows if row["human_reviewed"] == "True"]
+    assert len(reviewed) == 30
+    question_13 = next(row for row in rows if row["id"] == "cl-027-2")
+    assert question_13["expected"] == "contradicted"
+    assert question_13["reviewed_label"] == "insufficient"
+    assert question_13["reviewer"] == "117230865"
     sheet_b = ROOT / "benchmark" / "evaluation" / "human_review" / "response_sheet_B.csv"
     with sheet_b.open(encoding="utf-8", newline="") as handle:
         assert all(not (row.get("reviewed_label") or "").strip() for row in csv.DictReader(handle))
@@ -72,8 +76,14 @@ def test_original_session_is_immutable_and_not_gold():
     assert status["human_ai_original_agreements"] == first["original"]["agreements"]
     assert status["human_ai_post_feedback_agreements"] == first["after_feedback"]["agreements"]
     assert status["human_ai_original_agreement_is_accuracy"] is False
-    assert status["human_reviewed_rows"] == 0
+    assert status["human_reviewed_rows"] == 30
     assert status["gold_benchmark_released"] is False
+    formal = assemble_formal_review(ROOT)
+    assert formal["queue_csv"] == QUEUE.read_text(encoding="utf-8")
+    assert formal["paired_cases"] == 30
+    assert len(formal["sheet_disagreements"]) == 1
+    assert formal["gold_benchmark_released"] is False
+    assert formal["independence_verified"] is False
     original_codes = original["original_codes_in_packet_order"]
     second_doc = json.loads((STUDY / "second_reviewer_responses.json").read_text(encoding="utf-8"))
     second_codes = second_doc["original_codes_in_packet_order"]
@@ -84,7 +94,8 @@ def test_original_session_is_immutable_and_not_gold():
     assert first["cases"][12]["second_reviewer_label"] == "insufficient"
     assert first["cases"][12]["original_human_label"] == "contradicted"
     second = first["second_reviewer"]
-    assert second["counted_as_completed_two_human_review"] is False
+    assert second["formal_review_sheet"] is False
+    assert second["formal_queue_import_recorded"] is True
     assert second["versus_original_human"]["agreements"] == 29
     assert second["versus_revised_human"]["agreements"] == 30
     assert second["versus_ai"]["agreements"] == 30

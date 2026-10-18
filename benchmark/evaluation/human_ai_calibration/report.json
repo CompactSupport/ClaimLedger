@@ -416,7 +416,7 @@
     "reviewer_identity_verified": false,
     "response_timestamp": null,
     "formal_review_sheet": false,
-    "counted_as_completed_two_human_review": false,
+    "formal_queue_import_recorded": true,
     "differences_from_original_human": [
       {
         "position": 13,
@@ -529,8 +529,8 @@
     }
   },
   "integrity": {
-    "review_queue_sha256": "4b733dbb35f2f18a97e8f801463341ca2d50069b3354addc6fd82d336423704d",
-    "human_reviewed_rows_in_queue": 0,
+    "review_queue_sha256": "4f9cde5c049a7ae0bfecbfe95e01dd95bb5eedaf1d82dadda05327e65422299a",
+    "human_reviewed_rows_in_queue": 30,
     "reviewed_labels_empty": true,
     "author_expected_preserved": true,
     "question_13_author_expected": "contradicted",

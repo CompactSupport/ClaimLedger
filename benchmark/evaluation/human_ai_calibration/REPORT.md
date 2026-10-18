@@ -115,7 +115,7 @@ These figures are separate from the original result. They do not replace 29/30.
 
 ## Second reviewer
 
-A later set of 30 labels was supplied as another reviewer's answers. The user described that person as independent. Their identity was not verified, no timestamp was available, and the labels were not entered on reviewer B's formal sheet. This does not complete a two-human review and does not release gold. The original 29/30 comparison is unchanged.
+A later set of 30 labels was supplied as another reviewer's answers. The user described that person as independent. The formal sheets name Steven and David. Those names, and the adjudicator account id, do not prove a real-world identity. The completed sheets and the queue import are in `benchmark/evaluation/formal_review/`. The label-blind template for reviewer B stays empty. The import does not release gold. The original 29/30 comparison is unchanged.
 
 - Agreements with the original human labels: 29/30.
 - Cohen's kappa against the original human labels: 0.95.

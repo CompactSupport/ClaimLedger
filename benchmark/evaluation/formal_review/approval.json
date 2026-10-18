@@ -1,0 +1,20 @@
+{
+  "approval": {
+    "decision": "approved_for_queue_import",
+    "approver": "117230865",
+    "approved_at": "2026-10-18T03:52:00-07:00",
+    "approval_id": "117230865-2026-10-18T03:52:00-07:00",
+    "dataset_version": "candidates-2026-10-17.2",
+    "adjudication_sha256": "2cfda19eb935519510e289a6956d571709f45c6768f5078f33bf89a818b560fe",
+    "independence_attested": true,
+    "independence_verified": false
+  },
+  "write_action": {
+    "decision": "approved_queue_write",
+    "approver": "117230865",
+    "approved_at": "2026-10-18T03:52:00-07:00",
+    "dataset_version": "candidates-2026-10-17.2",
+    "adjudication_sha256": "2cfda19eb935519510e289a6956d571709f45c6768f5078f33bf89a818b560fe"
+  },
+  "plan_gold_benchmark_released": false
+}

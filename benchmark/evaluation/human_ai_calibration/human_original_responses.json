@@ -1,6 +1,8 @@
 {
   "schema": "claimledger.human_ai_original_responses.v1",
   "response_origin": "user_provided_conversational_judgment",
+  "reviewer_id": "Steven",
+  "reviewed_at": "2026-10-17T23:13:55-08:00",
   "submitted_before_comparative_feedback": true,
   "response_timestamp": null,
   "reviewer_identity_verified": false,

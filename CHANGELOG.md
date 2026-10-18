@@ -4,6 +4,7 @@ All notable changes to ClaimLedger are documented here. The project uses semanti
 
 ## Unreleased
 
+- Import the Steven and David calibration labels into the review queue after an explicit write approval. Thirty rows are human-reviewed, author labels stay in `expected`, and the set is not a released gold benchmark.
 - Record a second conversational 30-label set beside the original Human–AI session. It does not replace the original answers or become a formal human review.
 - Record one 30-case Human–AI calibration session. Original agreement stays separate from the post-feedback consensus, and neither is accuracy or a gold label.
 - Refuse a human-reviewed queue row unless the adjudication is tied to two validated human submissions, the approval digest, and the dataset version. A reviewer name does not prove identity. Queue writes stay off without a separate write approval.

@@ -26,6 +26,7 @@ jobs:
       - run: python scripts/validate_calibration.py --check
       - run: python scripts/run_semantic_pilot.py --check
       - run: python scripts/report_human_ai_calibration.py --check
+      - run: python scripts/apply_formal_calibration_import.py --check
   secret-scan:
     runs-on: ubuntu-latest
     steps:
