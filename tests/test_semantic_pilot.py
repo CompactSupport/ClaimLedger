@@ -277,10 +277,10 @@ def test_internal_subset_is_reproducible_and_hides_canonical_ids(tmp_path):
     )
     assert scored["independent_external_test"] is False
     assert scored["result_is_model_evaluation"] is False
-    assert "genuine model" in first["REPORT.md"].lower() or "no genuine" in first["REPORT.md"].lower()
     assert "not on PATH" in first["REPORT.md"]
-    assert "was not executed" in first["REPORT.md"]
-    assert "Genuine predictions: 0." in first["REPORT.md"]
+    assert "Genuine predictions: 10." in first["REPORT.md"]
+    assert "independent_external_test" in first["REPORT.md"]
+    assert "Macro-F1: 1.0." in first["REPORT.md"]
 
 
 def test_in_process_runner_cannot_be_recorded_as_a_model(tmp_path):
@@ -303,7 +303,7 @@ def test_verified_subscription_subprocess_is_recorded_as_real(tmp_path, monkeypa
     def fake_which(name):
         return r"C:\tools\agy.cmd" if name == "agy" else None
 
-    def fake_run(argv, cwd, env, capture_output, text, check):
+    def fake_run(argv, cwd, env, capture_output, text, check, input=None):
         seen["argv"] = argv
         seen["cwd"] = cwd
         seen["env"] = env
@@ -350,7 +350,7 @@ def test_verified_subscription_subprocess_is_recorded_as_real(tmp_path, monkeypa
 def test_failed_model_subprocess_is_still_recorded(tmp_path, monkeypatch):
     invocation = prepare_invocation([_record()], tmp_path / "work", ROOT, _environ())
 
-    def fake_run(argv, cwd, env, capture_output, text, check):
+    def fake_run(argv, cwd, env, capture_output, text, check, input=None):
         return subprocess.CompletedProcess(argv, 1, "", "authentication required")
 
     monkeypatch.setattr("claimledger.semantic_pilot.subprocess.run", fake_run)
@@ -404,6 +404,88 @@ def test_api_key_billing_does_not_start_antigravity(monkeypatch):
             invocation={"cwd": Path("."), "env": {}, "record": {}},
             repo_root=ROOT,
         )
+
+
+def test_codex_command_overrides_the_dangerous_default_sandbox(tmp_path, monkeypatch):
+    record = _record()
+    invocation = prepare_invocation([record], tmp_path / "work", ROOT, _environ())
+    seen = {}
+
+    def fake_which(name):
+        return r"C:\tools\codex.exe" if name == "codex" else None
+
+    def fake_run(argv, cwd, env, capture_output, text, check, input=None):
+        seen["argv"] = argv
+        seen["input"] = input
+        payload = {
+            "evaluation_id": record["evaluation_id"],
+            "verdict": "insufficient",
+            "quote": "",
+        }
+        return subprocess.CompletedProcess(argv, 0, json.dumps(payload), "")
+
+    monkeypatch.setattr("claimledger.semantic_pilot.shutil.which", fake_which)
+    monkeypatch.setattr("claimledger.semantic_pilot.subprocess.run", fake_run)
+    result = launch_subscription_model(
+        "codex",
+        {"authenticated": True, "billing_mode": "subscription", "api_key_present": False},
+        allow_real_inference=True,
+        invocation=invocation,
+        repo_root=ROOT,
+    )
+    assert result["real_model_execution"] is True
+    assert "-s" in seen["argv"]
+    assert "read-only" in seen["argv"]
+    assert "danger-full-access" not in seen["argv"]
+    assert seen["input"] == ""
+    with pytest.raises(PilotRefused, match="sandbox bypass"):
+        execute_restricted(
+            invocation,
+            model="codex",
+            cli_version="codex",
+            runner_argv=[r"C:\tools\codex.exe", "exec", "-s", "danger-full-access", "prompt"],
+            repo_root=ROOT,
+            real_model_execution=True,
+            provider="codex",
+        )
+
+
+def test_recorded_codex_run_matches_the_passages_and_adjudicated_labels():
+    recorded = json.loads(
+        (ROOT / "benchmark" / "evaluation" / "semantic_pilot" / "codex_subscription_run.json").read_text(encoding="utf-8")
+    )
+    public = json.loads(
+        (ROOT / "benchmark" / "evaluation" / "semantic_pilot" / "subset_public.json").read_text(encoding="utf-8")
+    )
+    audit = json.loads(
+        (ROOT / "benchmark" / "evaluation" / "semantic_pilot" / "subset_audit.json").read_text(encoding="utf-8")
+    )
+    passages = {}
+    for line in (ROOT / "benchmark" / "evaluation" / "isolated" / "inputs.jsonl").read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            row = json.loads(line)
+            passages[row["evaluation_id"]] = row["passage"]
+    labels = {row["evaluation_id"]: row["adjudicated_label"] for row in audit["cases"]}
+    assert [row["evaluation_id"] for row in recorded["predictions"]] == public["evaluation_ids"]
+    assert recorded["independent_external_test"] is False
+    assert recorded["independently_blinded"] is False
+    assert recorded["gold_benchmark_released"] is False
+    assert recorded["paid_model_calls"] == 0
+    assert recorded["sandbox_mode"] == "read-only"
+    correct = 0
+    for row in recorded["predictions"]:
+        assert row["adjudicated_label"] == labels[row["evaluation_id"]]
+        if row["verdict"] == "insufficient":
+            assert row["quote"] == ""
+        else:
+            assert row["quote"] in passages[row["evaluation_id"]]
+        correct += row["verdict"] == row["adjudicated_label"]
+    assert correct == 10
+    assert recorded["metrics"]["macro_f1"] == 1.0
+    retained = [row["tokens"] for row in recorded["tokens_used"] if row["tokens"] is not None]
+    assert sum(retained) == 43903
+    assert retained.count(None) == 0
+    assert sum(row["tokens"] is None for row in recorded["tokens_used"]) == 3
 
 
 def test_adjudicated_subset_check_does_not_run_a_model():

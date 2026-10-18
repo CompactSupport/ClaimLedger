@@ -45,7 +45,7 @@ An adjudication can be planned for `review_queue.csv` only when both of these ar
 
 `scripts/run_semantic_pilot.py --check` parses its arguments and runs those checks offline with a mock. The command exits nonzero when a check fails. Its passing output is a gate result, not a semantic-model score. A test may also run a subprocess command in the stripped workspace. That command is not model execution and it is not an operating-system sandbox.
 
-Codex, Gemini, or Antigravity starts only after authentication and subscription billing have both been verified, and only for one record outside the repository. API-key billing is not a fallback. `real_model_execution` is true only for that model subprocess. An in-process mock, and any other subprocess, stays false. The mock gate does not make a paid model call. No genuine prediction is recorded until such a process completes.
+Codex, Gemini, or Antigravity starts only after authentication and subscription billing have both been verified, and only for one record outside the repository. API-key billing is not a fallback. A Codex command passes `-s read-only` and does not use the desktop config's default sandbox. `real_model_execution` is true only for that model subprocess. An in-process mock, and any other subprocess, stays false. The mock gate does not make a paid model call. One recorded ChatGPT-subscription run is in `semantic_pilot/codex_subscription_run.json`. It is an internal comparison, not an external test.
 
 ## Result classes
 

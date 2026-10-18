@@ -237,10 +237,13 @@ def execute_restricted(invocation: dict, *, model: str, cli_version: str,
             raise PilotRefused("The runner command must not include the repository path.")
         if any(SENSITIVE_NAME.search(key) for key in invocation["env"]):
             raise PilotRefused("Refusing to start a process with a credential in the environment.")
+        if any(arg in {"danger-full-access", "--dangerously-bypass-approvals-and-sandbox"} for arg in runner_argv):
+            raise PilotRefused("Refusing a sandbox bypass.")
         completed = subprocess.run(
             runner_argv,
             cwd=invocation["cwd"],
             env=invocation["env"],
+            input="" if real_model_execution else None,
             capture_output=True,
             text=True,
             check=False,
@@ -315,7 +318,8 @@ def run_codex_subscription(billing: dict | None, *, allow_real_inference: bool =
     )
 
 
-def model_argv(provider: str, executable: str, prompt_text: str, record_text: str) -> list[str]:
+def model_argv(provider: str, executable: str, prompt_text: str, record_text: str,
+               workspace: Path) -> list[str]:
     """Build a documented non-interactive command. The arguments do not name the repository."""
     prompt = f"{prompt_text}\n\n{record_text}"
     if provider == "antigravity":
@@ -328,7 +332,16 @@ def model_argv(provider: str, executable: str, prompt_text: str, record_text: st
     if provider == "gemini":
         return [executable, "-p", prompt]
     if provider == "codex":
-        return [executable, "exec", prompt]
+        # The desktop config defaults to danger-full-access. Override it on every command.
+        return [
+            executable, "exec",
+            "-C", str(workspace),
+            "-s", "read-only",
+            "--skip-git-repo-check",
+            "-c", 'model_reasoning_effort="low"',
+            "--color", "never",
+            prompt,
+        ]
     raise PilotRefused(f"Unknown inference provider: {provider}.")
 
 
@@ -357,7 +370,7 @@ def launch_subscription_model(provider: str, billing: dict | None, *,
     workspace = Path(invocation["cwd"])
     prompt_text = (workspace / "prompt.txt").read_text(encoding="utf-8")
     record_text = (workspace / "input.json").read_text(encoding="utf-8")
-    argv = model_argv(provider, executable, prompt_text, record_text)
+    argv = model_argv(provider, executable, prompt_text, record_text, workspace)
     prepared = dict(invocation)
     prepared["env"] = subscription_process_env()
     return execute_restricted(

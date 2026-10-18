@@ -1,6 +1,6 @@
 # Semantic pilot
 
-This report does not contain a measured semantic-model score. No genuine model process was started, and mock output is not substituted.
+This report records one ChatGPT-subscription Codex run on the internal 10-case subset. Mock output is not included in that score.
 
 ## Label-derived annotations
 
@@ -19,15 +19,27 @@ This report does not contain a measured semantic-model score. No genuine model p
 
 ## Inference blocker
 
-The Codex CLI, the Gemini CLI, and the Antigravity CLI (agy) are not on PATH. Subscription authentication and billing were not verified, and no model process was started. API-key billing is not used as a fallback.
-
-No subscription CLI is on PATH, so the original 10-case subset was not executed. Genuine predictions remain 0.
+shutil.which does not find codex, gemini, or agy on PATH. The recorded run did not use that PATH lookup. It invoked the Microsoft Store Codex executable directly. That executable is not on PATH.
 
 A verified subscription and one record outside the repository can start Codex, Gemini, or Antigravity. `real_model_execution` is true only for that model subprocess. An in-process mock, and any other subprocess, stays false. A directory outside the repository and a stripped environment are not an operating-system sandbox. Any later run that can read this repository, including `subset_audit.json`, is not independently blinded.
 
+## Subscription run
+
+On 2026-10-18 the Microsoft Store Codex CLI 0.163.0-alpha.10.2, logged in with ChatGPT, answered the frozen 10-case subset. Each process was started with an explicit read-only sandbox and a workspace outside the repository that contained only that case. The adjudication file was not in the workspace. The run is not independently blinded, because that sandbox was not shown to block every other path on the machine. Ten of ten verdicts matched the adjudicated labels, and ten of ten quotes were valid. This is an internal comparison, not an external test and not a released gold benchmark.
+
+- CLI: `codex-cli 0.163.0-alpha.10.2` via the Microsoft Store package, not PATH.
+- Login: `Logged in using ChatGPT`.
+- Model: `gpt-6.1-sol`. Reasoning effort: `low`.
+- Sandbox flag: `read-only`. Config default was not used.
+- Cases: 10. Correct against adjudicated labels: 10.
+- Macro-F1: 1.0. Insufficient-prediction rate: 0.3.
+- Quote validity: 10 of 10.
+- `independent_external_test` is false. `independently_blinded` is false. `gold_benchmark_released` remains false.
+- Paid API-key calls: 0. The run used the ChatGPT subscription quota.
+
 ## Measured predictions
 
-- Genuine predictions: 0.
+- Genuine predictions: 10.
 - Paid model calls: 0.
-- Accuracy, macro-F1, confusion matrix, quote validity, and latency are not reported because there are no genuine predictions.
+- The score is an internal comparison with the adjudicated labels. It is not an external-test accuracy.
 - `gold_benchmark_released` remains false.
