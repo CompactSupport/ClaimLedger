@@ -4,6 +4,10 @@ All notable changes to ClaimLedger are documented here. The project uses semanti
 
 ## Unreleased
 
+- Refuse a human-reviewed queue row unless the adjudication is tied to two validated human submissions, the approval digest, and the dataset version. A reviewer name does not prove identity. Queue writes stay off without a separate write approval.
+- Make `scripts/run_semantic_pilot.py --check` run the offline mock gate and exit nonzero on failure. Mock output is not a semantic-model score, and real Codex execution stays disabled.
+- Validate the empty 30-case calibration sheets, keep disagreements for adjudication, and require an explicit approval before any adjudicated label can be planned for the canonical queue.
+- Add a one-record semantic-pilot harness with mocked tests. Real Codex inference stays disabled, and API-key billing is not a fallback.
 - State that the committed audit mapping is publicly readable and that copying the model view outside the repository is not an operating-system sandbox.
 - Add a seeded label-blind export for future semantic evaluations. Canonical case IDs and author labels stay in the candidate set. Model-visible inputs omit them, and the 30-case human packet has no recorded decisions. The export is not an external test set.
 - Import the remaining 90 AI second-opinion annotations beside the first 18. Combined author-label agreement is 107 of 108 and is not an accuracy estimate. The case-id suffix still encodes the author label.

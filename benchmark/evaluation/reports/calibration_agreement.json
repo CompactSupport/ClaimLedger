@@ -1,0 +1,19 @@
+{
+  "schema": "claimledger.calibration_report.v1",
+  "submissions": 0,
+  "valid_submissions": 0,
+  "paired_cases": 0,
+  "raw_agreement": null,
+  "cohen_kappa": null,
+  "disagreements": [],
+  "errors": [],
+  "ai_submissions_rejected": 0,
+  "import_applied": false,
+  "queue_updated": false,
+  "gold_benchmark_released": false,
+  "human_reviewed_rows": 0,
+  "uses_ai_annotations_as_human_review": false,
+  "reviewer_name_proves_identity": false,
+  "independence_verified": false,
+  "validated_pairs": []
+}

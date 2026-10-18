@@ -35,6 +35,18 @@ Prompt version: `claimledger.inference_prompt.v1`. No evaluator is configured. P
 
 The packet's join file is `benchmark/evaluation/audit/calibration_mapping.json`, seed `20261018`. That file is also committed and publicly readable.
 
+Reviewer sheets are validated by `scripts/validate_calibration.py`. The committed sheets are empty, so the agreement report has no pairs and Cohen's kappa is null. A valid pair needs two different human reviewer ids, timezone-aware timestamps, a label from the three classes, and an evidence quote that matches a character span of the packet passage. An AI identity is rejected and is not counted as human review. Disagreements stay unresolved until a person adjudicates them.
+
+An adjudication can be planned for `review_queue.csv` only when both of these are true. Two distinct validated human submissions exist for that case, and the approval record's decision is `approved_for_queue_import`. The approval must name the dataset version and the SHA-256 of the exact adjudication artifact. The import checks canonical id, claim text, document hash, passage hash, reviewer ids, labels, timestamps, and the adjudicated evidence span. A reviewer name does not prove a real-world identity or independence. A syntactically valid approval of a fabricated adjudication is refused. Writing the queue needs a second decision, `approved_queue_write`, bound to the same digest and dataset version. The validation command does not write the queue. Neither decision releases a gold benchmark.
+
+## Controlled semantic pilot
+
+`claimledger.semantic_pilot` prepares one evaluation record per invocation, in a directory outside the repository, with credential environment variables removed. That is not an operating-system sandbox. The harness checks the model JSON, the evaluation id, and whether a quote is an exact substring of the passage it wrote. Scoring requires a declared subset and rejects duplicate, missing, and unknown ids. Predictions stay separate from human-reviewed labels.
+
+`scripts/run_semantic_pilot.py --check` parses its arguments and runs those checks offline with a mock. The command exits nonzero when a check fails. Its passing output is a gate result, not a semantic-model score. A test may also run a subprocess command in the stripped workspace. That command is not model execution and it is not an operating-system sandbox.
+
+Codex runs only after authentication and subscription billing have both been verified. API-key billing is not a fallback. Real Codex execution is disabled in this revision. The mock gate does not make a paid model call.
+
 ## Result classes
 
 | Class | Where it stands |

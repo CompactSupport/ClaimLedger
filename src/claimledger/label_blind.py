@@ -114,6 +114,10 @@ Leave the label blank until you decide.
 Write an evidence quote only as an exact substring of the passage, plus its character span.
 Do not mark the canonical queue reviewed from this sheet.
 The adjudication log stays empty until both reviews exist.
+Fill only your own sheet. Use your own reviewer id and a timezone-aware timestamp.
+A quote must be an exact character span of the passage.
+Do not sign the sheet as a model or an AI system.
+Submitting a sheet does not copy it into the canonical queue.
 This packet is not an independent external test and it does not release a gold set.
 """
 
