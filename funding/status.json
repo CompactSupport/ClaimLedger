@@ -16,11 +16,11 @@
     "note": "This branch's own Actions run is not recorded here until GitHub reports it."
   },
   "tests": {
-    "local_pytest_passed": 104,
+    "local_pytest_passed": 110,
     "python_versions_run_locally": ["3.11.9", "3.12.10"],
     "line_coverage_percent": 84,
-    "measured_on": "2026-10-17",
-    "note": "Line coverage 84% is from the local Python 3.11 run after the semantic-pilot gate. Python 3.12 passed the same 104 tests. Thirty queue rows are human-reviewed. That is not a released gold benchmark. Genuine semantic-model predictions recorded: 0."
+    "measured_on": "2026-10-18",
+    "note": "Line coverage 84% is from the local Python 3.11 run after the subscription-execution fix. Python 3.12 passed the same 110 tests. Thirty queue rows are human-reviewed. That is not a released gold benchmark. Genuine semantic-model predictions recorded: 0."
   },
   "benchmark": {
     "gold_set_rows": 0,
@@ -91,8 +91,8 @@
     "openai_pilot_requests_made": 0,
     "retrieval_recall": null,
     "paid_inference_recorded": false,
-    "measured_on": "2026-10-17",
-    "note": "Candidate scores are engineering smoke on fictional author labels, not a gold benchmark. The stored 107 of 108 note match is not independent AI accuracy: 90 of those verdicts are label_derived_not_independent and follow the case-id suffix. The label-blind export has no scored genuine model run and is not an external test. Real Codex inference has not been run."
+    "measured_on": "2026-10-18",
+    "note": "Candidate scores are engineering smoke on fictional author labels, not a gold benchmark. The stored 107 of 108 note match is not independent AI accuracy: 90 of those verdicts are label_derived_not_independent and follow the case-id suffix. The label-blind export has no scored genuine model run and is not an external test. The 10-case subset was not executed: Codex, Gemini, and Antigravity were not on PATH, and subscription billing was not verified."
   },
   "contributors": ["CompactSupport"],
   "documented_adoption": []

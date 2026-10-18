@@ -19,9 +19,11 @@ This report does not contain a measured semantic-model score. No genuine model p
 
 ## Inference blocker
 
-Codex CLI is not on PATH. Subscription authentication and billing were not verified, and no model process was started. API-key billing is not used as a fallback.
+The Codex CLI, the Gemini CLI, and the Antigravity CLI (agy) are not on PATH. Subscription authentication and billing were not verified, and no model process was started. API-key billing is not used as a fallback.
 
-A directory outside the repository and a stripped environment are not an operating-system sandbox. Any later run that can read this repository, including `subset_audit.json`, is not independently blinded.
+No subscription CLI is on PATH, so the original 10-case subset was not executed. Genuine predictions remain 0.
+
+A verified subscription and one record outside the repository can start Codex, Gemini, or Antigravity. `real_model_execution` is true only for that model subprocess. An in-process mock, and any other subprocess, stays false. A directory outside the repository and a stripped environment are not an operating-system sandbox. Any later run that can read this repository, including `subset_audit.json`, is not independently blinded.
 
 ## Measured predictions
 

@@ -17,6 +17,7 @@ from claimledger.semantic_pilot import (
     SELECTION_SEED,
     inference_blocker,
     select_internal_subset,
+    subset_attempt_note,
     subset_case_hash,
 )
 
@@ -103,6 +104,11 @@ def build_report_files() -> dict[str, str]:
         "",
         blocker,
         "",
+        subset_attempt_note(),
+        "",
+        "A verified subscription and one record outside the repository can start "
+        "Codex, Gemini, or Antigravity. `real_model_execution` is true only for that "
+        "model subprocess. An in-process mock, and any other subprocess, stays false. "
         "A directory outside the repository and a stripped environment are not an "
         "operating-system sandbox. Any later run that can read this repository, "
         "including `subset_audit.json`, is not independently blinded.",

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Run the offline semantic-pilot gate.
 
-``--check`` executes mock integration checks only. It does not launch Codex,
+``--check`` executes mock integration checks only. It does not launch a model,
 and a passing mock is not a semantic-model evaluation result. A subprocess
 command used by tests is not an operating-system sandbox and is not model
 execution.
@@ -25,12 +25,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--check",
         action="store_true",
-        help="Run offline mock checks. Real Codex execution stays disabled.",
+        help="Run offline mock checks. This command does not start a model.",
     )
     args = parser.parse_args(argv)
     if not args.check:
         print(
-            "Real Codex execution is disabled. Pass --check for the offline mock gate.",
+            "Pass --check for the offline mock gate. A subscription run is scripts/run_adjudicated_subset.py --run.",
             file=sys.stderr,
         )
         return 2
@@ -44,7 +44,7 @@ def main(argv: list[str] | None = None) -> int:
             print(item, file=sys.stderr)
         return 1
     print("offline_mock_checks=passed")
-    print("real_codex_inference=disabled")
+    print("real_model_execution=not_started")
     print("api_key_fallback=refused")
     print("os_sandbox=false")
     print("mock_results_are_model_evaluation=false")
