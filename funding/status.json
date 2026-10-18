@@ -16,11 +16,11 @@
     "note": "This branch's own Actions run is not recorded here until GitHub reports it."
   },
   "tests": {
-    "local_pytest_passed": 101,
+    "local_pytest_passed": 102,
     "python_versions_run_locally": ["3.11.9", "3.12.10"],
-    "line_coverage_percent": 86,
+    "line_coverage_percent": 85,
     "measured_on": "2026-10-17",
-    "note": "Line coverage 86% is from the local Python 3.11 run after the import-provenance gate. Python 3.12 passed the same 101 tests."
+    "note": "Line coverage 85% is from the local Python 3.11 run after the Human-AI calibration report. Python 3.12 passed the same 102 tests."
   },
   "benchmark": {
     "gold_set_rows": 0,
@@ -37,6 +37,11 @@
     "human_calibration_rows": 30,
     "human_calibration_decisions": 0,
     "human_calibration_cohen_kappa": null,
+    "human_ai_calibration_cases": 30,
+    "human_ai_original_agreements": 29,
+    "human_ai_original_agreement_is_accuracy": false,
+    "human_ai_post_feedback_agreements": 30,
+    "human_ai_post_feedback_is_independent_accuracy": false,
     "calibration_import_applied": false,
     "label_blind_is_external_test": false,
     "audit_mapping_is_access_controlled": false,
