@@ -1,0 +1,34 @@
+{
+  "schema": "claimledger.formal_review_evidence.v1",
+  "adjudicator_id": "117230865",
+  "adjudicator_note": "GitHub numeric account id of CompactSupport. The id does not prove a real-world identity.",
+  "adjudicated_at": "2026-10-18T03:43:00-07:00",
+  "write_approved_at": "2026-10-18T03:52:00-07:00",
+  "independence_attested_by_user": true,
+  "independence_verified": false,
+  "adjudication_overrides_by_position": {
+    "13": "insufficient"
+  },
+  "quotes_by_position": {
+    "2": "It serves 14 stops and does not offer overnight service.",
+    "3": "The Comet bus runs every 15 minutes between 06:00 and 18:00.",
+    "4": "A batch passes when at least 9 of 10 vials are intact. This batch had 8 intact vials.",
+    "6": "Project Orion evaluated 120 samples in April 2026.",
+    "8": "Route East took 48 minutes. Route West took 53 minutes.",
+    "9": "No synthetic fibers were included.",
+    "11": "The Maple Archive opened its digital collection on June 4, 2026.",
+    "12": "The Maple Archive opened its digital collection on June 4, 2026.",
+    "13": "It does not mention nuts.",
+    "14": "The Cedar Observatory measured a nightly energy use of 14 kWh for the tracking apparatus.",
+    "15": "It was reviewed internally by two team members, not by external referees.",
+    "17": "No synthetic fibers were included.",
+    "18": "The Briar campaign collected 31,000 dollars online and 25,000 dollars at events. It reported no other donation channels.",
+    "19": "Model A succeeded in 42 trials and Model B in 39.",
+    "20": "The Briar campaign collected 31,000 dollars online and 25,000 dollars at events. It reported no other donation channels.",
+    "22": "Project Orion evaluated 120 samples in April 2026.",
+    "23": "A submission on 3 March 2026 was rejected as late.",
+    "24": "The grant covers equipment bought in 2026.",
+    "25": "Model A succeeded in 42 trials and Model B in 39.",
+    "27": "It was reviewed internally by two team members, not by external referees."
+  }
+}

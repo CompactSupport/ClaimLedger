@@ -10,6 +10,8 @@ The labels are not marked as independently verified human reviews. They do not f
 
 `revision.json` records a later change to question 13 after the person saw the AI comparison. The original label stays in the original file.
 
+`second_reviewer_responses.json` records 30 labels supplied later and described by the user as another independent reviewer. No name, timestamp, or evidence span was available, so none is invented. Those labels are not on reviewer B's formal sheet and are not a completed two-human review.
+
 ## AI responses
 
 AI labels are read from the committed files:

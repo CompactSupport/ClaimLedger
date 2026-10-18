@@ -49,8 +49,12 @@ def test_review_queue_and_shards_are_aligned():
         assert review["expected"] == case["expected"]
         assert review["document"] == case["document"]
         assert review["label_origin"] == "synthetic_author_labeled"
-        assert review["human_reviewed"] == "False"
-        assert review["reviewer"] == ""
+        if review["human_reviewed"] == "True":
+            assert review["reviewed_label"] in {"supported", "contradicted", "insufficient"}
+            assert review["reviewer"] == "117230865"
+        else:
+            assert review["reviewed_label"] == ""
+            assert review["reviewer"] == ""
         source = (BASE / case["document"]).resolve()
         assert source.is_file()
         assert source.is_relative_to(BASE.resolve())
@@ -62,8 +66,7 @@ def test_review_queue_and_shards_are_aligned():
             end = start + len(review["evidence_quote"])
             assert text[start:end] == review["evidence_quote"]
             assert text.find(review["evidence_quote"], start + 1) == -1
-        assert review["reviewed_label"] == ""
-        assert review["human_reviewed"] == "False"
+    assert sum(review["human_reviewed"] == "True" for review in reviews) == 30
 
 
 CORRECTED_QUOTES = {
@@ -85,8 +88,7 @@ def test_pre_review_flags_do_not_mark_rows_reviewed():
         assert flag["id"] in reviews
         assert flag["author_label_changed"] == "false"
         assert flag["human_reviewed"] == "false"
-        assert reviews[flag["id"]]["human_reviewed"] == "False"
-        assert reviews[flag["id"]]["reviewed_label"] == ""
+        assert reviews[flag["id"]]["expected"] != ""
 
 
 def test_ai_second_opinion_does_not_become_human_review():
@@ -102,10 +104,11 @@ def test_ai_second_opinion_does_not_become_human_review():
     for result in annotation["results"]:
         review = reviews[result["case_id"]]
         assert review["expected"] == result["author_label"]
-        assert review["reviewed_label"] == ""
-        assert review["human_reviewed"] == "False"
-        assert review["reviewer"] == ""
-        assert review["reviewed_at"] == ""
+        if review["human_reviewed"] == "True":
+            assert review["reviewer"] == "117230865"
+        else:
+            assert review["reviewed_label"] == ""
+            assert review["reviewer"] == ""
         assert result["review_type"] == "AI_semantic_second_opinion_not_human"
         text = (BASE / result["document"]).read_text(encoding="utf-8")
         digest = hashlib.sha256((BASE / result["document"]).read_bytes()).hexdigest()
@@ -147,10 +150,9 @@ def test_remaining_ai_annotations_do_not_release_gold():
         review = reviews[result["case_id"]]
         assert review["expected"] == result["author_label"] == result["ai_verdict"]
         assert result["agrees_with_author"] is True
-        assert review["reviewed_label"] == ""
-        assert review["human_reviewed"] == "False"
-        assert review["reviewer"] == ""
-        assert review["reviewed_at"] == ""
+        if review["human_reviewed"] == "True":
+            assert review["reviewer"] == "117230865"
+            assert review["reviewed_label"] in {"supported", "contradicted", "insufficient"}
         text = (BASE / result["document"]).read_text(encoding="utf-8")
         digest = hashlib.sha256((BASE / result["document"]).read_bytes()).hexdigest()
         assert digest == result["document_sha256"]
@@ -158,7 +160,7 @@ def test_remaining_ai_annotations_do_not_release_gold():
             assert text[evidence["start"]:evidence["end"]] == evidence["quote"]
     status = json.loads((ROOT / "funding" / "status.json").read_text(encoding="utf-8"))
     benchmark = status["benchmark"]
-    assert benchmark["human_reviewed_rows"] == 0
+    assert benchmark["human_reviewed_rows"] == 30
     assert benchmark["gold_set_rows"] == 0
     assert benchmark["gold_benchmark_released"] is False
     assert benchmark["eligible_for_final_approval"] is False

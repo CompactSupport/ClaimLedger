@@ -52,11 +52,13 @@ def test_canonical_labels_stay_in_the_queue():
     bundle = _bundle()
     reviews = _queue()
     assert [row["expected"] for row in reviews] == [LABEL_CYCLE[i % 3] for i in range(len(reviews))]
-    assert all(row["human_reviewed"] == "False" and row["reviewed_label"] == "" for row in reviews)
+    reviewed = [row for row in reviews if row["human_reviewed"] == "True"]
+    assert len(reviewed) == 30
+    assert all(row["reviewer"] == "117230865" and row["expected"] != "" for row in reviewed)
     assert bundle["protocol"]["review_queue_sha256"]
     status = json.loads((ROOT / "funding" / "status.json").read_text(encoding="utf-8"))
     assert status["benchmark"]["gold_benchmark_released"] is False
-    assert status["benchmark"]["human_reviewed_rows"] == 0
+    assert status["benchmark"]["human_reviewed_rows"] == 30
     assert status["benchmark"]["label_blind_is_external_test"] is False
     assert status["benchmark"]["label_blind_model_runs"] == 0
     assert status["benchmark"]["human_calibration_decisions"] == 0

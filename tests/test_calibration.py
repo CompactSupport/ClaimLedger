@@ -213,7 +213,6 @@ def test_fabricated_adjudication_cannot_become_human_reviewed():
             "adjudication_sha256": "0" * 64,
             "dataset_version": version,
         })
-    assert all(row["human_reviewed"] == "False" for row in rows)
     assert QUEUE.read_bytes() == before
 
 

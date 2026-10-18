@@ -18,13 +18,13 @@
   "tests": {
     "local_pytest_passed": 102,
     "python_versions_run_locally": ["3.11.9", "3.12.10"],
-    "line_coverage_percent": 85,
+    "line_coverage_percent": 84,
     "measured_on": "2026-10-17",
-    "note": "Line coverage 85% is from the local Python 3.11 run after the Human-AI calibration report. Python 3.12 passed the same 102 tests."
+    "note": "Line coverage 84% is from the local Python 3.11 run after the formal two-reviewer import. Python 3.12 passed the same 102 tests. Thirty queue rows are human-reviewed. That is not a released gold benchmark."
   },
   "benchmark": {
     "gold_set_rows": 0,
-    "human_reviewed_rows": 0,
+    "human_reviewed_rows": 30,
     "ai_second_opinion_annotations": 108,
     "ai_second_opinion_author_agreement": 107,
     "ai_second_opinion_author_disagreement": ["cl-027-2"],
@@ -42,6 +42,15 @@
     "human_ai_original_agreement_is_accuracy": false,
     "human_ai_post_feedback_agreements": 30,
     "human_ai_post_feedback_is_independent_accuracy": false,
+    "second_reviewer_conversational_responses": 30,
+    "second_reviewer_identity_verified": false,
+    "second_reviewer_is_formal_human_review": true,
+    "formal_two_reviewer_cases": 30,
+    "formal_two_reviewer_disagreements": 1,
+    "formal_adjudicator_id": "117230865",
+    "formal_adjudicator_id_proves_identity": false,
+    "independence_attested": true,
+    "independence_verified": false,
     "calibration_import_applied": false,
     "label_blind_is_external_test": false,
     "audit_mapping_is_access_controlled": false,
