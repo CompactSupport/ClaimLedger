@@ -41,9 +41,11 @@ An adjudication can be planned for `review_queue.csv` only when both of these ar
 
 ## Fresh held-out set
 
-`benchmark/heldout_v05/` freezes eight new fictional documents and sixteen claims that are not in the candidate corpus. The model-visible files omit author labels. The human adjudication sheet is blank, so those author labels are not human review. `model_contact_count` is 0, and the contact gate stays closed until the sheet is complete and a separate release allows the first model run.
+`benchmark/heldout_v05/` freezes eight new fictional documents and sixteen claims that are not in the candidate corpus. The model-visible files omit author labels. The initial human sheet is blank, and the research ledger has no adjudications. Author labels are not human review. One author label, the June Kiln North claim, remains `contradicted` and is marked `author_label_under_review`.
 
-`claimledger.entailment` records quote presence and entailment separately. A quote inside the passage can remain `unresolved`. That result does not confirm a supported or contradicted verdict.
+The snapshot and the research ledger are separate. The inference entry loads the ledger and refuses a held-out claim unless the adjudications are complete, the evidence quotes match the frozen passages, the timestamps are timezone-aware, and one approval digest is bound to that adjudication and to the freeze hash. A second contact for the same hash is refused. The committed ledger does not meet that bar, so `model_contact_count` is 0.
+
+`claimledger.entailment` records quote presence, a heuristic entailment relation, and `verdict_confirmed` separately. A different month is not treated as a contradiction. An empty quote does not verify an insufficient verdict. Heuristic rules do not certify labels. The set is public, so it is an internal freeze, not a secret external test.
 
 ## Controlled semantic pilot
 

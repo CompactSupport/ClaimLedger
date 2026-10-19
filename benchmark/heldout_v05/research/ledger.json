@@ -1,0 +1,9 @@
+{
+  "schema": "claimledger.heldout_v05_research_ledger.v1",
+  "dataset_version": "heldout-2026-10-18.1",
+  "freeze_sha256": "6b6ebf3b7419698453e48b090f48d618bf1099079de0708df82364cb893367f2",
+  "reviewer_submissions": [],
+  "human_adjudications": [],
+  "approvals": [],
+  "model_contacts": []
+}

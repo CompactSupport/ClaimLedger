@@ -4,6 +4,7 @@ All notable changes to ClaimLedger are documented here. The project uses semanti
 
 ## Unreleased
 
+- Keep the held-out snapshot separate from the research ledger. A different month is not a contradiction, empty insufficient quotes are not semantic confirmation, and the inference entry refuses held-out claims until a release is bound to the freeze hash.
 - Freeze a fresh v0.5 held-out set before any model sees it. Author reference labels are not human review, the human sheet is blank, and model contact stays closed. Quote presence and entailment are audited separately.
 - Record one ChatGPT-subscription Codex run on the internal 10-case subset. The Store CLI is not on PATH. Ten of ten verdicts matched the adjudicated labels. The run is not an external test, and the read-only sandbox is not an independent blind.
 - Start a subscription model subprocess only after billing is verified, and record `real_model_execution` for that subprocess alone. Codex commands pass an explicit read-only sandbox.

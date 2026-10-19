@@ -1,6 +1,6 @@
 """Quote presence and entailment stay separate. No model is called."""
 
-from claimledger.entailment import audit_entailment, entailment_confirms
+from claimledger.entailment import audit_entailment, label_assessment
 
 PASSAGE = (
     "The quay office counted 40 oil lanterns and 12 electric lanterns on 2 June 2026. "
@@ -16,7 +16,10 @@ def test_verbatim_quote_supports_the_claim():
     )
     assert audit["quote_present"] is True
     assert audit["entailment"] == "supports"
-    assert entailment_confirms(audit, "supported") is True
+    assessment = label_assessment(audit, "supported")
+    assert assessment["heuristic_suggestion"] == "claim_verbatim_in_quote"
+    assert assessment["verdict_confirmed"] is False
+    assert assessment["semantics_verified"] is False
 
 
 def test_a_true_sentence_can_be_present_without_entailing_the_claim():
@@ -28,7 +31,7 @@ def test_a_true_sentence_can_be_present_without_entailing_the_claim():
     assert audit["quote_present"] is True
     assert audit["entailment"] == "unresolved"
     assert audit["rule"] == "same_number_different_unit"
-    assert entailment_confirms(audit, "supported") is False
+    assert label_assessment(audit, "supported")["verdict_confirmed"] is False
 
 
 def test_a_clock_time_does_not_entail_a_dollar_amount():
@@ -38,7 +41,7 @@ def test_a_clock_time_does_not_entail_a_dollar_amount():
     assert audit["entailment"] == "unresolved"
 
 
-def test_month_swap_refutes_when_the_measure_matches():
+def test_a_different_month_is_not_a_contradiction():
     passage = "Kiln North fired 18 batches in May 2026. Kiln South fired 18 batches in June 2026.\n"
     audit = audit_entailment(
         "Kiln North fired 18 batches in June 2026.",
@@ -46,10 +49,25 @@ def test_month_swap_refutes_when_the_measure_matches():
         passage,
     )
     assert audit["quote_present"] is True
-    assert audit["entailment"] == "refutes"
-    assert audit["rule"] == "month_conflict"
-    assert entailment_confirms(audit, "contradicted") is True
-    assert entailment_confirms(audit, "supported") is False
+    assert audit["entailment"] == "unresolved"
+    assert audit["rule"] == "different_period_not_exclusive"
+    assert audit["verdict_confirmed"] is False
+    assessment = label_assessment(audit, "contradicted")
+    assert assessment["heuristic_suggestion"] == "different_period_not_exclusive"
+    assert assessment["verdict_confirmed"] is False
+
+
+def test_a_different_entity_in_the_same_month_is_not_a_contradiction():
+    passage = "Kiln North fired 18 batches in May 2026. Kiln South fired 18 batches in June 2026.\n"
+    audit = audit_entailment(
+        "Kiln North fired 18 batches in June 2026.",
+        "Kiln South fired 18 batches in June 2026.",
+        passage,
+    )
+    assert audit["quote_present"] is True
+    assert audit["entailment"] == "unresolved"
+    assert audit["rule"] == "presence_is_not_entailment"
+    assert audit["verdict_confirmed"] is False
 
 
 def test_exclusion_refutes_an_inclusion_claim():
@@ -59,11 +77,10 @@ def test_exclusion_refutes_an_inclusion_claim():
         "No mineral dye was added.",
         passage,
     )
-    assert audit == {
-        "quote_present": True,
-        "entailment": "refutes",
-        "rule": "exclusion_conflict",
-    }
+    assert audit["quote_present"] is True
+    assert audit["entailment"] == "refutes"
+    assert audit["rule"] == "exclusion_conflict"
+    assert audit["verdict_confirmed"] is False
 
 
 def test_less_than_uses_the_two_measures():
@@ -81,7 +98,10 @@ def test_missing_quote_is_not_entailment():
     audit = audit_entailment("The ferry carried 40 passengers.", "", "The log gives no passenger count.\n")
     assert audit["quote_present"] is False
     assert audit["entailment"] == "not_applicable"
-    assert entailment_confirms(audit, "insufficient") is True
+    assessment = label_assessment(audit, "insufficient")
+    assert assessment["format_ok"] is True
+    assert assessment["semantics_verified"] is False
+    assert assessment["verdict_confirmed"] is False
     absent = audit_entailment("The ferry carried 40 passengers.", "40 passengers", "The log gives no passenger count.\n")
     assert absent["rule"] == "quote_absent"
-    assert entailment_confirms(absent, "supported") is False
+    assert label_assessment(absent, "supported")["verdict_confirmed"] is False

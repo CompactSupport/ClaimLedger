@@ -27,29 +27,57 @@ STOPWORDS = {
 }
 
 
+def _audit(quote_present: bool, entailment: str, rule: str) -> dict:
+    return {
+        "quote_present": quote_present,
+        "entailment": entailment,
+        "rule": rule,
+        "semantics_verified": False,
+        "verdict_confirmed": False,
+    }
+
+
 def audit_entailment(claim: str, quote: str, passage: str) -> dict:
-    """Return presence and entailment as separate fields."""
-    if not isinstance(quote, str) or quote == "":
-        return {"quote_present": False, "entailment": "not_applicable", "rule": "empty_quote"}
-    if quote not in passage:
-        return {"quote_present": False, "entailment": "not_applicable", "rule": "quote_absent"}
-    relation, rule = _relation(claim, quote)
-    return {"quote_present": True, "entailment": relation, "rule": rule}
+    """Return presence and entailment as separate fields.
 
-
-def entailment_confirms(audit: dict, verdict: str) -> bool:
-    """True only when the entailment rule agrees with the verdict.
-
-    ``unresolved`` never confirms a supported or contradicted verdict.
+    Heuristic rules never set ``verdict_confirmed``. They can suggest a
+    relation. They do not certify a label.
     """
-    relation = audit.get("entailment")
-    if verdict == "supported":
-        return relation == "supports"
-    if verdict == "contradicted":
-        return relation == "refutes"
-    if verdict == "insufficient":
-        return relation == "not_applicable" and audit.get("quote_present") is False
-    return False
+    if not isinstance(quote, str) or quote == "":
+        return _audit(False, "not_applicable", "empty_quote")
+    if quote not in passage:
+        return _audit(False, "not_applicable", "quote_absent")
+    relation, rule = _relation(claim, quote)
+    return _audit(True, relation, rule)
+
+
+def label_assessment(audit: dict, verdict: str) -> dict:
+    """Separate format, heuristic suggestion, and semantic confirmation.
+
+    An empty quote on an insufficient verdict matches the format. It does not
+    verify that the passage leaves the claim unsettled.
+    """
+    empty_insufficient = (
+        verdict == "insufficient"
+        and audit.get("rule") == "empty_quote"
+        and audit.get("quote_present") is False
+    )
+    quote_for_decision = verdict in {"supported", "contradicted"} and audit.get("quote_present") is True
+    suggestion = None
+    if verdict == "supported" and audit.get("entailment") == "supports":
+        suggestion = audit.get("rule")
+    elif verdict == "contradicted" and audit.get("entailment") == "refutes":
+        suggestion = audit.get("rule")
+    elif audit.get("entailment") == "unresolved":
+        suggestion = audit.get("rule")
+    return {
+        "quote_present": audit.get("quote_present"),
+        "entailment": audit.get("entailment"),
+        "format_ok": empty_insufficient or quote_for_decision,
+        "semantics_verified": False,
+        "verdict_confirmed": False,
+        "heuristic_suggestion": suggestion,
+    }
 
 
 def _relation(claim: str, quote: str) -> tuple[str, str]:
@@ -60,8 +88,8 @@ def _relation(claim: str, quote: str) -> tuple[str, str]:
         return "refutes", measure
     if measure == "same_number_different_unit":
         return "unresolved", measure
-    if _month_conflict(claim, quote):
-        return "refutes", "month_conflict"
+    if _different_period(claim, quote):
+        return "unresolved", "different_period_not_exclusive"
     if _exclusion_conflict(claim, quote):
         return "refutes", "exclusion_conflict"
     comparison = _less_than(claim, quote)
@@ -94,7 +122,8 @@ def _measure_conflict(claim: str, quote: str) -> str | None:
     return None
 
 
-def _month_conflict(claim: str, quote: str) -> bool:
+def _different_period(claim: str, quote: str) -> bool:
+    """Different months are not mutually exclusive. This only flags them for review."""
     claim_months = [month for month in MONTHS if re.search(rf"\b{month}\b", claim)]
     quote_months = [month for month in MONTHS if re.search(rf"\b{month}\b", quote)]
     if len(claim_months) != 1 or len(quote_months) != 1 or claim_months[0] == quote_months[0]:

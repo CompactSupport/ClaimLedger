@@ -60,6 +60,7 @@
       "document_id": "h02",
       "claim": "Kiln North fired 18 batches in June 2026.",
       "author_label": "contradicted",
+      "author_label_under_review": true,
       "author_quote": "Kiln North fired 18 batches in May 2026."
     },
     {
