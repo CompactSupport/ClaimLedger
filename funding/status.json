@@ -16,11 +16,11 @@
     "note": "This branch's own Actions run is not recorded here until GitHub reports it."
   },
   "tests": {
-    "local_pytest_passed": 104,
+    "local_pytest_passed": 112,
     "python_versions_run_locally": ["3.11.9", "3.12.10"],
     "line_coverage_percent": 84,
-    "measured_on": "2026-10-17",
-    "note": "Line coverage 84% is from the local Python 3.11 run after the semantic-pilot gate. Python 3.12 passed the same 104 tests. Thirty queue rows are human-reviewed. That is not a released gold benchmark. Genuine semantic-model predictions recorded: 0."
+    "measured_on": "2026-10-18",
+    "note": "Line coverage is from the local Python 3.11 run after the ChatGPT-subscription Codex subset. Python 3.12 passed the same tests. Thirty queue rows are human-reviewed. That is not a released gold benchmark. The 10-case Codex score is an internal comparison, not an external test."
   },
   "benchmark": {
     "gold_set_rows": 0,
@@ -31,7 +31,7 @@
     "ai_second_opinion_agreement_is_accuracy": false,
     "ai_remaining_90_inference_class": "label_derived_not_independent",
     "ai_remaining_90_independent_semantic_predictions": 0,
-    "semantic_pilot_genuine_predictions": 0,
+    "semantic_pilot_genuine_predictions": 10,
     "ai_second_opinion_is_human_review": false,
     "case_id_suffix_encodes_author_label": true,
     "label_blind_protocol": "claimledger.evaluation_export.v1",
@@ -58,7 +58,7 @@
     "label_blind_is_external_test": false,
     "audit_mapping_is_access_controlled": false,
     "agent_directory_is_os_sandbox": false,
-    "semantic_pilot_real_runs": 0,
+    "semantic_pilot_real_runs": 1,
     "semantic_pilot_paid_model_calls": 0,
     "semantic_pilot_mock_results_are_evaluation": false,
     "reviewer_name_proves_identity": false,
@@ -91,8 +91,8 @@
     "openai_pilot_requests_made": 0,
     "retrieval_recall": null,
     "paid_inference_recorded": false,
-    "measured_on": "2026-10-17",
-    "note": "Candidate scores are engineering smoke on fictional author labels, not a gold benchmark. The stored 107 of 108 note match is not independent AI accuracy: 90 of those verdicts are label_derived_not_independent and follow the case-id suffix. The label-blind export has no scored genuine model run and is not an external test. Real Codex inference has not been run."
+    "measured_on": "2026-10-18",
+    "note": "Candidate scores are engineering smoke on fictional author labels, not a gold benchmark. The stored 107 of 108 note match is not independent AI accuracy: 90 of those verdicts are label_derived_not_independent and follow the case-id suffix. One ChatGPT-subscription Codex run scored the internal 10-case subset. That score is not an external test. The Store Codex executable is not on PATH."
   },
   "contributors": ["CompactSupport"],
   "documented_adoption": []

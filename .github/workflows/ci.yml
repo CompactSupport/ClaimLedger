@@ -28,6 +28,7 @@ jobs:
       - run: python scripts/report_human_ai_calibration.py --check
       - run: python scripts/apply_formal_calibration_import.py --check
       - run: python scripts/report_semantic_pilot.py --check
+      - run: python scripts/run_adjudicated_subset.py --check
   secret-scan:
     runs-on: ubuntu-latest
     steps:

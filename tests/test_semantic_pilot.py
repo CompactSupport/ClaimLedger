@@ -14,6 +14,8 @@ from claimledger.semantic_pilot import (
     PilotRefused,
     execute_real_inference,
     execute_restricted,
+    launch_subscription_model,
+    observe_subscription_billing,
     offline_mock_checks,
     prepare_invocation,
     restricted_env,
@@ -133,6 +135,9 @@ def test_subprocess_mock_sees_only_the_invocation(tmp_path):
     assert result["prompt_version"] == "claimledger.inference_prompt.v1"
     assert result["human_reviewed"] is False
     assert result["passage_sha256"] == invocation["passage_sha256"]
+    assert result["real_model_execution"] is False
+    assert result["result_is_model_evaluation"] is False
+    assert result["execution_kind"] == "subprocess_command"
     with pytest.raises(PilotRefused, match="repository path"):
         execute_restricted(
             invocation,
@@ -161,7 +166,7 @@ def test_codex_subscription_gate_never_starts_a_process(monkeypatch):
     verified = {"authenticated": True, "billing_mode": "subscription", "api_key_present": False}
     with pytest.raises(PilotRefused, match="disabled"):
         run_codex_subscription(verified)
-    with pytest.raises(PilotRefused, match="disabled"):
+    with pytest.raises(PilotRefused, match="one-record invocation"):
         run_codex_subscription(verified, allow_real_inference=True)
 
 
@@ -272,5 +277,232 @@ def test_internal_subset_is_reproducible_and_hides_canonical_ids(tmp_path):
     )
     assert scored["independent_external_test"] is False
     assert scored["result_is_model_evaluation"] is False
-    assert "genuine model" in first["REPORT.md"].lower() or "no genuine" in first["REPORT.md"].lower()
     assert "not on PATH" in first["REPORT.md"]
+    assert "Genuine predictions: 10." in first["REPORT.md"]
+    assert "independent_external_test" in first["REPORT.md"]
+    assert "Macro-F1: 1.0." in first["REPORT.md"]
+
+
+def test_in_process_runner_cannot_be_recorded_as_a_model(tmp_path):
+    invocation = prepare_invocation([_record()], tmp_path / "work", ROOT, _environ())
+    with pytest.raises(PilotRefused, match="in-process"):
+        execute_restricted(
+            invocation,
+            model="mock-model",
+            cli_version="mock-0",
+            runner=lambda _cwd, _env: "{}",
+            real_model_execution=True,
+        )
+
+
+def test_verified_subscription_subprocess_is_recorded_as_real(tmp_path, monkeypatch):
+    record = _record()
+    invocation = prepare_invocation([record], tmp_path / "work", ROOT, _environ())
+    seen = {}
+
+    def fake_which(name):
+        return r"C:\tools\agy.cmd" if name == "agy" else None
+
+    def fake_run(argv, cwd, env, capture_output, text, check, input=None):
+        seen["argv"] = argv
+        seen["cwd"] = cwd
+        seen["env"] = env
+        payload = {
+            "evaluation_id": record["evaluation_id"],
+            "verdict": "supported",
+            "quote": "The sample count was 120",
+        }
+        envelope = {"status": "SUCCESS", "structured_output": payload}
+        return subprocess.CompletedProcess(argv, 0, json.dumps(envelope), "")
+
+    monkeypatch.setattr("claimledger.semantic_pilot.shutil.which", fake_which)
+    monkeypatch.setattr("claimledger.semantic_pilot.subprocess.run", fake_run)
+    result = launch_subscription_model(
+        "antigravity",
+        {"authenticated": True, "billing_mode": "subscription", "api_key_present": False},
+        allow_real_inference=True,
+        invocation=invocation,
+        repo_root=ROOT,
+    )
+    assert result["real_model_execution"] is True
+    assert result["result_is_model_evaluation"] is True
+    assert result["status"] == "completed_valid"
+    assert result["verdict"] == "supported"
+    assert result["independently_blinded"] is False
+    assert result["os_sandbox"] is False
+    assert result["adjudication_file_mounted"] is False
+    assert "--sandbox" in seen["argv"]
+    assert str(ROOT.resolve()) not in " ".join(str(arg) for arg in seen["argv"])
+    assert seen["cwd"] == invocation["cwd"]
+    assert "GEMINI_API_KEY" not in seen["env"]
+    assert "OPENAI_API_KEY" not in seen["env"]
+    scored = score_adjudicated_subset(
+        [result],
+        subset=[record["evaluation_id"]],
+        adjudicated_labels={record["evaluation_id"]: "supported"},
+    )
+    assert scored["real_inference"] is True
+    assert scored["result_is_model_evaluation"] is True
+    assert scored["independent_external_test"] is False
+    assert scored["paid_model_calls"] == 0
+
+
+def test_failed_model_subprocess_is_still_recorded(tmp_path, monkeypatch):
+    invocation = prepare_invocation([_record()], tmp_path / "work", ROOT, _environ())
+
+    def fake_run(argv, cwd, env, capture_output, text, check, input=None):
+        return subprocess.CompletedProcess(argv, 1, "", "authentication required")
+
+    monkeypatch.setattr("claimledger.semantic_pilot.subprocess.run", fake_run)
+    result = execute_restricted(
+        invocation,
+        model="antigravity",
+        cli_version="agy",
+        runner_argv=[r"C:\tools\agy.cmd", "-p", "prompt"],
+        repo_root=ROOT,
+        real_model_execution=True,
+        provider="antigravity",
+    )
+    assert result["real_model_execution"] is True
+    assert result["result_is_model_evaluation"] is False
+    assert result["status"] == "rejected_process"
+
+
+def test_billing_observation_never_invents_a_subscription(monkeypatch):
+    def fake_which(name):
+        return r"C:\tools\agy.cmd" if name == "agy" else None
+
+    monkeypatch.setattr("claimledger.semantic_pilot.shutil.which", fake_which)
+    with pytest.raises(PilotRefused, match="not been verified"):
+        observe_subscription_billing(
+            "antigravity",
+            environ={"PATH": r"C:\tools"},
+            settings={"security": {"auth": {"selectedType": "oauth-personal"}}},
+        )
+    observed = observe_subscription_billing(
+        "antigravity",
+        environ={"GEMINI_API_KEY": "present"},
+        settings=None,
+    )
+    assert observed["billing_mode"] == "api_key"
+    assert observed["api_key_present"] is True
+    with pytest.raises(PilotRefused, match="not on PATH"):
+        observe_subscription_billing("gemini", environ={})
+
+
+def test_api_key_billing_does_not_start_antigravity(monkeypatch):
+    def boom(*_args, **_kwargs):
+        raise AssertionError("a process was started")
+
+    monkeypatch.setattr("claimledger.semantic_pilot.subprocess.run", boom)
+    monkeypatch.setattr("claimledger.semantic_pilot.shutil.which", lambda _name: r"C:\tools\agy.cmd")
+    with pytest.raises(PilotRefused, match="API key"):
+        launch_subscription_model(
+            "antigravity",
+            {"authenticated": True, "billing_mode": "subscription", "api_key_present": True},
+            allow_real_inference=True,
+            invocation={"cwd": Path("."), "env": {}, "record": {}},
+            repo_root=ROOT,
+        )
+
+
+def test_codex_command_overrides_the_dangerous_default_sandbox(tmp_path, monkeypatch):
+    record = _record()
+    invocation = prepare_invocation([record], tmp_path / "work", ROOT, _environ())
+    seen = {}
+
+    def fake_which(name):
+        return r"C:\tools\codex.exe" if name == "codex" else None
+
+    def fake_run(argv, cwd, env, capture_output, text, check, input=None):
+        seen["argv"] = argv
+        seen["input"] = input
+        payload = {
+            "evaluation_id": record["evaluation_id"],
+            "verdict": "insufficient",
+            "quote": "",
+        }
+        return subprocess.CompletedProcess(argv, 0, json.dumps(payload), "")
+
+    monkeypatch.setattr("claimledger.semantic_pilot.shutil.which", fake_which)
+    monkeypatch.setattr("claimledger.semantic_pilot.subprocess.run", fake_run)
+    result = launch_subscription_model(
+        "codex",
+        {"authenticated": True, "billing_mode": "subscription", "api_key_present": False},
+        allow_real_inference=True,
+        invocation=invocation,
+        repo_root=ROOT,
+    )
+    assert result["real_model_execution"] is True
+    assert "-s" in seen["argv"]
+    assert "read-only" in seen["argv"]
+    assert "danger-full-access" not in seen["argv"]
+    assert seen["input"] == ""
+    with pytest.raises(PilotRefused, match="sandbox bypass"):
+        execute_restricted(
+            invocation,
+            model="codex",
+            cli_version="codex",
+            runner_argv=[r"C:\tools\codex.exe", "exec", "-s", "danger-full-access", "prompt"],
+            repo_root=ROOT,
+            real_model_execution=True,
+            provider="codex",
+        )
+
+
+def test_recorded_codex_run_matches_the_passages_and_adjudicated_labels():
+    recorded = json.loads(
+        (ROOT / "benchmark" / "evaluation" / "semantic_pilot" / "codex_subscription_run.json").read_text(encoding="utf-8")
+    )
+    public = json.loads(
+        (ROOT / "benchmark" / "evaluation" / "semantic_pilot" / "subset_public.json").read_text(encoding="utf-8")
+    )
+    audit = json.loads(
+        (ROOT / "benchmark" / "evaluation" / "semantic_pilot" / "subset_audit.json").read_text(encoding="utf-8")
+    )
+    passages = {}
+    for line in (ROOT / "benchmark" / "evaluation" / "isolated" / "inputs.jsonl").read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            row = json.loads(line)
+            passages[row["evaluation_id"]] = row["passage"]
+    labels = {row["evaluation_id"]: row["adjudicated_label"] for row in audit["cases"]}
+    assert [row["evaluation_id"] for row in recorded["predictions"]] == public["evaluation_ids"]
+    assert recorded["independent_external_test"] is False
+    assert recorded["independently_blinded"] is False
+    assert recorded["gold_benchmark_released"] is False
+    assert recorded["paid_model_calls"] == 0
+    assert recorded["sandbox_mode"] == "read-only"
+    correct = 0
+    for row in recorded["predictions"]:
+        assert row["adjudicated_label"] == labels[row["evaluation_id"]]
+        if row["verdict"] == "insufficient":
+            assert row["quote"] == ""
+        else:
+            assert row["quote"] in passages[row["evaluation_id"]]
+        correct += row["verdict"] == row["adjudicated_label"]
+    assert correct == 10
+    assert recorded["metrics"]["macro_f1"] == 1.0
+    retained = [row["tokens"] for row in recorded["tokens_used"] if row["tokens"] is not None]
+    assert sum(retained) == 43903
+    assert retained.count(None) == 0
+    assert sum(row["tokens"] is None for row in recorded["tokens_used"]) == 3
+
+
+def test_adjudicated_subset_check_does_not_run_a_model():
+    script = ROOT / "scripts" / "run_adjudicated_subset.py"
+    completed = subprocess.run(
+        [sys.executable, str(script), "--check"], cwd=ROOT, capture_output=True, text=True,
+    )
+    assert completed.returncode == 0, completed.stderr
+    assert "processes_started=0" in completed.stdout
+    assert "adjudication_file_opened=false" in completed.stdout
+    assert "macro_f1" not in completed.stdout.lower()
+    blocked = subprocess.run(
+        [sys.executable, str(script), "--run"], cwd=ROOT, capture_output=True, text=True,
+    )
+    assert blocked.returncode == 2
+    assert "processes_started=0" in blocked.stdout
+    assert "genuine_predictions=0" in blocked.stdout
+    assert "not on PATH" in blocked.stderr
+    assert "macro_f1" not in blocked.stdout.lower()
+    assert "macro-f1" not in blocked.stderr.lower()

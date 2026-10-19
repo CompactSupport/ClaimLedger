@@ -4,6 +4,8 @@ All notable changes to ClaimLedger are documented here. The project uses semanti
 
 ## Unreleased
 
+- Record one ChatGPT-subscription Codex run on the internal 10-case subset. The Store CLI is not on PATH. Ten of ten verdicts matched the adjudicated labels. The run is not an external test, and the read-only sandbox is not an independent blind.
+- Start a subscription model subprocess only after billing is verified, and record `real_model_execution` for that subprocess alone. Codex commands pass an explicit read-only sandbox.
 - Reclassify the 90 stored annotations as label-derived from the case-id suffix. They are not semantic model predictions, and the 90/90 or 107/108 match is not independent accuracy.
 - Add a reproducible 10-case internal pilot subset and a real-inference gate. No genuine model process was started, so no model score is reported.
 - Import the Steven and David calibration labels into the review queue after an explicit write approval. Thirty rows are human-reviewed, author labels stay in `expected`, and the set is not a released gold benchmark.
