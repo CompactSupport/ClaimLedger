@@ -307,7 +307,8 @@ def assert_codex_subscription(billing: dict | None) -> None:
 
 
 def run_codex_subscription(billing: dict | None, *, allow_real_inference: bool = False,
-                           invocation: dict | None = None, repo_root: Path | None = None) -> dict | None:
+                           invocation: dict | None = None, repo_root: Path | None = None,
+                           heldout_ledger: dict | None = None) -> dict | None:
     """Run one Codex record after subscription billing is verified."""
     return launch_subscription_model(
         "codex",
@@ -315,6 +316,7 @@ def run_codex_subscription(billing: dict | None, *, allow_real_inference: bool =
         allow_real_inference=allow_real_inference,
         invocation=invocation,
         repo_root=repo_root,
+        heldout_ledger=heldout_ledger,
     )
 
 
@@ -348,7 +350,8 @@ def model_argv(provider: str, executable: str, prompt_text: str, record_text: st
 def launch_subscription_model(provider: str, billing: dict | None, *,
                               allow_real_inference: bool = False,
                               invocation: dict | None = None,
-                              repo_root: Path | None = None) -> dict | None:
+                              repo_root: Path | None = None,
+                              heldout_ledger: dict | None = None) -> dict | None:
     """Start one subscription-billed model process, or refuse before it starts."""
     assert_codex_subscription(billing)
     if provider not in SUBSCRIPTION_COMMANDS:
@@ -359,6 +362,14 @@ def launch_subscription_model(provider: str, billing: dict | None, *,
         raise PilotRefused(
             "A one-record invocation outside the repository is required before a model process can start."
         )
+    from .heldout import release_decision_for_record
+    decision = release_decision_for_record(
+        invocation.get("record") or {},
+        root=repo_root,
+        ledger=heldout_ledger,
+    )
+    if decision is not None and decision["allowed"] is not True:
+        raise PilotRefused("Held-out model contact is closed. " + " ".join(decision["reasons"]))
     command = SUBSCRIPTION_COMMANDS[provider]
     executable = shutil.which(command)
     if executable is None:
@@ -679,7 +690,8 @@ def observe_subscription_billing(provider: str, *, environ: dict[str, str] | Non
 
 def execute_real_inference(invocation: dict, billing: dict | None, *,
                            allow_real_inference: bool = False,
-                           provider: str = "codex") -> dict:
+                           provider: str = "codex",
+                           heldout_ledger: dict | None = None) -> dict:
     """Run one genuine model call. API-key billing is never a fallback.
 
     A directory outside the repository is not an operating-system sandbox. If
@@ -691,6 +703,7 @@ def execute_real_inference(invocation: dict, billing: dict | None, *,
         allow_real_inference=allow_real_inference,
         invocation=invocation,
         repo_root=None,
+        heldout_ledger=heldout_ledger,
     )
     if result is None:
         raise PilotRefused("Real inference did not return a recorded result.")

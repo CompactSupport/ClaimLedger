@@ -1,0 +1,46 @@
+{
+  "schema": "claimledger.heldout_v05_freeze.v1",
+  "dataset_version": "heldout-2026-10-18.1",
+  "milestone": "v0.5-fresh-heldout-entailment",
+  "author_label_origin": "dataset_author",
+  "author_labels_are_human_review": false,
+  "gold_benchmark_released": false,
+  "document_count": 8,
+  "claim_count": 16,
+  "case_ids": [
+    "hf-1eac11ab6911",
+    "hf-21efb60601ae",
+    "hf-391afe9771ee",
+    "hf-417be1621708",
+    "hf-5b469139a703",
+    "hf-7bcacd04d628",
+    "hf-7dd786aa6664",
+    "hf-7e501e4da0d2",
+    "hf-82171c11abfe",
+    "hf-8b7794a6a183",
+    "hf-ab794625faf5",
+    "hf-bffebe7e02c3",
+    "hf-d7511ee6c22e",
+    "hf-d85d4f62c1db",
+    "hf-e18190cb7cdc",
+    "hf-e6e516b65c8f"
+  ],
+  "author_label_under_review": [
+    "hf-82171c11abfe"
+  ],
+  "document_sha256": {
+    "h01": "7aacf2c63a7104c8b90689ca56ff4871eebc8040a0bafa9e1e464e630b34b680",
+    "h02": "1192dd598310b0d896a14236d1f6d5341ae5b98c47e4ac64a86fbb4f7f9ed514",
+    "h03": "8b9d2250ed920d4a88ab0ed0879266ecb48f1723a593b58a9e863b3826552a3d",
+    "h04": "76c44b38f0ea18aa9fb004508826d72ae1ef2f1ece7839f7552805ec1f011452",
+    "h05": "7e6e5245d8a3e28d38d1dae410b5cc443de1ad2b434a9cf81120069a2879692f",
+    "h06": "891648493602c395f6e90b3d1fe34d85e5036fe7c9213c8fa3c7a329b485d4fc",
+    "h07": "4b870d2aa92d6ed0f6b30c9c0716d11a26624a8ca0397b16e565389f678b7ef1",
+    "h08": "15b8a9541245c715b6cf73d0448bccc1e870a4d54764e66fe5f9ec825a81b997"
+  },
+  "catalog_sha256": "664d843b835a8e2acc07c45a5e404167b7ed902dd380f7f198bff9f1cc76864a",
+  "model_inputs_sha256": "9c9a3f577e22e6111ce8f8884987b5cdbb10d8ae2cc2438137735080ec8ac0fa",
+  "initial_blank_sheet_sha256": "5dd69d893c6f360eb4bbc4949625f26cafa268dd78e6d8a5387a9b39198e472f",
+  "entailment_audit_sha256": "3e2b6e732ff818bd113e6c0b50d4b89bcf2cf4e52f19456fe656b32d05d56b64",
+  "freeze_sha256": "6b6ebf3b7419698453e48b090f48d618bf1099079de0708df82364cb893367f2"
+}

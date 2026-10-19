@@ -39,6 +39,14 @@ Reviewer sheets are validated by `scripts/validate_calibration.py`. The committe
 
 An adjudication can be planned for `review_queue.csv` only when both of these are true. Two distinct validated human submissions exist for that case, and the approval record's decision is `approved_for_queue_import`. The approval must name the dataset version and the SHA-256 of the exact adjudication artifact. The import checks canonical id, claim text, document hash, passage hash, reviewer ids, labels, timestamps, and the adjudicated evidence span. A reviewer name does not prove a real-world identity or independence. A syntactically valid approval of a fabricated adjudication is refused. Writing the queue needs a second decision, `approved_queue_write`, bound to the same digest and dataset version. The validation command does not write the queue. Neither decision releases a gold benchmark.
 
+## Fresh held-out set
+
+`benchmark/heldout_v05/` freezes eight new fictional documents and sixteen claims that are not in the candidate corpus. The model-visible files omit author labels. The initial human sheet is blank, and the research ledger has no adjudications. Author labels are not human review. One author label, the June Kiln North claim, remains `contradicted` and is marked `author_label_under_review`.
+
+The snapshot and the research ledger are separate. The inference entry loads the ledger and refuses a held-out claim unless the adjudications are complete, the evidence quotes match the frozen passages, the timestamps are timezone-aware, and one approval digest is bound to that adjudication and to the freeze hash. A second contact for the same hash is refused. The committed ledger does not meet that bar, so `model_contact_count` is 0.
+
+`claimledger.entailment` records quote presence, a heuristic entailment relation, and `verdict_confirmed` separately. A different month is not treated as a contradiction. An empty quote does not verify an insufficient verdict. Heuristic rules do not certify labels. The set is public, so it is an internal freeze, not a secret external test.
+
 ## Controlled semantic pilot
 
 `claimledger.semantic_pilot` prepares one evaluation record per invocation, in a directory outside the repository, with credential environment variables removed. That is not an operating-system sandbox. The harness checks the model JSON, the evaluation id, and whether a quote is an exact substring of the passage it wrote. Scoring requires a declared subset and rejects duplicate, missing, and unknown ids. Predictions stay separate from human-reviewed labels.
