@@ -29,6 +29,7 @@ jobs:
       - run: python scripts/apply_formal_calibration_import.py --check
       - run: python scripts/report_semantic_pilot.py --check
       - run: python scripts/run_adjudicated_subset.py --check
+      - run: python scripts/check_heldout_v05.py --check
   secret-scan:
     runs-on: ubuntu-latest
     steps:

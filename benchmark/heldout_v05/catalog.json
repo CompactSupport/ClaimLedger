@@ -1,0 +1,138 @@
+{
+  "schema": "claimledger.heldout_v05_catalog.v1",
+  "label_origin": "dataset_author",
+  "author_labels_are_human_review": false,
+  "model_contact_count": 0,
+  "documents": [
+    {
+      "document_id": "h01",
+      "text": "The quay office counted 40 oil lanterns and 12 electric lanterns on 2 June 2026. The oil lanterns were tagged for repair. The ledger does not give their purchase price.\n"
+    },
+    {
+      "document_id": "h02",
+      "text": "Kiln North fired 18 batches in May 2026. Kiln South fired 18 batches in June 2026. Neither log records the fuel type.\n"
+    },
+    {
+      "document_id": "h03",
+      "text": "The sample used only plant dye. No mineral dye was added. The notebook lists the dyer as one person.\n"
+    },
+    {
+      "document_id": "h04",
+      "text": "Lock Seven opened at 09:40. The notice says the lock closes at 17:00. It does not state the fee.\n"
+    },
+    {
+      "document_id": "h05",
+      "text": "Plot A yielded 6 kilograms. Plot B yielded 9 kilograms. The trial did not report rainfall.\n"
+    },
+    {
+      "document_id": "h06",
+      "text": "The west desk answers letters from 08:00 until 12:00. After 12:00 the desk files maps. The sheet lists no weekend hours.\n"
+    },
+    {
+      "document_id": "h07",
+      "text": "On 4 April 2026 the ferry left at 07:10 because the gate was open. The log gives no passenger count.\n"
+    },
+    {
+      "document_id": "h08",
+      "text": "The mosaic used 200 glass tiles and 50 stone tiles. The curator counted the tiles once.\n"
+    }
+  ],
+  "claims": [
+    {
+      "document_id": "h01",
+      "claim": "The oil lanterns were tagged for repair.",
+      "author_label": "supported",
+      "author_quote": "The oil lanterns were tagged for repair."
+    },
+    {
+      "document_id": "h01",
+      "claim": "The oil lanterns cost 40 dollars.",
+      "author_label": "insufficient",
+      "author_quote": ""
+    },
+    {
+      "document_id": "h02",
+      "claim": "Kiln North fired 18 batches in May 2026.",
+      "author_label": "supported",
+      "author_quote": "Kiln North fired 18 batches in May 2026."
+    },
+    {
+      "document_id": "h02",
+      "claim": "Kiln North fired 18 batches in June 2026.",
+      "author_label": "contradicted",
+      "author_quote": "Kiln North fired 18 batches in May 2026."
+    },
+    {
+      "document_id": "h03",
+      "claim": "The sample included mineral dye.",
+      "author_label": "contradicted",
+      "author_quote": "No mineral dye was added."
+    },
+    {
+      "document_id": "h03",
+      "claim": "Two people dyed the sample.",
+      "author_label": "insufficient",
+      "author_quote": ""
+    },
+    {
+      "document_id": "h04",
+      "claim": "Lock Seven opened at 09:40.",
+      "author_label": "supported",
+      "author_quote": "Lock Seven opened at 09:40."
+    },
+    {
+      "document_id": "h04",
+      "claim": "The lock fee is 17 dollars.",
+      "author_label": "insufficient",
+      "author_quote": ""
+    },
+    {
+      "document_id": "h05",
+      "claim": "Plot A is less than Plot B.",
+      "author_label": "supported",
+      "author_quote": "Plot A yielded 6 kilograms. Plot B yielded 9 kilograms."
+    },
+    {
+      "document_id": "h05",
+      "claim": "The trial recorded rainfall.",
+      "author_label": "contradicted",
+      "author_quote": "The trial did not report rainfall."
+    },
+    {
+      "document_id": "h06",
+      "claim": "The west desk answers letters from 08:00 until 12:00.",
+      "author_label": "supported",
+      "author_quote": "The west desk answers letters from 08:00 until 12:00."
+    },
+    {
+      "document_id": "h06",
+      "claim": "The west desk answers letters after 12:00.",
+      "author_label": "contradicted",
+      "author_quote": "After 12:00 the desk files maps."
+    },
+    {
+      "document_id": "h07",
+      "claim": "On 4 April 2026 the ferry left at 07:10 because the gate was open.",
+      "author_label": "supported",
+      "author_quote": "On 4 April 2026 the ferry left at 07:10 because the gate was open."
+    },
+    {
+      "document_id": "h07",
+      "claim": "The ferry carried 40 passengers.",
+      "author_label": "insufficient",
+      "author_quote": ""
+    },
+    {
+      "document_id": "h08",
+      "claim": "The mosaic used 200 glass tiles and 50 stone tiles.",
+      "author_label": "supported",
+      "author_quote": "The mosaic used 200 glass tiles and 50 stone tiles."
+    },
+    {
+      "document_id": "h08",
+      "claim": "The mosaic used 200 stone tiles.",
+      "author_label": "contradicted",
+      "author_quote": "The mosaic used 200 glass tiles and 50 stone tiles."
+    }
+  ]
+}

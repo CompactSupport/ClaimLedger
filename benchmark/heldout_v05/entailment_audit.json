@@ -1,0 +1,135 @@
+{
+  "schema": "claimledger.heldout_v05_entailment_audit.v1",
+  "auditor": "claimledger.entailment",
+  "model_contact_count": 0,
+  "rows": [
+    {
+      "id": "hf-1eac11ab6911",
+      "author_label": "supported",
+      "quote_present": true,
+      "entailment": "supports",
+      "rule": "claim_verbatim_in_quote",
+      "entailment_confirms_author_label": true
+    },
+    {
+      "id": "hf-21efb60601ae",
+      "author_label": "contradicted",
+      "quote_present": true,
+      "entailment": "refutes",
+      "rule": "same_unit_different_number",
+      "entailment_confirms_author_label": true
+    },
+    {
+      "id": "hf-391afe9771ee",
+      "author_label": "insufficient",
+      "quote_present": false,
+      "entailment": "not_applicable",
+      "rule": "empty_quote",
+      "entailment_confirms_author_label": true
+    },
+    {
+      "id": "hf-417be1621708",
+      "author_label": "contradicted",
+      "quote_present": true,
+      "entailment": "refutes",
+      "rule": "exclusion_conflict",
+      "entailment_confirms_author_label": true
+    },
+    {
+      "id": "hf-5b469139a703",
+      "author_label": "insufficient",
+      "quote_present": false,
+      "entailment": "not_applicable",
+      "rule": "empty_quote",
+      "entailment_confirms_author_label": true
+    },
+    {
+      "id": "hf-7bcacd04d628",
+      "author_label": "contradicted",
+      "quote_present": true,
+      "entailment": "unresolved",
+      "rule": "presence_is_not_entailment",
+      "entailment_confirms_author_label": false
+    },
+    {
+      "id": "hf-7dd786aa6664",
+      "author_label": "supported",
+      "quote_present": true,
+      "entailment": "supports",
+      "rule": "claim_verbatim_in_quote",
+      "entailment_confirms_author_label": true
+    },
+    {
+      "id": "hf-7e501e4da0d2",
+      "author_label": "supported",
+      "quote_present": true,
+      "entailment": "supports",
+      "rule": "claim_verbatim_in_quote",
+      "entailment_confirms_author_label": true
+    },
+    {
+      "id": "hf-82171c11abfe",
+      "author_label": "contradicted",
+      "quote_present": true,
+      "entailment": "refutes",
+      "rule": "month_conflict",
+      "entailment_confirms_author_label": true
+    },
+    {
+      "id": "hf-8b7794a6a183",
+      "author_label": "supported",
+      "quote_present": true,
+      "entailment": "supports",
+      "rule": "less_than_measures",
+      "entailment_confirms_author_label": true
+    },
+    {
+      "id": "hf-ab794625faf5",
+      "author_label": "contradicted",
+      "quote_present": true,
+      "entailment": "refutes",
+      "rule": "exclusion_conflict",
+      "entailment_confirms_author_label": true
+    },
+    {
+      "id": "hf-bffebe7e02c3",
+      "author_label": "supported",
+      "quote_present": true,
+      "entailment": "supports",
+      "rule": "claim_verbatim_in_quote",
+      "entailment_confirms_author_label": true
+    },
+    {
+      "id": "hf-d7511ee6c22e",
+      "author_label": "supported",
+      "quote_present": true,
+      "entailment": "supports",
+      "rule": "claim_verbatim_in_quote",
+      "entailment_confirms_author_label": true
+    },
+    {
+      "id": "hf-d85d4f62c1db",
+      "author_label": "insufficient",
+      "quote_present": false,
+      "entailment": "not_applicable",
+      "rule": "empty_quote",
+      "entailment_confirms_author_label": true
+    },
+    {
+      "id": "hf-e18190cb7cdc",
+      "author_label": "insufficient",
+      "quote_present": false,
+      "entailment": "not_applicable",
+      "rule": "empty_quote",
+      "entailment_confirms_author_label": true
+    },
+    {
+      "id": "hf-e6e516b65c8f",
+      "author_label": "supported",
+      "quote_present": true,
+      "entailment": "supports",
+      "rule": "claim_verbatim_in_quote",
+      "entailment_confirms_author_label": true
+    }
+  ]
+}
