@@ -12,12 +12,15 @@ import pytest
 
 from claimledger.semantic_pilot import (
     PilotRefused,
+    execute_real_inference,
     execute_restricted,
     offline_mock_checks,
     prepare_invocation,
     restricted_env,
     run_codex_subscription,
+    score_adjudicated_subset,
     score_subset,
+    select_internal_subset,
     validate_model_output,
 )
 
@@ -211,3 +214,63 @@ def test_check_command_runs_the_offline_mock_gate(tmp_path):
     assert "os_sandbox=false" in completed.stdout
     assert "macro_f1" not in completed.stdout
     assert "macro-f1" not in completed.stdout.lower()
+
+
+def test_real_inference_refuses_without_a_verified_subscription_cli():
+    record = _record()
+    invocation = {
+        "cwd": Path("."),
+        "record": record,
+        "prompt_version": "claimledger.inference_prompt.v1",
+        "passage_sha256": "abc",
+    }
+    with pytest.raises(PilotRefused, match="has not been verified"):
+        execute_real_inference(invocation, None, allow_real_inference=True)
+    with pytest.raises(PilotRefused, match="not used as a fallback"):
+        execute_real_inference(invocation, {
+            "authenticated": True,
+            "billing_mode": "api_key",
+            "api_key_present": False,
+        }, allow_real_inference=True)
+    with pytest.raises(PilotRefused, match="not on PATH"):
+        execute_real_inference(invocation, {
+            "authenticated": True,
+            "billing_mode": "subscription",
+            "api_key_present": False,
+        }, allow_real_inference=True)
+
+
+def test_internal_subset_is_reproducible_and_hides_canonical_ids(tmp_path):
+    from scripts.report_semantic_pilot import _load_cases, build_report_files
+    first = build_report_files()
+    second = build_report_files()
+    assert first == second
+    public = json.loads(first["subset_public.json"])
+    assert len(public["evaluation_ids"]) == 10
+    assert public["independent_external_test"] is False
+    assert "cl-" not in first["subset_public.json"]
+    assert "supported" not in first["subset_public.json"]
+    chosen = select_internal_subset(_load_cases())
+    assert [row["evaluation_id"] for row in chosen] == public["evaluation_ids"]
+    by_document = {}
+    for case in _load_cases():
+        by_document.setdefault(case["document"], set()).add(case["canonical_id"])
+    selected = {case["canonical_id"] for case in chosen}
+    for document, ids in by_document.items():
+        overlap = ids & selected
+        assert overlap == set() or overlap == ids
+    scored = score_adjudicated_subset(
+        [{
+            "evaluation_id": public["evaluation_ids"][0],
+            "status": "completed_valid",
+            "verdict": "insufficient",
+            "quote_in_source": True,
+            "real_model_execution": False,
+        }],
+        subset=[public["evaluation_ids"][0]],
+        adjudicated_labels={public["evaluation_ids"][0]: "insufficient"},
+    )
+    assert scored["independent_external_test"] is False
+    assert scored["result_is_model_evaluation"] is False
+    assert "genuine model" in first["REPORT.md"].lower() or "no genuine" in first["REPORT.md"].lower()
+    assert "not on PATH" in first["REPORT.md"]

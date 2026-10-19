@@ -4,6 +4,8 @@ All notable changes to ClaimLedger are documented here. The project uses semanti
 
 ## Unreleased
 
+- Reclassify the 90 stored annotations as label-derived from the case-id suffix. They are not semantic model predictions, and the 90/90 or 107/108 match is not independent accuracy.
+- Add a reproducible 10-case internal pilot subset and a real-inference gate. No genuine model process was started, so no model score is reported.
 - Import the Steven and David calibration labels into the review queue after an explicit write approval. Thirty rows are human-reviewed, author labels stay in `expected`, and the set is not a released gold benchmark.
 - Record a second conversational 30-label set beside the original Human–AI session. It does not replace the original answers or become a formal human review.
 - Record one 30-case Human–AI calibration session. Original agreement stays separate from the post-feedback consensus, and neither is accuracy or a gold label.

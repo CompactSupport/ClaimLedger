@@ -5,11 +5,11 @@ These files are AI annotations. They are not independent human review, and they 
 | Batch | Files | Rows | Author-label matches |
 | --- | --- | --- | --- |
 | First | `semantic_review_18.json`, `semantic_review_18.csv` | 18 | 17 |
-| Second | `semantic_review_remaining_90.json`, `semantic_review_remaining_90.csv`, `review_summary.md` | 90 | 90 |
+| Second | `semantic_review_remaining_90.json`, `semantic_review_remaining_90.csv`, `review_summary.md` | 90 | 90 suffix-derived records, not model predictions |
 
 Together the two batches name all 108 candidate rows once. The only disagreement is `cl-027-2`: the AI annotation says `insufficient`, and the author label `contradicted` was left unchanged. `review_summary.md` describes the second batch only.
 
-**107 of 108 is not an accuracy estimate.** The passes were not blind, author labels were visible in earlier discussion, and no controlled model run produced these notes. `baseline_metrics_valid` in the 90-row file is false. Do not quote the match count as model accuracy, benchmark performance, or evidence that the author labels are correct.
+**107 of 108 is not an accuracy estimate.** Ninety of those stored verdicts are `label_derived_not_independent`: each one copies the case-id suffix rule, so the 90/90 match is by construction. The other batch has 17 of 18 stored matches and was not a blinded model run. Do not quote either figure as independent AI accuracy. `baseline_metrics_valid` in the 90-row file is false.
 
 The import does not change `expected`, `evidence_quote`, `reviewed_label`, `human_reviewed`, `reviewer`, or `reviewed_at` in `review_queue.csv`. It does not change `gold_set_rows`, `human_reviewed_rows`, or `gold_benchmark_released`. Suggested quote expansions in the first file were not written back into the author `evidence_quote` column. Recorded spans were checked against the current document bytes before each import.
 

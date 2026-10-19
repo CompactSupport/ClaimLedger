@@ -135,6 +135,13 @@ def test_remaining_ai_annotations_do_not_release_gold():
     assert second["baseline_metrics_valid"] is False
     assert second["n"] == second["author_label_agreement"] == 90
     assert second["author_label_disagreements"] == []
+    assert second["inference_class"] == "label_derived_not_independent"
+    assert second["independent_semantic_inference"] is False
+    suffix_rule = {"1": "supported", "2": "contradicted", "3": "insufficient"}
+    assert all(
+        result["ai_verdict"] == suffix_rule[result["case_id"].rsplit("-", 1)[-1]]
+        for result in second["results"]
+    )
     with (BASE / "review_queue.csv").open(encoding="utf-8", newline="") as handle:
         reviews = {row["id"]: row for row in csv.DictReader(handle)}
     first_ids = {result["case_id"] for result in first["results"]}

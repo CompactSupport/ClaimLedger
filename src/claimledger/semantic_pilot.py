@@ -9,13 +9,53 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import random
 import re
+import shutil
 import subprocess
 from pathlib import Path
 
 from .label_blind import CANONICAL_ID_RE, CLASSES, PROMPT, PROMPT_VERSION
+from .metrics import classification_metrics
 
 RESULT_SCHEMA = "claimledger.semantic_pilot_result.v1"
+SELECTION_SEED = 20261018
+DATASET_GIT_COMMIT = "24c8c8e5824c98bf0f7cc68c46fcdbbe5164e73f"
+PREFERRED_REASON_TAGS = (
+    "negation",
+    "omission",
+    "numeric_unit",
+    "comparison",
+    "temporal_boundary",
+    "paraphrase",
+    "arithmetic",
+    "scope_equivalence",
+    "absence",
+    "fragment",
+    "related_metric",
+)
+REASON_TAGS = {
+    "cl-003-1": "negation",
+    "cl-003-2": "negation",
+    "cl-002-1": "paraphrase",
+    "cl-006-1": "comparison",
+    "cl-006-2": "comparison",
+    "cl-006-3": "related_metric",
+    "cl-024-1": "comparison",
+    "cl-016-1": "temporal_boundary",
+    "cl-032-1": "temporal_boundary",
+    "cl-027-2": "omission",
+    "cl-004-2": "numeric_unit",
+    "cl-015-1": "arithmetic",
+    "cl-015-2": "arithmetic",
+    "cl-031-2": "arithmetic",
+    "cl-029-1": "scope_equivalence",
+    "cl-009-3": "absence",
+    "cl-011-3": "absence",
+    "cl-014-3": "absence",
+    "cl-018-1": "fragment",
+    "cl-018-2": "fragment",
+}
 ENV_ALLOWLIST = {"SYSTEMROOT", "COMSPEC", "PATH", "PATHEXT", "TEMP", "TMP", "WINDIR"}
 SENSITIVE_NAME = re.compile(r"(?i)(KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL)")
 
@@ -348,4 +388,137 @@ def offline_mock_checks(workspace: Path, repo_root: Path) -> dict:
         "os_sandbox": False,
         "mock_results_are_model_evaluation": False,
         "human_labels_synthesized": False,
+    }
+
+
+def select_internal_subset(adjudicated_cases: list[dict], *, seed: int = SELECTION_SEED,
+                           target_size: int = 10) -> list[dict]:
+    """Pick a reproducible subset without splitting a document.
+
+    ``adjudicated_cases`` items need ``canonical_id``, ``document``, ``evaluation_id``,
+    and ``adjudicated_label``. The returned order is document name, then evaluation id.
+    """
+    grouped: dict[str, list[dict]] = {}
+    for case in adjudicated_cases:
+        grouped.setdefault(case["document"], []).append(dict(case))
+    for cases in grouped.values():
+        cases.sort(key=lambda item: item["evaluation_id"])
+    remaining = dict(grouped)
+    selected_docs: list[str] = []
+    rng = random.Random(seed)
+
+    def fits(document: str) -> bool:
+        used = sum(len(grouped[name]) for name in selected_docs)
+        return used + len(grouped[document]) <= target_size
+
+    def take(candidates: list[str]) -> None:
+        if not candidates:
+            return
+        smallest = min(len(remaining[name]) for name in candidates)
+        tied = sorted(name for name in candidates if len(remaining[name]) == smallest)
+        rng.shuffle(tied)
+        choice = tied[0]
+        selected_docs.append(choice)
+        remaining.pop(choice)
+
+    covered: set[str] = set()
+    for tag in PREFERRED_REASON_TAGS:
+        options = [
+            document for document, cases in remaining.items()
+            if fits(document) and any(REASON_TAGS.get(case["canonical_id"]) == tag for case in cases)
+            and tag not in covered
+        ]
+        if options:
+            take(options)
+            covered.add(tag)
+    while sum(len(grouped[name]) for name in selected_docs) < target_size and remaining:
+        options = [document for document in remaining if fits(document)]
+        if not options:
+            break
+        before = len(selected_docs)
+        take(options)
+        if len(selected_docs) == before:
+            break
+    chosen = [case for document in selected_docs for case in grouped[document]]
+    if len(chosen) != target_size:
+        raise PilotRefused(f"Subset selection produced {len(chosen)} cases, not {target_size}.")
+    documents_in = {case["document"] for case in chosen}
+    for document, cases in grouped.items():
+        ids = {case["canonical_id"] for case in cases}
+        chosen_ids = {case["canonical_id"] for case in chosen if case["document"] == document}
+        if chosen_ids and chosen_ids != ids:
+            raise PilotRefused(f"Document {document} was split across the subset boundary.")
+        if document in documents_in and chosen_ids != ids:
+            raise PilotRefused(f"Document {document} was split across the subset boundary.")
+    chosen.sort(key=lambda item: (item["document"], item["evaluation_id"]))
+    return chosen
+
+
+def subset_case_hash(evaluation_ids: list[str]) -> str:
+    payload = "\n".join(sorted(evaluation_ids)).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def inference_blocker() -> str:
+    """Explain why no genuine model call is recorded. This does not start a process."""
+    if shutil.which("codex") is None:
+        return (
+            "Codex CLI is not on PATH. Subscription authentication and billing were "
+            "not verified, and no model process was started. API-key billing is not "
+            "used as a fallback."
+        )
+    return (
+        "Codex CLI is on PATH, but no verified subscription billing record was supplied. "
+        "This revision does not launch the CLI and does not fall back to API-key billing."
+    )
+
+
+def execute_real_inference(invocation: dict, billing: dict | None, *,
+                           allow_real_inference: bool = False) -> dict:
+    """Run one genuine model call. API-key billing is never a fallback.
+
+    A stripped environment and a directory outside the repository are not an
+    operating-system sandbox. If this process can read the repository, the run
+    is not independently blinded.
+    """
+    assert_codex_subscription(billing)
+    if not allow_real_inference:
+        raise PilotRefused("Real inference is disabled until it is explicitly enabled.")
+    executable = shutil.which("codex")
+    if not executable:
+        raise PilotRefused(
+            "Codex CLI is not on PATH, so subscription billing cannot be verified "
+            "and no model process was started. API-key billing is not used as a fallback."
+        )
+    raise PilotRefused(
+        "Codex CLI is present, but this revision has no verified non-interactive "
+        "subscription command. Refusing to guess a command that might use API-key billing."
+    )
+
+
+def score_adjudicated_subset(results: list[dict], *, subset: list[str],
+                             adjudicated_labels: dict[str, str]) -> dict:
+    """Score model output against adjudicated human labels. This is not an external test."""
+    scored = score_subset(
+        results,
+        subset=subset,
+        known_ids=set(adjudicated_labels),
+        author_labels=adjudicated_labels,
+        label_source="adjudicated_human_label_internal_development_only",
+    )
+    pairs = [(adjudicated_labels[item], next(
+        row["verdict"] for row in results if row["evaluation_id"] == item
+    )) for item in subset]
+    metrics = classification_metrics(pairs)
+    real = all(row.get("real_model_execution") is True for row in results)
+    return {
+        **scored,
+        "comparison_label": "adjudicated_human_label",
+        "independent_external_test": False,
+        "result_is_model_evaluation": real,
+        "metrics": metrics,
+        "accuracy": sum(expected == actual for expected, actual in pairs) / len(pairs),
+        "quote_validity_rate": (
+            sum(row.get("quote_in_source") is True for row in results) / len(results)
+        ),
     }

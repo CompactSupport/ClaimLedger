@@ -1,0 +1,20 @@
+{
+  "schema": "claimledger.semantic_pilot_subset.v1",
+  "selection_seed": 20261018,
+  "case_set_sha256": "d221389a0ec88a420e1cdd5d966bb1ae2e8cf947db4a95bbe6e2bcfc8235a297",
+  "dataset_version": "candidates-2026-10-17.2",
+  "dataset_git_commit": "24c8c8e5824c98bf0f7cc68c46fcdbbe5164e73f",
+  "evaluation_ids": [
+    "ev-176485808969",
+    "ev-326954034369",
+    "ev-cd9a75fe1b23",
+    "ev-d93b050022d1",
+    "ev-db1140beb268",
+    "ev-26cfa8dba797",
+    "ev-016b2345c1f3",
+    "ev-db6154cd9391",
+    "ev-ce8ea279a236",
+    "ev-5aaeb7ea57c6"
+  ],
+  "independent_external_test": false
+}

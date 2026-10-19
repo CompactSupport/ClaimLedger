@@ -13,8 +13,8 @@ The response origin is a user-provided conversational judgment. The exact origin
 - Dataset version: `candidates-2026-10-17.2`.
 - Mapping: `benchmark/evaluation/audit/calibration_mapping.json` (`claimledger.evaluation_export.v1`, seed 20261018, SHA-256 `7b8cc7775caee9084b7356f18e68656d177051d409586907642998c189fd3d6c`).
 - AI sources, with the commit recorded inside each file:
-  - `benchmark/candidates/ai_second_opinion/semantic_review_18.json` commit `4729842129139cb8ddecb9cdbb05be0ec7754e86`, SHA-256 `2ef71de15078667e34a6f453996a094ffaafd257a1efa9e1f2f7dcb13aa748ac`, paid API calls 0.
-  - `benchmark/candidates/ai_second_opinion/semantic_review_remaining_90.json` commit `82f29b7d3ed5f51d03ba6f135c024f7d06b3c9a2`, SHA-256 `ced3f1b34d08749be63e0c0921d19f82436a8bbeca60b27408c92fe505ecc363`, paid API calls 0.
+  - `benchmark/candidates/ai_second_opinion/semantic_review_18.json` commit `4729842129139cb8ddecb9cdbb05be0ec7754e86`, SHA-256 `2ef71de15078667e34a6f453996a094ffaafd257a1efa9e1f2f7dcb13aa748ac`, paid API calls 0, inference class `unspecified_not_a_blind_model_run`.
+  - `benchmark/candidates/ai_second_opinion/semantic_review_remaining_90.json` commit `82f29b7d3ed5f51d03ba6f135c024f7d06b3c9a2`, SHA-256 `942418a77fc85b754a7da2bb25fec15eb09b48758006d936962a1c728de53b34`, paid API calls 0, inference class `label_derived_not_independent`.
 
 The committed AI annotations predate this comparison. They were not produced under a rigorously independent blind protocol. No encrypted AI-answer artifact was used.
 
