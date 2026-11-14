@@ -18,7 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-dependencies = ["pypdf>=5,<7"]
+dependencies = ["pypdf>=5,<8"]
 
 [project.optional-dependencies]
 openai = ["openai>=1.70,<4"]
